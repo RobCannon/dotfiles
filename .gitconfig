@@ -1,0 +1,15 @@
+[user]
+	name = Rob Cannon
+	email = rob.cannon@equifax.com
+[credential]
+	helper = store
+[fetch]
+	prune = true
+[push]
+	default = simple
+[pull]
+	rebase = true
+[init]
+	defaultBranch = main
+[help]
+	autocorrect = 1

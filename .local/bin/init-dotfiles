@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo ".cfg" >> .gitignore
+alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+git clone --bare https://github.com/RobCannon/dotfiles.git $HOME/.cfg
+config config --local status.showUntrackedFiles no
+config checkout -f
+
+sudo usermod -aG docker $USER
+newgrp docker
+
+source ~/.bash_profile

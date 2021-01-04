@@ -1,0 +1,9 @@
+{
+    "terraform.languageServer": {
+      "external": true
+    },
+    "remote.SSH.showLoginTerminal": true,
+    "remote.SSH.defaultExtensions": [
+        "mauve.terraform"
+    ]
+}
