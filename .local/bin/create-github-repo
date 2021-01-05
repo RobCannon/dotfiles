@@ -1,0 +1,63 @@
+#!/bin/pwsh
+[CmdletBinding()]
+param (
+    [Parameter()]
+    [String]
+    $Name,
+
+    [Parameter()]
+    [String]
+    $Team = 'cloud-services'
+)
+
+# Different for each application
+$application_name = "platform-services-poc"
+$jenkins_url = [uri]"https://cicd-tools.eops.prd.gcp.efx/iaas-ps-jenkins/"
+$team = "iaas-platform-services-poc"
+
+
+if (-Not $Name) {
+  $Name = "$(Get-Location | Split-Path -Leaf)"
+  Push-Location .
+}
+else {
+  Push-Location $Name
+}
+
+$repo_name = "$($Team)-$Name"
+$repo_url = "https://github.com/Equifax/$repo_name.git"
+$jenkins_instance_name = $jenkins_url.AbsolutePath.Replace('/','')
+
+if ($(git remote)) {
+  git fetch --all
+}
+gh repo create Equifax/$repo_name --internal --confirm --team $team
+git push -f --mirror origin
+
+Pop-Location
+
+# Build a uri that prefills all of these value for a CICD ticket
+$query = [System.Web.HttpUtility]::ParseQueryString([String]::Empty)
+$query.Add('pid', '36900')
+$query.Add('issuetype', '7') # IssueType = Story
+$query.Add('reporter', 'rxc423')
+$query.Add('labels', 'CICDREPOS')
+$query.Add('labels', 'GitHub_JenkinsAuth')
+$query.Add('summary', "$jenkins_instance_name Authentication Request with GitHub")
+$query.Add('priority', '5') # Priority = Trivial
+$query.Add('customfield_13900', '33239')   # Organization Unit = IaaS
+$query.Add('customfield_11500', 'rob.cannon@equifax.com') # Reporter
+$query.Add('description', @"
+||Field||Value||
+|Jenkins Url|$jenkins_url|
+|GitHub Repositories|$repo_url|
+|Repository Type|Internal|
+|Organization Name|Equifax|
+"@)
+
+$uri = [UriBuilder]::new('https://equifax.atlassian.net/secure/CreateIssueDetails!init.jspa')
+$uri.Query = $query.ToString()
+
+Write-Host "Create Ticket with CICD team to grant access to GitHub Repo $repo_name"
+Write-Host ""
+Write-Host $uri.ToString()
