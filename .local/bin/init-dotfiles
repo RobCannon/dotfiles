@@ -8,5 +8,3 @@ sudo usermod -aG docker $USER
 newgrp docker
 
 source ~/.bash_profile
-
-gh auth login
