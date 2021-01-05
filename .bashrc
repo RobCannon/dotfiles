@@ -8,11 +8,11 @@ fi
 # User specific aliases and functions
 
 ## Colorize the ls output ##
-alias ls='ls --color=auto'
+eval "$(dircolors)"
+alias ls='ls -F -h --color=always -v --time-style=long-iso -l'
 
 ## Use a long listing format ##
-alias ll='ls -la --color=auto'
-alias dir='ls -la --color=auto'
+alias dir='ls -a'
 
 ## Show hidden files ##
 alias l.='ls -d .* --color=auto'
@@ -121,9 +121,6 @@ alias grevoke='rm -rf ~/.config/gcloud'
 #alias man='tldr'
 
 #complete -C aws_completer aws
-
-#alias enable-proxy='export http_proxy=http://172.25.49.99:3128; export https_proxy=http://172.25.49.99:3128; export no_proxy=*.googleapis.com'
-#alias disable-proxy='unset http_proxy; unset https_proxy; unset no_proxy'
 
 if [ -f /usr/share/bash-completion/completions/git ]
 then
