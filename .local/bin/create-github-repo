@@ -7,26 +7,38 @@ param (
 
     [Parameter()]
     [String]
-    $Team = 'cloud-services'
+    $Team,
+
+    [Parameter()]
+    [String]
+    $JenkinsUrl = 'https://cicd-tools.eops.prd.gcp.efx/iaas-ps-jenkins/'
 )
 
-# Different for each application
-$application_name = "platform-services-poc"
-$jenkins_url = [uri]"https://cicd-tools.eops.prd.gcp.efx/iaas-ps-jenkins/"
-$team = "iaas-platform-services-poc"
-
-
 if (-Not $Name) {
-  $Name = "$(Get-Location | Split-Path -Leaf)"
-  Push-Location .
+  $path = Get-Location
 }
 else {
-  Push-Location $Name
+  $path = Join-Path (Get-Location) $Name
+}
+
+if (-Not (Test-Path $path)) {
+  Write-Error "$path does not exist"
+  exit
+}
+elseif (-Not (Test-Path "$path/.git")) {
+  Write-Error "$path is not a valid git repo"
+  exit
+}
+
+if (-Not $Team) {
+  $Team = Get-Location | Split-Path -Parent | Split-Path -Leaf
 }
 
 $repo_name = "$($Team)-$Name"
 $repo_url = "https://github.com/Equifax/$repo_name.git"
-$jenkins_instance_name = $jenkins_url.AbsolutePath.Replace('/','')
+$jenkins_instance_name = ([uri]$JenkinsUrl).AbsolutePath.Replace('/','')
+
+Push-Location $Path
 
 if ($(git remote)) {
   git fetch --all
@@ -49,7 +61,7 @@ $query.Add('customfield_13900', '33239')   # Organization Unit = IaaS
 $query.Add('customfield_11500', 'rob.cannon@equifax.com') # Reporter
 $query.Add('description', @"
 ||Field||Value||
-|Jenkins Url|$jenkins_url|
+|Jenkins Url|$JenkinsUrl|
 |GitHub Repositories|$repo_url|
 |Repository Type|Internal|
 |Organization Name|Equifax|
