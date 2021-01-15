@@ -6,7 +6,8 @@ Param (
 
 $current_branch = git branch --show-current
 
-git fetch origin "$($BranchName):$BranchName" && `
+git pull && `
+  git fetch origin "$($BranchName):$BranchName" && `
   git push && `
   git merge $BranchName && `
   git checkout $BranchName && `
