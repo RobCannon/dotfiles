@@ -100,7 +100,7 @@ alias kru='k rollout undo'
 alias kl='k logs'
 
 # Terraform aliases
-alias tfi='terraform init -upgrade=true -plugin-dir=/usr/bin'
+alias tfi='terraform init -upgrade=true'
 alias tfv='terraform validate'
 alias tfp='terraform plan'
 alias tfa='terraform apply -auto-approve'
