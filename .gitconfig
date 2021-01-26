@@ -7,8 +7,6 @@
 	prune = true
 [push]
 	default = simple
-[pull]
-	rebase = true
 [init]
 	defaultBranch = main
 [help]
