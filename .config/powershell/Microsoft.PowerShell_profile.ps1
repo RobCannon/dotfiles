@@ -2,7 +2,9 @@ using namespace System.Management.Automation
 using namespace System.Management.Automation.Language
 
 Import-Module posh-git
-Import-Module oh-my-posh
+#Import-Module oh-my-posh
+Get-ChildItem /usr/local/share/powershell/Modules/oh-my-posh -Filter *.psm1 -Recurse | Import-Module
+
 Set-PoshPrompt -Theme $HOME/.config/oh-my-posh/my-posh.json
 
 Import-Module -Name Terminal-Icons
