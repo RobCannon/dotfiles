@@ -4,7 +4,9 @@ Param (
   [string]$BranchName
 )
 
-function OpenBranch {
+Import-Module posh-git
+
+function Unblock-GitHubBranch {
   Param (
     [Parameter(Mandatory = $true)]
     [string]$BranchName
@@ -39,94 +41,97 @@ function OpenBranch {
   }
 }
 
-$current_branch = git branch --show-current
+function Merge-GitBranch {
+  Param (
+    [Parameter(Mandatory = $true)]
+    [string]$BranchName
+  )
 
-if (git status --porcelain --untracked-files) {
-  Write-Warning "There are uncommited changes in $current_branch"
-  exit
-}
+  # Is there a way to figure out if a merge is needed
 
-git fetch && git fetch origin $BranchName && git pull
+  $current_branch = Get-GitBranch
+  $merge_base = git merge-base FETCH_HEAD $BranchName
+  $merge_results = git merge-tree $merge_base $BranchName FETCH_HEAD
+  if ($merge_results) {
+    $conflict = $merge_results | ? { $_ -match '^+<* \.our$' }
 
-$current_commit = git rev-parse --verify $current_branch
-$remote_current_commit = git rev-parse --verify origin/$current_branch
-if ($current_commit -ne $remote_current_commit) {
-  OpenBranch $current_branch
-  Write-Host -ForegroundColor Green "Pushing changes to origin/$current_branch"
-  git push
-}
-
-$merge_base = git merge-base FETCH_HEAD $BranchName
-$merge_results = git merge-tree $merge_base $BranchName FETCH_HEAD
-if ($merge_results) {
-  $conflict = $merge_results | ?{ $_ -match '^+<* \.our$' }
-
-  if ($conflict) {
-    Write-Warning "There are merge conflict merging $current_branch to $BranchName"
-    exit
+    if ($conflict) {
+      Write-Warning "There are merge conflict merging $BranchName to $current_branch"
+      exit
+    }
   }
 
   $message = "Merging $BranchName to $current_branch"
   Write-Host -ForegroundColor Green $message
   git merge $BranchName -m "$message"
-  OpenBranch $current_branch
+
+  $status = Get-GitStatus
+  if ($status.AheadBy -gt 0) {
+    Write-Host -ForegroundColor Green "Pushing merge changes to origin/$current_branch"
+    Unblock-GitHubBranch $current_branch
+    git push
+  }
+}
+
+git fetch && git fetch origin
+
+$status = Get-GitStatus
+$current_branch = $status.Branch
+
+if ($status.HasWorking -or $status.HasUntracked) {
+  Write-Warning "There are uncommited changes in $current_branch"
+  exit
+}
+
+if ($status.BehindBy -gt 0) {
+  Write-Host -ForegroundColor Green "Pulling upstream changes to $current_branch"
+  git pull
+}
+
+
+$status = Get-GitStatus
+if ($status.AheadBy -gt 0) {
+  Unblock-GitHubBranch $current_branch
+  Write-Host -ForegroundColor Green "Pushing changes to origin/$current_branch"
   git push
 }
 
+Merge-GitBranch $BranchName
+
 git checkout $BranchName
 
-if (git status --porcelain --untracked-files) {
+$status = Get-GitStatus
+if ($status.HasWorking -or $status.HasUntracked) {
   Write-Warning "There are uncommited changes in $BranchName"
   exit
 }
 
-$current_commit = git rev-parse --verify $BranchName
-$remote_current_commit = git rev-parse --verify origin/$BranchName
-if ($current_commit -ne $remote_current_commit) {
-  Write-Host -ForegroundColor Green "Pulling changes from $BranchName"
+if ($status.BehindBy -gt 0) {
+  Write-Host -ForegroundColor Green "Pulling upstream changes to $BranchName"
   git pull
 }
 
-$merge_base = git merge-base FETCH_HEAD $current_branch
-$merge_results = git merge-tree $merge_base $current_branch FETCH_HEAD
-
-if ($merge_results) {
-  $conflict = $merge_results | ?{ $_ -match '^+<* \.our$' }
-
-  if ($conflict) {
-    Write-Warning "There are merge conflict merging $BranchName to $current_branch"
-    exit
-  }
-}
-
-# Is there a way to figure out if a merge is needed
-git merge $current_branch -m "Merging $current_branch to $BranchName"
-
-$current_commit = git rev-parse --verify $BranchName
-$remote_current_commit = git rev-parse --verify origin/$BranchName
-if ($current_commit -ne $remote_current_commit) {
-  OpenBranch $BranchName
+$status = Get-GitStatus
+if ($status.BehindBy -gt 0) {
+  Unblock-GitHubBranch $BranchName
+  Write-Host -ForegroundColor Green "Pushing changes to origin/$BranchName"
   git push
 }
+
+Merge-GitBranch $current_branch
 
 git checkout $current_branch
 
-$merge_base = git merge-base FETCH_HEAD $BranchName
-$merge_results = git merge-tree $merge_base $BranchName FETCH_HEAD
-if ($merge_results) {
-  $conflict = $merge_results | ?{ $_ -match '^+<* \.our$' }
-
-  if ($conflict) {
-    Write-Warning "There are merge conflict merging $current_branch to $BranchName"
-    exit
-  }
+if ($status.BehindBy -gt 0) {
+  Write-Host -ForegroundColor Green "Pulling upstream changes to $current_branch"
+  git pull
 }
 
-git merge $BranchName -m "Merging $BranchName to $current_branch"
-
-$current_commit = git rev-parse --verify $current_branch
-$remote_current_commit = git rev-parse --verify origin/$current_branch
-if ($current_commit -ne $remote_current_commit) {
-  OpenBranch $current_branch
+$status = Get-GitStatus
+if ($status.BehindBy -gt 0) {
+  Unblock-GitHubBranch $current_branch
+  Write-Host -ForegroundColor Green "Pushing changes to origin/$current_branch"
   git push
 }
+
+Merge-GitBranch $BranchName
