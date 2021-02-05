@@ -3,6 +3,10 @@
       "external": true
     },
     "remote.SSH.defaultExtensions": [
-        "hashicorp.terraform"
+        "hashicorp.terraform",
+        "ms-vscode.powershell",
+        "esbenp.prettier-vscode",
+        "fabianlauer.vs-code-xml-format",
+        "redhat.vscode-yaml"
     ]
 }
