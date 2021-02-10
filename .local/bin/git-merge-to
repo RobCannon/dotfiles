@@ -35,7 +35,7 @@ function Unblock-GitHubBranch {
     required_status_checks        = $null
   }
 
-  (Invoke-RestMethod -Headers $headers "https://api.github.com/repos/$owner/$repo/branches").where{ $_.protected -eq $True -and $_.name -eq $BranchName } | % {
+  (Invoke-RestMethod -Headers $headers "https://api.github.com/repos/$owner/$repo/branches/$BranchName").where{ $_.protected -eq $True } | % {
     Write-Host "Opening $BranchName branch for $owner/$repo"
     Invoke-RestMethod -Headers $headers -Method Put -Body ($protection | ConvertTo-Json -Depth 10) "https://api.github.com/repos/$owner/$repo/branches/$BranchName/protection" | Out-Null
   }
