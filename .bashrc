@@ -129,7 +129,8 @@ fi
 
 if [[ -n $PS1 ]]; then
   # This should only run for interactive shells
-  if [ $USERPROFILE ]; then
+  if [ -f "$USERPROFILE/scoop/apps/ssh-agent-wsl/2.5/ssh-agent-wsl" ]
+  then
     eval $($USERPROFILE/scoop/apps/ssh-agent-wsl/2.5/ssh-agent-wsl -r)
   fi
 
@@ -137,7 +138,8 @@ if [[ -n $PS1 ]]; then
       PS1="$(oh-my-posh -config ~/.config/oh-my-posh/my-posh.json -error $?)"
   }
 
-  if [ "$TERM" != "linux" ] && [ -x "$(command -v oh-my-posh)" ]; then
+  if [ "$TERM" != "linux" ] && [ -x "$(command -v oh-my-posh)" ]
+  then
       PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
   fi
 fi
