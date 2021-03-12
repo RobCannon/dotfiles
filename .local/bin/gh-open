@@ -23,7 +23,7 @@ $protection = @{
   required_status_checks = $null
 }
 
-$BranchName = Get-GitBranch
+$BranchName = (Get-GitStatus).Branch
 
 (Invoke-RestMethod -Headers $headers "https://api.github.com/repos/$owner/$repo/branches/$BranchName").where{ $_.protected -eq $True } | % {
   Write-Host "Opening $BranchName branch for $owner/$repo"

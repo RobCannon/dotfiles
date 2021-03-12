@@ -49,7 +49,7 @@ function Merge-GitBranch {
 
   # Is there a way to figure out if a merge is needed
 
-  $current_branch = Get-GitBranch
+  $current_branch = (Get-GitStatus).Branch
   $merge_base = git merge-base FETCH_HEAD $BranchName
   $merge_results = git merge-tree $merge_base $BranchName FETCH_HEAD
   if ($merge_results) {

@@ -8,5 +8,6 @@
         "esbenp.prettier-vscode",
         "fabianlauer.vs-code-xml-format",
         "redhat.vscode-yaml"
-    ]
+    ],
+    "remote.autoForwardPortsSource": "output"
 }
