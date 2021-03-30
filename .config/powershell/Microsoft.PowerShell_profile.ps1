@@ -1,12 +1,12 @@
 using namespace System.Management.Automation
 using namespace System.Management.Automation.Language
 
-Import-Module posh-git
+#Import-Module posh-git
 Import-Module oh-my-posh
 
 Set-PoshPrompt -Theme $HOME/.config/oh-my-posh/my-posh.json
 
-Import-Module -Name Terminal-Icons
+#Import-Module -Name Terminal-Icons
 
 function invoke-terraforminit { & terraform init -upgrade=true }
 function invoke-terraformvalidate { & terraform validate }
