@@ -6,8 +6,11 @@
         "hashicorp.terraform",
         "ms-vscode.powershell",
         "esbenp.prettier-vscode",
+        "tht13.html-preview-vscode",
         "fabianlauer.vs-code-xml-format",
         "redhat.vscode-yaml"
     ],
-    "remote.autoForwardPortsSource": "output"
+    "remote.autoForwardPortsSource": "output",
+    "remote.downloadExtensionsLocally": true,
+    "terminal.integrated.rendererType": "dom"
 }
