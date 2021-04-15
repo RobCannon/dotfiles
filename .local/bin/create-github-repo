@@ -1,4 +1,4 @@
-#!/bin/pwsh
+#!/usr/bin/env pwsh
 [CmdletBinding()]
 param (
     [Parameter()]
@@ -11,65 +11,102 @@ param (
 
     [Parameter()]
     [String]
-    $JenkinsUrl = 'https://cicd-tools.eops.prd.gcp.efx/iaas-ps-jenkins/'
+    $JenkinsUrl = 'https://cicd-tools.eops.prd.gcp.efx/iaas-cs-ci-jenkins/'
 )
+
+if (-Not $env:GITHUB_TOKEN -and (Test-Path ~/.config/gh/hosts.yml)) {
+  $env:GITHUB_TOKEN = (Get-Content ~/.config/gh/hosts.yml | ConvertFrom-Yaml).'github.com'.oauth_token
+}
+$headers = @{ Authorization = "token $($env:GITHUB_TOKEN)" }
 
 if (-Not $Name) {
   $path = Get-Location
+  $Name = $path | Split-Path -Leaf
+  Write-Host "Name parameter not specified, using -Name $Name"
 }
 else {
   $path = Join-Path (Get-Location) $Name
 }
 
 if (-Not (Test-Path $path)) {
-  Write-Error "$path does not exist"
-  exit
-}
-elseif (-Not (Test-Path "$path/.git")) {
-  Write-Error "$path is not a valid git repo"
-  exit
+  throw "$path does not exist"
 }
 
-if (-Not $Team) {
-  $Team = Get-Location | Split-Path -Parent | Split-Path -Leaf
-}
+Push-Location $path
+try {
+  # Make sure code is checked in
+  $status = Get-GitStatus
+  if (-Not $status) {
+    throw "No git repository found at $path"
+  }
 
-$repo_name = "$($Team)-$Name"
-$repo_url = "https://github.com/Equifax/$repo_name.git"
-$jenkins_instance_name = ([uri]$JenkinsUrl).AbsolutePath.Replace('/','')
+  if ($status.HasUntracked) {
+    throw "Repository has uncommited files.  Please make sure the local repository is up to date before creating a remote repo"
+  }
 
-Push-Location $Path
+  $parent = $path | Split-Path -Parent | Split-Path -Leaf
+  $repo_name = "$($parent)-$Name"
+  $repo_url = "https://github.com/Equifax/$repo_name.git"
 
-if ($(git remote)) {
-  git fetch --all
-}
-gh repo create Equifax/$repo_name --internal --confirm --team $team
-git push -f --mirror origin
+  $remote = git remote get-url origin
 
-Pop-Location
+  if (-Not $remote) {
+    if (-Not $Team) {
+      $Team = $parent
+      Write-Host "Team parameter not specified, using -Team $Team"
+    }
 
-# Build a uri that prefills all of these value for a CICD ticket
-$query = [System.Web.HttpUtility]::ParseQueryString([String]::Empty)
-$query.Add('pid', '36900')
-$query.Add('issuetype', '7') # IssueType = Story
-$query.Add('reporter', 'rxc423')
-$query.Add('labels', 'CICDREPOS')
-$query.Add('labels', 'GitHub_JenkinsAuth')
-$query.Add('summary', "$jenkins_instance_name Authentication Request with GitHub")
-$query.Add('priority', '5') # Priority = Trivial
-$query.Add('customfield_13900', '33239')   # Organization Unit = IaaS
-$query.Add('customfield_11500', 'rob.cannon@equifax.com') # Reporter
-$query.Add('description', @"
+    # Check if team exists
+    if (-Not (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/orgs/Equifax/teams/$Team" -SkipHttpErrorCheck).slug) {
+      throw "Team $Team not found in the Equifax organization"
+    }
+
+
+    if ($(git remote)) {
+      git fetch --all
+    }
+    gh repo create Equifax/$repo_name --internal --confirm --team $team
+    git push --set-upstream origin main
+    git push -f --mirror origin
+  }
+  else {
+    Write-Warning "Remote GitHub repo already exists at $remote"
+  }
+
+  # Build a uri that prefills all of these value for a CICD ticket
+  $jenkins_instance_name = ([uri]$JenkinsUrl).AbsolutePath.Replace('/','')
+  $query = [System.Web.HttpUtility]::ParseQueryString([String]::Empty)
+  $query.Add('pid', '36900')
+  $query.Add('issuetype', '7') # IssueType = Story
+  $query.Add('reporter', 'rxc423')
+  $query.Add('labels', 'CICDREPOS')
+  $query.Add('labels', 'GitHub_JenkinsAuth')
+  $query.Add('summary', "$jenkins_instance_name Authentication Request with GitHub")
+  $query.Add('priority', '5') # Priority = Trivial
+  $query.Add('customfield_13900', '33239')   # Organization Unit = IaaS
+  $query.Add('customfield_11500', 'rob.cannon@equifax.com') # Reporter
+  $query.Add('description', @"
 ||Field||Value||
+|Alliance|IaaS|
 |Jenkins Url|$JenkinsUrl|
+|GitHub App Id|91308|
+|Installation Id|91308|
 |GitHub Repositories|$repo_url|
 |Repository Type|Internal|
 |Organization Name|Equifax|
 "@)
 
-$uri = [UriBuilder]::new('https://equifax.atlassian.net/secure/CreateIssueDetails!init.jspa')
-$uri.Query = $query.ToString()
+  $uri = [UriBuilder]::new('https://equifax.atlassian.net/secure/CreateIssueDetails!init.jspa')
+  $uri.Query = $query.ToString()
 
-Write-Host "Create Ticket with CICD team to grant access to GitHub Repo $repo_name"
-Write-Host ""
-Write-Host $uri.ToString()
+  Write-Host "Create Ticket with CICD team to grant access to GitHub Repo $repo_name"
+  Write-Host ""
+  Write-Host $uri.ToString()
+}
+catch {
+  Write-Error $_
+  exit 1
+}
+finally {
+  Pop-Location
+}
