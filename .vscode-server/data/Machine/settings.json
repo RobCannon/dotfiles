@@ -10,7 +10,5 @@
         "fabianlauer.vs-code-xml-format",
         "redhat.vscode-yaml"
     ],
-    "remote.autoForwardPortsSource": "output",
-    "remote.downloadExtensionsLocally": true,
-    "terminal.integrated.rendererType": "dom"
+    "remote.autoForwardPortsSource": "output"
 }
