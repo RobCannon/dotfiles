@@ -1,4 +1,8 @@
 #!/bin/env pwsh
+<<<<<<< HEAD
+=======
+
+>>>>>>> 189b8112962db4a274463542264c6c19a1333838
 if (Test-Path ~/.config/gh/hosts.yml) {
   (Get-Content ~/.config/gh/hosts.yml | ConvertFrom-Yaml).'github.com'.oauth_token
 }
