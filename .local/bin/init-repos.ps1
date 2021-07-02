@@ -1,4 +1,4 @@
-#!/bin/pwsh
+#!/usr/bin/env pwsh
 clone-repos.ps1 cloud-services-equifax-shell
 clone-repos.ps1 cloud-services-container-imaging
 clone-repos.ps1 cloud-services-kubernetes

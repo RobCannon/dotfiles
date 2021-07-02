@@ -1,4 +1,4 @@
-#!/bin/pwsh
+#!/usr/bin/env pwsh
 Param (
   [Parameter(Mandatory=$true)]
   [string]$TeamName,
