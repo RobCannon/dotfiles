@@ -1,9 +1,9 @@
 #!/usr/bin/env pwsh
-clone-repos.ps1 cloud-services-equifax-shell
-clone-repos.ps1 cloud-services-container-imaging
-clone-repos.ps1 cloud-services-kubernetes
-clone-repos.ps1 cloud-services
-clone-repos.ps1 iaas-platform-services-fr-smtp-relay ~/src/smtp-relay
+clone-repos cloud-services-equifax-shell
+clone-repos cloud-services-container-imaging
+clone-repos cloud-services-kubernetes
+clone-repos cloud-services
+clone-repos iaas-platform-services-fr-smtp-relay ~/src/smtp-relay
 
 
 git clone https://github.com/Equifax/6463_us_server-imaging_iaas_project-setup.git ~/src/server-imaging/project-setup
