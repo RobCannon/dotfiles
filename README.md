@@ -1,11 +1,19 @@
 Based on https://www.atlassian.com/git/tutorials/dotfiles
 
 ```
-source <(curl -s https://raw.githubusercontent.com/RobCannon/dotfiles/main/.local/bin/init-dotfiles)
+alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+git clone --bare  https://github.com/Equifax/robcannon-dotfiles.git $HOME/.cfg
+config config --local status.showUntrackedFiles no
+config checkout -f rob
+
+sudo usermod -aG docker $USER
+newgrp docker
+
+source ~/.bash_profile
 ```
 
 And, to get repos
 ```
 gh auth login
-source <(curl -s https://raw.githubusercontent.com/RobCannon/dotfiles/main/.local/bin/init-repos.ps1)
+init-repos
 ```
