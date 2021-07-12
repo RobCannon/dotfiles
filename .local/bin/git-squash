@@ -1,0 +1,15 @@
+#!/usr/bin/env pwsh
+[CmdletBinding()]
+param (
+    [Parameter()]
+    [String]
+    $BranchName = 'main'
+)
+
+$branch_names = git for-each-ref --format='%(refname:short)' refs/heads
+if ($BranchName -notin $branch_names) {
+  Write-Error "$BranchName is not a valid branch.  Consider: $($branch_names -join ', ')"
+  exit 1
+}
+
+git reset $(git merge-base $BranchName $(git rev-parse --abbrev-ref HEAD))
