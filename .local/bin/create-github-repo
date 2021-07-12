@@ -83,9 +83,9 @@ try {
   $query.Add('labels', 'GitHub_JenkinsAuth')
   $query.Add('summary', "$jenkins_instance_name Authentication Request with GitHub")
   $query.Add('priority', '8') # Priority = Medium
-  $query.Add('customfield_10702', 'CA') # Category = CA
+  $query.Add('customfield_10702', '32733') # Category = CA
   $query.Add('customfield_13900', '33239')   # Organization Unit = IaaS
-  $query.Add('customfield_13001', 'BAU-Fulfillment/Onboarding')   # Workstream = BAU-Fulfillment/Onboarding
+  $query.Add('customfield_13001', '40159')   # Workstream = BAU-Fulfillment/Onboarding
   $query.Add('customfield_11500', 'rob.cannon@equifax.com') # Reporter
   $query.Add('description', @"
 ||Field||Value||
