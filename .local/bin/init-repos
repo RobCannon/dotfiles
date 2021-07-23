@@ -7,6 +7,7 @@ clone-repos iac-kubernetes-admin ~/src/codeshare
 clone-repos iaas-platform-services-fr-smtp-relay ~/src/smtp-relay
 
 git clone https://github.com/Equifax/robcannon-dotfiles.git ~/src/github/robcannon-dotfiles
+git clone https://github.com/docker/docker-bench-security.git ~/src/github/docker-bench-security
 
 git clone https://github.com/Equifax/6463_us_server-imaging_iaas_project-setup.git ~/src/server-imaging/project-setup
 
