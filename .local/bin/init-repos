@@ -1,5 +1,5 @@
 #!/usr/bin/env pwsh
-clone-repos cloud-services-equifax-shell
+clone-repos equifax-shell
 clone-repos cloud-services-container-imaging
 clone-repos cloud-services-kubernetes
 clone-repos cloud-services

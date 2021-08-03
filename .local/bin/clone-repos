@@ -27,6 +27,8 @@ foreach($repo in $repos) {
   $clone_url = $repo.clone_url
   $folder = Join-Path $Path $repo.name.Replace("$TeamName-",'')
 
-  Write-Host "Cloning $clone_url to $folder"
-  git clone $clone_url $folder
+  if (-Not (Test-Path $folder)) {
+    Write-Host "Cloning $clone_url to $folder"
+    git clone $clone_url $folder
+  }
 }
