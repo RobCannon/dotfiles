@@ -34,6 +34,7 @@ Set-PSReadLineOption -EditMode Windows
 # when you used up arrow, which can be useful if you forget the exact
 # string you started the search on.
 Set-PSReadLineOption -HistorySearchCursorMovesToEnd
+Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 
