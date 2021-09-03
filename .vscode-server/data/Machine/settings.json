@@ -1,14 +1,4 @@
 {
-    "terraform.languageServer": {
-      "external": true
-    },
-    "remote.SSH.defaultExtensions": [
-        "hashicorp.terraform",
-        "ms-vscode.powershell",
-        "esbenp.prettier-vscode",
-        "tht13.html-preview-vscode",
-        "fabianlauer.vs-code-xml-format",
-        "redhat.vscode-yaml"
-    ],
-    "remote.autoForwardPortsSource": "output"
+  "omnisharp.path": "/usr/local/bin/omnisharp/omnisharp/OmniSharp.exe",
+  "omnisharp.useGlobalMono": "never"
 }

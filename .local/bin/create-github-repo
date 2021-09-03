@@ -48,7 +48,7 @@ try {
   $repo_name = "$($parent)-$Name"
   $repo_url = "https://github.com/Equifax/$repo_name.git"
 
-  $remote = git remote get-url origin
+  $remote = git remote get-url origin 2>$null
 
   if (-Not $remote) {
     if (-Not $Team) {
@@ -74,36 +74,11 @@ try {
   }
 
   # Build a uri that prefills all of these value for a CICD ticket
-  $jenkins_instance_name = ([uri]$JenkinsUrl).AbsolutePath.Replace('/','')
-  $query = [System.Web.HttpUtility]::ParseQueryString([String]::Empty)
-  $query.Add('pid', '36900')
-  $query.Add('issuetype', '19') # IssueType = Support Ticket
-  $query.Add('reporter', 'rxc423')
-  $query.Add('labels', 'cicdsupport')
-  $query.Add('labels', 'GitHub_JenkinsAuth')
-  $query.Add('summary', "$jenkins_instance_name Authentication Request with GitHub")
-  $query.Add('priority', '8') # Priority = Medium
-  $query.Add('customfield_10702', '32733') # Category = CA
-  $query.Add('customfield_13900', '33239')   # Organization Unit = IaaS
-  $query.Add('customfield_13001', '40159')   # Workstream = BAU-Fulfillment/Onboarding
-  $query.Add('customfield_11500', 'rob.cannon@equifax.com') # Reporter
-  $query.Add('description', @"
-||Field||Value||
-|Alliance|IaaS|
-|Jenkins Url|$JenkinsUrl|
-|GitHub App Id|91308|
-|Installation Id|13332963|
-|GitHub Repositories|$repo_url|
-|Repository Type|Internal|
-|Organization Name|Equifax|
-"@)
 
-  $uri = [UriBuilder]::new('https://equifax.atlassian.net/secure/CreateIssueDetails!init.jspa')
-  $uri.Query = $query.ToString()
-
-  Write-Host "Create Ticket with CICD team to grant access to GitHub Repo $repo_name"
-  Write-Host ""
-  Write-Host $uri.ToString()
+  Write-Host "Link to Self Service Job to add repo to GitHub application"
+  Write-Host 'https://cicd-tools.eops.prd.gcp.efx/cicd-mbps-jenkins/job/public_jobs/job/cicd_self_service_Add_GithubRepo_to_GithubApp/build?delay=0sec'
+  Write-Host ''
+  Write-Host "https://github.com/Equifax/$repo_name.git"
 }
 catch {
   Write-Error $_
