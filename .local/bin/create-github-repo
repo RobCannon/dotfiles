@@ -7,11 +7,7 @@ param (
 
     [Parameter()]
     [String]
-    $Team,
-
-    [Parameter()]
-    [String]
-    $JenkinsUrl = 'https://cicd-tools.eops.prd.gcp.efx/iaas-cs-ci-jenkins/'
+    $Team = 'cloud-services-admin'
 )
 
 if (-Not $env:GITHUB_TOKEN -and (Test-Path ~/.config/gh/hosts.yml)) {
