@@ -11,7 +11,7 @@
                     "style": "powerline",
                     "powerline_symbol": "\uE0B0",
                     "foreground": "#ffffff",
-                    "background": "#07585c",
+                    "background": "#0077c2",
                     "properties": {
                         "prefix": " \uFCB5 "
                     }

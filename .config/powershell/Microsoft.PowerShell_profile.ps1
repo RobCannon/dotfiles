@@ -3,7 +3,7 @@ using namespace System.Management.Automation.Language
 
 Import-Module oh-my-posh
 
-Set-PoshPrompt -Theme $HOME/.config/oh-my-posh/my-posh.json
+Set-PoshPrompt -Theme $HOME/.config/oh-my-posh/my-posh-pwsh.json
 
 
 function invoke-terraforminit { & terraform init -upgrade=true }
