@@ -1,5 +1,7 @@
-using namespace System.Management.Automation
-using namespace System.Management.Automation.Language
+# Jump out if run from a script
+if ([Environment]::GetCommandLineArgs().Length -gt 1) {
+  return
+}
 
 Import-Module oh-my-posh
 
