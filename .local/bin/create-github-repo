@@ -72,7 +72,7 @@ try {
   # Build a uri that prefills all of these value for a CICD ticket
 
   Write-Host "Link to Self Service Job to add repo to GitHub application"
-  Write-Host 'https://cicd-tools.eops.prd.gcp.efx/cicd-mbps-jenkins/job/public_jobs/job/cicd_self_service_Add_GithubRepo_to_GithubApp/build?delay=0sec'
+  Write-Host 'https://cicd-tools.us.equifax.com/cicd-mbps-jenkins/job/public_jobs/job/cicd_self_service_Add_GithubRepo_to_GithubApp/build?delay=0sec'
   Write-Host ''
   Write-Host "https://github.com/Equifax/$repo_name.git"
 }
