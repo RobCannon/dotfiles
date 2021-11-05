@@ -1,0 +1,8 @@
+#!/usr/bin/env pwsh
+git fetch --prune --prune-tags --force
+git pull --tags origin --rebase
+$local_branches = $(git for-each-ref --format='%(refname:short)' refs/heads)
+$remove_branches = $(git for-each-ref --format='%(refname:short)' refs/remotes/origin) | %{ $_ -replace '^origin/','' }
+$local_branches | ?{ $_ -notin $remove_branches } | %{
+  git branch -D $_
+}
