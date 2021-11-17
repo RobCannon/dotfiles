@@ -12,7 +12,7 @@ function Unblock-GitHubBranch {
     [string]$BranchName
   )
 
-  $owner, $repo = $(([Uri]$(git remote get-url origin)).PathAndQuery | Select-String -Pattern '/(.*)/(.*).git').Matches.Groups | ? Name -NE 0 | % Value
+  $owner,$repo=$(([Uri]$(git remote get-url origin)).PathAndQuery | Select-String -Pattern '\/([^\/]*)\/([^\/\.]*)').Matches.Groups | ? Name -ne 0 | % Value
 
   if ($env:APPDATA) {
     $token = (Get-Content "$($env:APPDATA)/GitHub CLI/hosts.yml" | ConvertFrom-Yaml).'github.com'.oauth_token
@@ -42,7 +42,7 @@ function Unblock-GitHubBranch {
     required_status_checks        = $null
   }
 
-  (Invoke-RestMethod -Headers $headers "https://api.github.com/repos/$owner/$repo/branches/$BranchName").where{ $_.protected -eq $True } | % {
+  (Invoke-RestMethod -Headers $headers "https://api.github.com/repos/$owner/$repo/branches").where{ $_.name -eq $BranchName -and $_.protected -eq $True } | % {
     Write-Host "Opening $BranchName branch for $owner/$repo"
     Invoke-RestMethod -Headers $headers -Method Put -Body ($protection | ConvertTo-Json -Depth 10) "https://api.github.com/repos/$owner/$repo/branches/$BranchName/protection" | Out-Null
   }
