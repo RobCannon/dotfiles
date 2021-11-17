@@ -19,7 +19,14 @@ if (-Not (Test-Path $Path)) {
   New-Item -Path $Path -ItemType Directory | Out-Null
 }
 
-$token=(Get-Content ~/.config/gh/hosts.yml | ConvertFrom-Yaml).'github.com'.oauth_token
+if ($env:APPDATA) {
+  $token = (Get-Content "$($env:APPDATA)/GitHub CLI/hosts.yml" | ConvertFrom-Yaml).'github.com'.oauth_token
+} elseif ($env:HOME) {
+  $token = (Get-Content "$($env:HOME)/.config/gh/hosts.yml" | ConvertFrom-Yaml).'github.com'.oauth_token
+} else {
+  throw "Unable to locate GitHub token, try gh auth login"
+}
+
 $headers = @{ Authorization = "token $token" }
 
 $repos = Invoke-RestMethod -Headers $headers "https://api.github.com/orgs/Equifax/teams/$TeamName/repos"

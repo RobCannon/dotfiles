@@ -10,10 +10,14 @@ param (
     $Team = 'cloud-services-admin'
 )
 
-if (-Not $env:GITHUB_TOKEN -and (Test-Path ~/.config/gh/hosts.yml)) {
-  $env:GITHUB_TOKEN = (Get-Content ~/.config/gh/hosts.yml | ConvertFrom-Yaml).'github.com'.oauth_token
+if ($env:APPDATA) {
+  $token = (Get-Content "$($env:APPDATA)/GitHub CLI/hosts.yml" | ConvertFrom-Yaml).'github.com'.oauth_token
+} elseif ($env:HOME) {
+  $token = (Get-Content "$($env:HOME)/.config/gh/hosts.yml" | ConvertFrom-Yaml).'github.com'.oauth_token
+} else {
+  throw "Unable to locate GitHub token, try gh auth login"
 }
-$headers = @{ Authorization = "token $($env:GITHUB_TOKEN)" }
+$headers = @{ Authorization = "token $token" }
 
 if (-Not $Name) {
   $path = Get-Location
