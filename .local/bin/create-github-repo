@@ -48,6 +48,8 @@ try {
   $repo_name = "$($parent)-$Name"
   $repo_url = "https://github.com/Equifax/$repo_name.git"
 
+  Write-Host "Create new repo at $repo_url"
+
   $remote = git remote get-url origin 2>$null
 
   if (-Not $remote) {
@@ -65,7 +67,7 @@ try {
     if ($(git remote)) {
       git fetch --all
     }
-    gh repo create Equifax/$repo_name --internal --confirm --team $team
+    gh repo create Equifax/$repo_name --internal --push --remote origin --source . --team $team
     git push --set-upstream origin main
     git push -f --mirror origin
   }
