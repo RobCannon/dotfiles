@@ -144,3 +144,5 @@ fi
 [[ $PS1 && -f /usr/share/bash-completion/completions/git ]] && source /usr/share/bash-completion/completions/git
 complete -F __start_kubectl k
 #complete -C aws_completer aws
+
+export SSLKEYLOGFILE=~/.ssl-key.log
