@@ -45,9 +45,17 @@ try {
     throw "Not an existing GitHub repo"
   }
   $remote_url = git remote get-url $remote 2>$null
-  $branch_name = git branch --show-current
+  $owner,$repo_name=$(([Uri]$remote_url).PathAndQuery | Select-String -Pattern '\/([^\/]*)\/([^\/\.]*)').Matches.Groups | ? Name -ne 0 | % Value
+  $default_branch = (Invoke-RestMethod -Headers $headers "https://api.github.com/repos/$owner/$repo_name").default_branch
 
-  $repo_name = $remote_url.Replace('https://github.com/Equifax/','')
+  git checkout $default_branch
+  git fetch --prune --prune-tags --force
+  git pull --tags origin --rebase
+  $local_branches = $(git for-each-ref --format='%(refname:short)' refs/heads)
+  $remove_branches = $(git for-each-ref --format='%(refname:short)' refs/remotes/origin) | %{ $_ -replace '^origin/','' }
+  $local_branches | ?{ $_ -notin $remove_branches } | %{
+    git branch -D $_
+  }
 
   $repo = Invoke-RestMethod -Headers $headers  "https://api.github.com/repos/RobCannon/$repo_name" -SkipHttpErrorCheck
   if ($repo.name -ne $repo_name) {
@@ -60,13 +68,13 @@ try {
     git remote add origin "https://github.com/RobCannon/$repo_name"
   }
 
-  git push --set-upstream $remote $branch_name
+  git push --set-upstream $remote $default_branch
   git push -f --mirror $remote
 
   Write-Host "Restoring remote to $remote"
   git remote remove $remote
   git remote add $remote $remote_url
-  git branch -u $remote/$branch_name
+  git branch --set-upstream-to=$remote/$default_branch $default_branch
 }
 catch {
   Write-Error $_
