@@ -40,31 +40,32 @@ try {
     throw "Repository has uncommited files.  Please make sure the local repository is up to date before coping a remote repo"
   }
 
-  $remote = git remote get-url origin 2>$null
-
+  $remote = git remote 2>$null
   if (-Not $remote) {
     throw "Not an existing GitHub repo"
   }
+  $remote_url = git remote get-url $remote 2>$null
+  $branch_name = git branch --show-current
 
-  $repo_name = $remote.Replace('https://github.com/Equifax/','')
+  $repo_name = $remote_url.Replace('https://github.com/Equifax/','')
 
   $repo = Invoke-RestMethod -Headers $headers  "https://api.github.com/repos/RobCannon/$repo_name" -SkipHttpErrorCheck
   if ($repo.name -ne $repo_name) {
     Write-Host "Creating RobCannon/$repo_name"
-    git remote remove origin
-    gh repo create RobCannon/$repo_name --private --push --remote origin --source .
+    git remote remove $remote
+    gh repo create RobCannon/$repo_name --private --push --remote $remote --source .
   }
   else {
     Write-Host "Repo RobCannon/$repo_name already exists, updating"
     git remote add origin "https://github.com/RobCannon/$repo_name"
   }
 
-  git push --set-upstream origin main
-  git push -f --mirror origin
+  git push --set-upstream $remote $branch_name
+  git push -f --mirror $remote
 
   Write-Host "Restoring remote to $remote"
-  git remote remove origin
-  git remote add origin $remote
+  git remote remove $remote
+  git remote add $remote $remote_url
 }
 catch {
   Write-Error $_
