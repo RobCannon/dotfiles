@@ -48,10 +48,17 @@ try {
 
   $repo_name = $remote.Replace('https://github.com/Equifax/','')
 
-  git remote remove origin
+  $repo = Invoke-RestMethod -Headers $headers  "https://api.github.com/repos/RobCannon/$repo_name" -SkipHttpErrorCheck
+  if ($repo.name -ne $repo_name) {
+    Write-Host "Creating RobCannon/$repo_name"
+    git remote remove origin
+    gh repo create RobCannon/$repo_name --private --push --remote origin --source .
+  }
+  else {
+    Write-Host "Repo RobCannon/$repo_name already exists, updating"
+    git remote add origin "https://github.com/RobCannon/$repo_name"
+  }
 
-  Write-Host "Creating RobCannon/$repo_name"
-  gh repo create RobCannon/$repo_name --private --push --remote origin --source .
   git push --set-upstream origin main
   git push -f --mirror origin
 
