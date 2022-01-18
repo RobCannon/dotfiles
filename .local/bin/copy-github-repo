@@ -46,6 +46,8 @@ try {
     throw "Not an existing GitHub repo"
   }
 
+  $repo_name = $remote.Replace('https://github.com/Equifax/','')
+
   git remote remove origin
 
   Write-Host "Creating RobCannon/$repo_name"
