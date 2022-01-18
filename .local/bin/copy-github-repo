@@ -1,0 +1,66 @@
+#!/usr/bin/env pwsh
+[CmdletBinding()]
+param (
+    [Parameter()]
+    [String]
+    $Name
+)
+
+if ($env:APPDATA) {
+  $token = (Get-Content "$($env:APPDATA)/GitHub CLI/hosts.yml" | ConvertFrom-Yaml).'github.com'.oauth_token
+} elseif ($env:HOME) {
+  $token = (Get-Content "$($env:HOME)/.config/gh/hosts.yml" | ConvertFrom-Yaml).'github.com'.oauth_token
+} else {
+  throw "Unable to locate GitHub token, try gh auth login"
+}
+$headers = @{ Authorization = "token $token" }
+
+if (-Not $Name) {
+  $path = Get-Location
+  $Name = $path | Split-Path -Leaf
+  Write-Host "Name parameter not specified, using -Name $Name"
+}
+else {
+  $path = Join-Path (Get-Location) $Name
+}
+
+if (-Not (Test-Path $path)) {
+  throw "$path does not exist"
+}
+
+Push-Location $path
+try {
+  # Make sure code is checked in
+  $status = Get-GitStatus
+  if (-Not $status) {
+    throw "No git repository found at $path"
+  }
+
+  if ($status.HasUntracked) {
+    throw "Repository has uncommited files.  Please make sure the local repository is up to date before coping a remote repo"
+  }
+
+  $remote = git remote get-url origin 2>$null
+
+  if (-Not $remote) {
+    throw "Not an existing GitHub repo"
+  }
+
+  git remote remove origin
+
+  Write-Host "Creating RobCannon/$repo_name"
+  gh repo create RobCannon/$repo_name --private --push --remote origin --source .
+  git push --set-upstream origin main
+  git push -f --mirror origin
+
+  Write-Host "Restoring remote to $remote"
+  git remote remove origin
+  git remote add origin $remote
+}
+catch {
+  Write-Error $_
+  exit 1
+}
+finally {
+  Pop-Location
+}
