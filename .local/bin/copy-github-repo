@@ -40,12 +40,12 @@ try {
     throw "Repository has uncommited files.  Please make sure the local repository is up to date before coping a remote repo"
   }
 
-  $remote = git remote 2>$null
+  $remote = git remote 2>$null | Select-Object -First 1
   if (-Not $remote) {
     throw "Not an existing GitHub repo"
   }
   $remote_url = git remote get-url $remote 2>$null
-  $owner,$repo_name=$(([Uri]$remote_url).PathAndQuery | Select-String -Pattern '\/([^\/]*)\/([^\/\.]*)').Matches.Groups | ? Name -ne 0 | % Value
+  $owner,$repo_name = $(([Uri]$remote_url).PathAndQuery | Select-String -Pattern '\/([^\/]*)\/([^\/\.]*)').Matches.Groups | ? Name -ne 0 | % Value
   $default_branch = (Invoke-RestMethod -Headers $headers "https://api.github.com/repos/$owner/$repo_name").default_branch
 
   git checkout $default_branch
