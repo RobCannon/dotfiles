@@ -66,6 +66,7 @@ try {
   Write-Host "Restoring remote to $remote"
   git remote remove $remote
   git remote add $remote $remote_url
+  git branch -u $remote/$branch_name
 }
 catch {
   Write-Error $_
