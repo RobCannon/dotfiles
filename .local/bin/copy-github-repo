@@ -71,9 +71,9 @@ try {
   git push --set-upstream $remote $default_branch
   git push -f --mirror $remote
 
-  Write-Host "Restoring remote to $remote"
+  Write-Host "Restoring remote $remote to $remote_url"
   git remote remove $remote
-  git remote add $remote $remote_url
+  git remote add -f -t $default_branch $remote $remote_url
   git branch --set-upstream-to=$remote/$default_branch $default_branch
 }
 catch {
