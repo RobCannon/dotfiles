@@ -65,6 +65,7 @@ try {
   }
   else {
     Write-Host "Repo RobCannon/$repo_name already exists, updating"
+    git remote remove $remote
     git remote add origin "https://github.com/RobCannon/$repo_name"
   }
 
