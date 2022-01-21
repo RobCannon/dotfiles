@@ -60,22 +60,18 @@ try {
   $repo = Invoke-RestMethod -Headers $headers  "https://api.github.com/repos/RobCannon/$repo_name" -SkipHttpErrorCheck
   if ($repo.name -ne $repo_name) {
     Write-Host "Creating RobCannon/$repo_name"
-    git remote remove $remote
-    gh repo create RobCannon/$repo_name --private --push --remote $remote --source .
+    gh repo create RobCannon/$repo_name --private --push --remote RobCannon --source .
   }
   else {
     Write-Host "Repo RobCannon/$repo_name already exists, updating"
-    git remote remove $remote
-    git remote add origin "https://github.com/RobCannon/$repo_name"
+    git remote add RobCannon "https://github.com/RobCannon/$repo_name"
   }
 
-  git push --set-upstream $remote $default_branch
-  git push -f --mirror $remote
+  git push --set-upstream RobCannon $default_branch
+  git push -f --mirror RobCannon
 
   Write-Host "Restoring remote $remote to $remote_url"
-  git remote remove $remote
-  git remote add -f -t $default_branch $remote $remote_url
-  git branch --set-upstream-to=$remote/$default_branch $default_branch
+  git remote remove RobCannon
 }
 catch {
   Write-Error $_
