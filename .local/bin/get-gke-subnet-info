@@ -1,0 +1,45 @@
+#!/usr/bin/env pwsh
+param (
+  [String]$ProjectId = 'iaas-ps-gkesvc-dev-npe-62e8',
+  [Switch]$AsJson
+)
+
+$ProgressPreference = 'SilentlyContinue'
+$sot = (Invoke-WebRequest -SkipCertificateCheck 'https://metadata.cia.gcp.efx/metadata/sot.json').Content | ConvertFrom-Json -AsHashtable
+
+$project = $sot.alliances.Values.environments.Values.teams.Values.projects.Values.where({$_.'project-id' -eq $ProjectId})
+
+$compute_subnetwork = $project.subnets.all.Values.where({$_.flags -contains 'VM'}).name | Select-Object -First 1
+
+$subnet_info = $project.subnets.all.Values.where({$_.flags -contains 'GKE-NODES'}) | %{
+  $subnet = $_
+  $vpc_boundary = switch($project.sdlc)
+  {
+    'crt' { 'commercial-npe' }
+    'dev' { 'commercial-npe' }
+    'fr-crt' { 'fedramp-npe' }
+    'fr-prd' { 'fedramp-prd' }
+    'fr-uat' { 'fedramp-npe' }
+    'prd' { 'commercial-prd' }
+    'qa' { 'commercial-npe' }
+    'uat' { 'commercial-npe' }
+    default { $_ }
+  }
+  [PSCustomObject]@{
+    project_id = $project.'project-id'
+    network_project_id = $_.project
+    subnetwork = $_.name
+    region = $_.region
+    master_ipv4_cidr_block = $subnet.gke.'gke-master'
+    compute_subnetwork = $compute_subnetwork
+    vpc_controls_boundary = $vpc_boundary
+    size = $_.gke.size
+  }
+}
+
+if ($AsJson.IsPresent) {
+  $subnet_info | ConvertTo-Json
+}
+else {
+  $subnet_info | Format-Table -AutoSize
+}
