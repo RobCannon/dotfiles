@@ -25,6 +25,12 @@ $subnet_info = $project.subnets.all.Values.where({$_.flags -contains 'GKE-NODES'
     'uat' { 'commercial-npe' }
     default { $_ }
   }
+  $size= switch($_.gke.size)
+  {
+    'xs' { 'x-small' }
+    'xl' { 'x-large' }
+    default { $_ }
+  }
   [PSCustomObject]@{
     project_id = $project.'project-id'
     network_project_id = $_.project
@@ -33,7 +39,7 @@ $subnet_info = $project.subnets.all.Values.where({$_.flags -contains 'GKE-NODES'
     master_ipv4_cidr_block = $subnet.gke.'gke-master'
     compute_subnetwork = $compute_subnetwork
     vpc_controls_boundary = $vpc_boundary
-    size = $_.gke.size
+    size = $size
   }
 }
 
