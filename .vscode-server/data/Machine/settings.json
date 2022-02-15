@@ -1,4 +1,11 @@
 {
   "omnisharp.path": "/usr/local/bin/omnisharp/omnisharp/OmniSharp.exe",
-  "omnisharp.useGlobalMono": "never"
+  "omnisharp.useGlobalMono": "never",
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "terminal.integrated.profiles.linux": {
+    "bash": {
+      "path": "bash",
+      "args": ["-l"]
+    }
+  }
 }
