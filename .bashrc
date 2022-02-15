@@ -148,5 +148,8 @@ complete -F __start_kubectl k
 export SSLKEYLOGFILE=~/.ssl-key.log
 
 
-export VSCODE_IPC_HOOK_CLI=$(find /run/user/$(id -u) -maxdepth 1 -mindepth 1 -type s -name 'vscode-ipc-*' -printf "%C@\t%p\n" | sort -nr | head -1 | cut -f2-)
-export PATH=$PATH:$(find ~/.vscode-server/bin/ -maxdepth 1 -mindepth 1 -type d -printf "%C@\t%p\n" | sort -nr | head -1 | cut -f2-)/bin
+if [ -d ~/.vscode-server/bin ]
+then
+  export VSCODE_IPC_HOOK_CLI=$(find /run/user/$(id -u) -maxdepth 1 -mindepth 1 -type s -name 'vscode-ipc-*' -printf "%C@\t%p\n" | sort -nr | head -1 | cut -f2-)
+  export PATH=$PATH:$(find ~/.vscode-server/bin/ -maxdepth 1 -mindepth 1 -type d -printf "%C@\t%p\n" | sort -nr | head -1 | cut -f2-)/bin
+fi
