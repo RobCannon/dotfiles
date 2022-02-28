@@ -3,10 +3,7 @@ if ([Environment]::GetCommandLineArgs().Length -gt 1) {
   return
 }
 
-Import-Module oh-my-posh
-
-Set-PoshPrompt -Theme $HOME/.config/oh-my-posh/my-posh-pwsh.json
-
+oh-my-posh --init --shell pwsh --config $HOME/.config/oh-my-posh/my-posh-pwsh.json | Invoke-Expression
 
 function invoke-terraforminit { & terraform init -upgrade=true }
 function invoke-terraformvalidate { & terraform validate }
