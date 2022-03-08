@@ -129,14 +129,7 @@ if [[ -n $PS1 ]]; then
     eval $($USERPROFILE/scoop/apps/ssh-agent-wsl/2.5/ssh-agent-wsl -r)
   fi
 
-  function _update_ps1() {
-      PS1="$(oh-my-posh -config ~/.config/oh-my-posh/my-posh.json -error $?)"
-  }
-
-  if [ "$TERM" != "linux" ] && [ -x "$(command -v oh-my-posh)" ]
-  then
-      PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
-  fi
+  eval "$(oh-my-posh --init --shell bash --config ~/.config/oh-my-posh/my-posh.json)"
 fi
 
 # Use bash-completion, if available
@@ -146,6 +139,8 @@ complete -F __start_kubectl k
 #complete -C aws_completer aws
 
 export SSLKEYLOGFILE=~/.ssl-key.log
+
+export GITHUB_TOKEN=$(github-token)
 
 
 if [ -d ~/.vscode-server/bin ]
