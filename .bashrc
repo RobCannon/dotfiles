@@ -140,7 +140,7 @@ complete -F __start_kubectl k
 
 export SSLKEYLOGFILE=~/.ssl-key.log
 
-export GITHUB_TOKEN=$(github-token)
+export GITHUB_TOKEN=$(~/.local/bin/github-token)
 
 
 if [ -d ~/.vscode-server/bin ]
