@@ -7,5 +7,5 @@ if [ -f ~/.bashrc ]; then
 fi
 
 # User specific environment and startup programs
-export PATH=$PATH:$HOME/.local/bin:$HOME/bin:$HOME/.dotnet:$HOME/.dotnet/tools
+export PATH=$PATH:$HOME/.local/bin
 export KUBECONFIG=$HOME/.kube/config
