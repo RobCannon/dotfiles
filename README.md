@@ -13,7 +13,7 @@ gh auth login
 Then, enter this batch of commands
 ```
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
-git clone --bare "https://github.com/Equifax/robcannon-dotfiles.git" $HOME/.cfg
+git clone --bare "https://github.com/RobCannon/robcannon-dotfiles.git" $HOME/.cfg
 config config --local status.showUntrackedFiles no
 config checkout -f main
 
