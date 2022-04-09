@@ -9,37 +9,37 @@ AUTH_HEADER="Authorization: Bearer ${GITHUB_TOKEN}"
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstall core packages\e[0m"
-sudo apt-get --assume-yes install \
+sudo DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
   apt-transport-https \
   ca-certificates \
   lsb-release \
   gnupg \
   curl \
-  wget
+  wget \
+  software-properties-common
 
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mGetting keys for custom apt repositories\e[0m"
+echo -e "\e[1;36mInstall Microsoft GPG keys\e[0m"
+wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
+rm packages-microsoft-prod.deb
 
-echo -e "\e[1;29mFor: /etc/spt/sources.list.d/git-core.list\e[0m"
-sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E1DD270288B4E6030699E45FA1715D88E1DF1F24 2>&1
 
-echo -e "\e[1;29mFor: /etc/spt/sources.list.d/deadsnakes.list\e[0m"
-sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys F23C5A6CF475977595C89F51BA6932366A755776 2>&1
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInstall docker GPG keys\e[0m"
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-echo -e "\e[1;29mFor: /etc/spt/sources.list.d/docker.list\e[0m"
-# Based on https://docs.docker.com/engine/install/ubuntu/
-#  Pull key to home drive and move it to prevent gpg: WARNING: unsafe ownership on homedir
-curl -fsSL https://nrm.us.equifax.com/repository/iaas-download-docker-apt-proxy/gpg | gpg --dearmor -o docker-archive-keyring.gpg
-sudo mv docker-archive-keyring.gpg /usr/share/keyrings/docker-archive-keyring.gpg
-sudo chmod a+r /usr/share/keyrings/docker-archive-keyring.gpg
 
-echo -e "\e[1;29mFor: /etc/spt/sources.list.d/microsoft-prod.list\e[0m"
-curl -sSL https://packages.microsoft.com/keys/microsoft.asc | sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add -
-
-echo -e "\e[1;29mFor: /etc/spt/sources.list.d/pgdg.list\e[0m"
-curl -fsSL https://nrm.us.equifax.com/repository/iaas-apt-postgresql-proxy/ACCC4CF8.asc | sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add -
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInstall python deadsnakes PPA\e[0m"
+sudo add-apt-repository ppa:deadsnakes/ppa
 
 
 echo ''
@@ -287,9 +287,9 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get -yq install ./gh_linux_amd64.deb
 rm gh_linux_amd64.deb
 
 
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInitialize Powershell\e[0m"
+#echo ''
+#echo -e "\e[1;36m------\e[0m"
+#echo -e "\e[1;36mInitialize Powershell\e[0m"
 #chmod +x /tmp/provisioner-files/powershell-init.ps1
 #sudo -- sh -c 'umask 002; /tmp/provisioner-files/powershell-init.ps1'
 #sudo rm /tmp/provisioner-files/powershell-init.ps1
