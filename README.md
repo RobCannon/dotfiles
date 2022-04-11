@@ -8,9 +8,9 @@ gh auth login
 Then, enter this batch of commands
 ```
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
-git clone --bare "https://github.com/Equifax/robcannon-dotfiles.git" $HOME/.cfg
+git clone --bare "https://github.com/RobCannon/robcannon-dotfiles.git" $HOME/.cfg
 dotfiles config --local status.showUntrackedFiles no
-dotfiles checkout -f rob
+dotfiles checkout -f main
 
 sudo usermod -aG docker $USER
 newgrp docker
