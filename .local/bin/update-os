@@ -208,6 +208,14 @@ rm istioctl.tar.gz
 echo ''
 
 
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInstalling oh-my-posh for custom prompt\e[0m"
+curl --silent --show-error --location --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url https://github.com/JanDeDobbeleer/oh-my-posh3/releases/latest/download/posh-linux-amd64 --output oh-my-posh
+sudo mv oh-my-posh /usr/bin/oh-my-posh
+sudo chmod a+rx /usr/bin/oh-my-posh
+
+
 
 #echo ''
 #echo -e "\e[1;36m------\e[0m"

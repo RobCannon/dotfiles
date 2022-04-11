@@ -1,12 +1,3 @@
-# .bashrc
-
-# Source global definitions
-if [ -f /etc/bashrc ]; then
-	. /etc/bashrc
-fi
-
-# User specific aliases and functions
-
 ## Colorize the ls output ##
 eval "$(dircolors)"
 alias ls='ls -F -h --color=always -v --time-style=long-iso -l'
@@ -40,7 +31,7 @@ alias gitreset='git fetch origin -p && git reset --hard @{u} && git clean -xfd'
 alias giturl='git remote get-url origin'
 alias gitsync='git pull --tags origin --rebase -f && git fetch --prune && git branch -r | awk "{print \$1}" | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk "{print \$1}" | xargs git branch -D'
 alias gitmergetest='gh-open && git checkout main && git merge test && git push && git checkout test'
-alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
 # This command is used ALOT both below and in daily life
 alias k='kubectl'
@@ -138,13 +129,4 @@ fi
 complete -F __start_kubectl k
 #complete -C aws_completer aws
 
-export SSLKEYLOGFILE=~/.ssl-key.log
 
-export GITHUB_TOKEN=$(~/.local/bin/github-token)
-
-
-if [ -d ~/.vscode-server/bin ]
-then
-  export VSCODE_IPC_HOOK_CLI=$(find /run/user/$(id -u) -maxdepth 1 -mindepth 1 -type s -name 'vscode-ipc-*' -printf "%C@\t%p\n" | sort -nr | head -1 | cut -f2-)
-  export PATH=$PATH:$(find ~/.vscode-server/bin/ -maxdepth 1 -mindepth 1 -type d -printf "%C@\t%p\n" | sort -nr | head -1 | cut -f2-)/bin
-fi
