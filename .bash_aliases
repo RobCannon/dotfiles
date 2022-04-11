@@ -104,13 +104,7 @@ alias dockerclean='docker kill $(docker ps -q) || true && docker rm $(docker ps 
 alias dockercleanall='docker kill $(docker ps -q) || true && docker rm $(docker ps -a -q) || true && docker rmi --force $(docker images -q)'
 alias dockerkillall='docker kill $(docker ps -q) || true && docker rm $(docker ps -a -q) || true'
 
-# gcloud aliases
-alias gcil='gcloud compute instances list'
-alias glogin='gcloud auth login --quiet --update-adc'
-alias grevoke='rm -rf ~/.config/gcloud'
 
-#alias ping='prettyping --nolegend'
-#alias man='tldr'
 alias topcpu='ps -eo pid,ppid,user,%mem,%cpu,cmd --sort=-%cpu | head -n 20'
 
 if [[ -n $PS1 ]]; then
