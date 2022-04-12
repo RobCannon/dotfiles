@@ -15,8 +15,6 @@ dotfiles checkout -f main
 
 .local/bin/init-os
 
-clear
-
 .local/bin/update-os
 
 .local/bin/init-repos

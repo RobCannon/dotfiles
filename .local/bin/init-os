@@ -106,6 +106,7 @@ Set-PSResourceRepository -Name PSGallery -Trusted
 
 Install-PSResource PSReadLine -Reinstall
 Install-PSResource Powershell-yaml -Reinstall
+cls
 EOF
 
 echo ''
