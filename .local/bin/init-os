@@ -19,7 +19,38 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
   gnupg \
   curl \
   wget \
-  software-properties-common
+  software-properties-common \
+  build-essential \
+  make \
+  git \
+  auditd \
+  audispd-plugins \
+  lsyncd \
+  bash \
+  bash-completion \
+  tldr \
+  nano \
+  openssl \
+  gnupg-agent \
+  inetutils-traceroute \
+  tcpdump \
+  libssl-dev \
+  libghc-zlib-dev \
+  libcurl4-gnutls-dev \
+  libexpat1-dev \
+  libncurses5-dev \
+  libgdbm-dev \
+  libnss3-dev \
+  libreadline-dev \
+  libffi-dev \
+  libsqlite3-dev \
+  libbz2-dev \
+  libgdiplus \
+  libc6-dev \
+  zlib1g-dev \
+  gettext \
+  unzip \
+  jq
 
 
 echo ''
@@ -33,7 +64,7 @@ rm packages-microsoft-prod.deb
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstall docker GPG keys\e[0m"
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
@@ -54,37 +85,6 @@ echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling common tools via apt\e[0m"
 sudo DEBIAN_FRONTEND=noninteractive apt-get -yq install \
-  git \
-  auditd \
-  audispd-plugins \
-  lsyncd \
-  bash \
-  bash-completion \
-  tldr \
-  nano \
-  openssl \
-  gnupg-agent \
-  inetutils-traceroute \
-  tcpdump \
-  build-essential \
-  make \
-  libssl-dev \
-  libghc-zlib-dev \
-  libcurl4-gnutls-dev \
-  libexpat1-dev \
-  libncurses5-dev \
-  libgdbm-dev \
-  libnss3-dev \
-  libreadline-dev \
-  libffi-dev \
-  libsqlite3-dev \
-  libbz2-dev \
-  libgdiplus \
-  libc6-dev \
-  zlib1g-dev \
-  gettext \
-  unzip \
-  jq \
   powershell \
   dotnet-sdk-6.0 \
   python3.11 \
