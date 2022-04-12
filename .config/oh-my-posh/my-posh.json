@@ -5,7 +5,7 @@
       "alignment": "left",
       "segments": [
         {
-          "background": "#07585c",
+          "background": "#0077c2",
           "foreground": "#ffffff",
           "powerline_symbol": "\ue0b0",
           "properties": {
