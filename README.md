@@ -20,6 +20,8 @@ init-os
 clear
 
 update-os
+
+init-repos
 ```
 
 ```
