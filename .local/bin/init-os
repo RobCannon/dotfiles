@@ -54,11 +54,7 @@ echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling common tools via apt\e[0m"
 sudo DEBIAN_FRONTEND=noninteractive apt-get -yq install \
-  apt-transport-https \
-  ca-certificates \
-  curl \
   git \
-  software-properties-common \
   auditd \
   audispd-plugins \
   lsyncd \
@@ -96,10 +92,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get -yq install \
   python3-pip \
   python3-crcmod \
   virtualenv \
-  openssh-client \
-  containerd.io \
-  docker-ce \
-  docker-ce-cli
+  openssh-client
 
 
 echo ''

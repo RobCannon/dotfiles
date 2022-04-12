@@ -13,11 +13,16 @@ git clone --bare "https://github.com/RobCannon/dotfiles.git" $HOME/.cfg
 dotfiles config --local status.showUntrackedFiles no
 dotfiles checkout -f main
 
-sudo usermod -aG docker $USER
-newgrp docker
-
 source ~/.bash_profile
 
 init-os
+
+clear
+
 update-os
+```
+
+```
+sudo usermod -aG docker $USER
+newgrp docker
 ```

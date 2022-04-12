@@ -76,6 +76,12 @@ rm vault.zip
 echo ''
 
 
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInstalling flux cli\e[0m"
+curl -s https://fluxcd.io/install.sh | sudo bash
+
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling terraform\e[0m"
@@ -128,14 +134,14 @@ sudo chown root:root /usr/bin/kube-linter
 rm kube-linter-linux.zip
 
 
-echo ''
-echo '------'
-echo 'Installing kpt'
-#curl --silent --show-error --location --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url $(curl --silent --show-error --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url https://api.github.com/repos/GoogleContainerTools/kpt/releases/latest | jq -r '.assets[] | select(.name == "kpt_linux_amd64") | .browser_download_url') --output kpt
-curl --silent --show-error --location --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url https://github.com/GoogleContainerTools/kpt/releases/download/v0.39.2/kpt_linux_amd64 --output kpt
-sudo mv kpt /usr/bin/kpt
-sudo chmod a+rx /usr/bin/kpt
-sudo chown root:root /usr/bin/kpt
+# echo ''
+# echo '------'
+# echo 'Installing kpt'
+# #curl --silent --show-error --location --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url $(curl --silent --show-error --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url https://api.github.com/repos/GoogleContainerTools/kpt/releases/latest | jq -r '.assets[] | select(.name == "kpt_linux_amd64") | .browser_download_url') --output kpt
+# curl --silent --show-error --location --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url https://github.com/GoogleContainerTools/kpt/releases/download/v0.39.2/kpt_linux_amd64 --output kpt
+# sudo mv kpt /usr/bin/kpt
+# sudo chmod a+rx /usr/bin/kpt
+# sudo chown root:root /usr/bin/kpt
 
 
 echo ''
@@ -168,17 +174,17 @@ sudo chmod a+rx /usr/bin/docker-compose
 sudo chown root:root /usr/bin/docker-compose
 
 
-echo ''
-echo -e "\e[1;36m------\e[0m"
-KUBECTL_VERSION=$(curl --silent --show-error https://storage.googleapis.com/kubernetes-release/release/stable.txt)
-echo -e "\e[1;36mInstalling kubectl $KUBECTL_VERSION\e[0m"
-curl --silent --show-error --location --url "https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl" --output kubectl
-sudo mv kubectl /usr/bin/kubectl
-sudo chown root:root /usr/bin/kubectl
-sudo chmod a+rx /usr/bin/kubectl
-kubectl completion bash > kubectl && sudo mv kubectl /etc/bash_completion.d/kubectl
-sudo chmod a+r /etc/bash_completion.d/kubectl
-echo ''
+# echo ''
+# echo -e "\e[1;36m------\e[0m"
+# KUBECTL_VERSION=$(curl --silent --show-error https://storage.googleapis.com/kubernetes-release/release/stable.txt)
+# echo -e "\e[1;36mInstalling kubectl $KUBECTL_VERSION\e[0m"
+# curl --silent --show-error --location --url "https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl" --output kubectl
+# sudo mv kubectl /usr/bin/kubectl
+# sudo chown root:root /usr/bin/kubectl
+# sudo chmod a+rx /usr/bin/kubectl
+# kubectl completion bash > kubectl && sudo mv kubectl /etc/bash_completion.d/kubectl
+# sudo chmod a+r /etc/bash_completion.d/kubectl
+# echo ''
 
 
 echo ''
