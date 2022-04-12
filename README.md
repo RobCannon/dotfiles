@@ -13,15 +13,15 @@ git clone --bare "https://github.com/RobCannon/dotfiles.git" $HOME/.cfg
 dotfiles config --local status.showUntrackedFiles no
 dotfiles checkout -f main
 
-source ~/.bash_profile
-
-init-os
+.local/bin/init-os
 
 clear
 
-update-os
+.local/bin/update-os
 
-init-repos
+.local/bin/init-repos
+
+source ~/.bash_profile
 ```
 
 ```
