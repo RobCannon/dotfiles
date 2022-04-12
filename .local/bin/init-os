@@ -47,6 +47,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
   libbz2-dev \
   libgdiplus \
   libc6-dev \
+  libstdc++ \
   zlib1g-dev \
   gettext \
   unzip \
