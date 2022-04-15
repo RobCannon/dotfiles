@@ -22,6 +22,9 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
   software-properties-common \
   build-essential \
   make \
+  procps \
+  file \
+  gcc \
   git \
   auditd \
   audispd-plugins \
@@ -51,7 +54,8 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
   zlib1g-dev \
   gettext \
   unzip \
-  jq
+  jq \
+  openssh-client
 
 
 echo ''
@@ -92,7 +96,8 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get -yq install \
   python3-pip \
   python3-crcmod \
   virtualenv \
-  openssh-client
+  dotnet-sdk-6.0
+  
 
 
 echo ''
@@ -110,11 +115,6 @@ Install-PSResource Powershell-yaml -Reinstall
 cls
 EOF
 
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling common tools via apt\e[0m"
-sudo DEBIAN_FRONTEND=noninteractive apt-get -yq install \
-  dotnet-sdk-6.0
 
 
 echo ''
@@ -122,3 +122,82 @@ echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mUpgrade packages from apt\e[0m"
 sudo DEBIAN_FRONTEND=noninteractive apt-get --yes -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
 echo ''
+
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mClean up packages from apt\e[0m"
+sudo DEBIAN_FRONTEND=noninteractive apt-get --yes -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" auto-remove
+echo ''
+
+
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInstalling HomeBrew\e[0m"
+NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInstalling yq for yaml parsing\e[0m"
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install yq
+
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInstalling github command line\e[0m"
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install gh
+
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInstalling Hashicorp packer\e[0m"
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install packer
+
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInstalling Hashicorp vault\e[0m"
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install vault
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInstalling Hashicorp terraform\e[0m"
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install terraform
+
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInstalling terraform-docs\e[0m"
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install terraform-docs
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInstalling Helm\e[0m"
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install docker-compose
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInstalling Helm\e[0m"
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install helm
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInstalling Istio cli\e[0m"
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install istioctl
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInstalling FluxCD cli\e[0m"
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install flux
+
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInstalling Oh-My-Posh\e[0m"
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install oh-my-posh
+
+echo ''
+echo -e "\e[1;32m------\e[0m"
+echo -e "\e[1;32mOS Initialization Complete\e[0m"

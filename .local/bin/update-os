@@ -18,84 +18,16 @@ echo ''
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mUpgrade packages from apt\e[0m"
+echo -e "\e[1;36mClean up packages from apt\e[0m"
 sudo DEBIAN_FRONTEND=noninteractive apt-get --yes -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" auto-remove
 echo ''
 
 
+brew update
 
-ACCEPT_HEADER="Accept: application/vnd.github.v3+json"
-#AUTH_HEADER="Authorization: Bearer ${GITHUB_TOKEN}"
+brew upgrade
 
-
-
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling yq for yaml parsing\e[0m"
-curl --silent --show-error --location --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url $(curl --silent --show-error --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url https://api.github.com/repos/mikefarah/yq/releases/latest | jq -r '.assets[] | select(.name == "yq_linux_amd64") | .browser_download_url') --output yq
-sudo mv yq /usr/bin/yq
-sudo chmod a+rx /usr/bin/yq
-sudo chown root:root /usr/bin/yq
-
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling github command line\e[0m"
-curl --silent --show-error --location --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url $(curl --silent --show-error --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url https://api.github.com/repos/cli/cli/releases/latest | jq -r '.assets[] | select(.name | test("gh_\\S+_linux_amd64.deb$")) | .browser_download_url') --output gh_linux_amd64.deb
-sudo DEBIAN_FRONTEND=noninteractive apt-get -yq install ./gh_linux_amd64.deb
-rm gh_linux_amd64.deb
-
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-PACKER_VERSION=$(curl --silent --show-error --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url https://api.github.com/repos/hashicorp/packer/releases/latest | jq -r '.tag_name' | grep  -oP "(?<=v)\S+")
-echo -e "\e[1;36mInstalling packer $PACKER_VERSION\e[0m"
-curl --silent --show-error --location --url "https://releases.hashicorp.com/packer/$PACKER_VERSION/packer_${PACKER_VERSION}_linux_amd64.zip" --output packer.zip
-unzip packer.zip
-chmod a+x packer
-sudo mv packer /usr/bin/
-sudo chmod a+rx /usr/bin/packer
-sudo chown root:root /usr/bin/packer
-rm packer.zip
-echo ''
-
-
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-VAULT_VERSION=$(curl --silent --show-error --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url https://api.github.com/repos/hashicorp/vault/releases/latest | jq -r '.tag_name' | grep  -oP "(?<=v)\S+")
-echo -e "\e[1;36mInstalling Hashicorp vault $VAULT_VERSION\e[0m"
-curl --silent --show-error --location --url "https://releases.hashicorp.com/vault/$VAULT_VERSION/vault_${VAULT_VERSION}_linux_amd64.zip" --output vault.zip
-unzip vault.zip
-chmod a+x vault
-sudo mv vault /usr/bin/
-sudo chmod a+rx /usr/bin/vault
-sudo chown root:root /usr/bin/vault
-rm vault.zip
-echo ''
-
-
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling flux cli\e[0m"
-curl -s https://fluxcd.io/install.sh | sudo bash
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling terraform\e[0m"
-# Check for new releases at https://releases.hashicorp.com/terraform/
-TERRAFORM_VERSION=1.1
-TERRAFORM_SPECIFIC_VERSION=$(curl --silent --show-error --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url "https://api.github.com/repos/hashicorp/terraform/releases?per_page=100" | jq -r '.[].tag_name' | grep -m 1 -oP "(?<=v)${TERRAFORM_VERSION}\.\d+$")
-curl --silent --show-error --location --url "https://releases.hashicorp.com/terraform/$TERRAFORM_SPECIFIC_VERSION/terraform_${TERRAFORM_SPECIFIC_VERSION}_linux_amd64.zip" --output terraform.zip
-unzip terraform.zip
-chmod a+x terraform
-sudo mv terraform /usr/bin/terraform
-sudo chmod a+rx /usr/bin/terraform
-sudo chown root:root /usr/bin/terraform
-rm terraform.zip
-echo ''
+brew cleanup
 
 
 #echo ''
@@ -111,131 +43,5 @@ echo ''
 
 
 echo ''
-echo '------'
-echo 'Installing terraform-docs'
-TERRAFORM_DOCS_VERSION=$(curl --silent --show-error --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url https://api.github.com/repos/terraform-docs/terraform-docs/releases/latest | jq -r '.tag_name' | grep  -oP "(?<=v)\S+")
-curl --silent --show-error --location --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url "https://terraform-docs.io/dl/v$TERRAFORM_DOCS_VERSION/terraform-docs-v$TERRAFORM_DOCS_VERSION-$(uname)-amd64.tar.gz" --output terraform-docs.tar.gz
-tar -xzf terraform-docs.tar.gz
-sudo mv terraform-docs /usr/bin/terraform-docs
-sudo chmod a+rx /usr/bin/terraform-docs
-sudo chown root:root /usr/bin/terraform-docs
-rm terraform-docs.tar.gz
-echo ''
-
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling kube-linter\e[0m"
-curl --silent --show-error --location --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url $(curl --silent --show-error --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url https://api.github.com/repos/stackrox/kube-linter/releases/latest | jq -r '.assets[] | select(.name == "kube-linter-linux.zip") | .browser_download_url') --output kube-linter-linux.zip
-unzip kube-linter-linux.zip
-sudo mv kube-linter /usr/bin/kube-linter
-sudo chmod a+rx /usr/bin/kube-linter
-sudo chown root:root /usr/bin/kube-linter
-rm kube-linter-linux.zip
-
-
-# echo ''
-# echo '------'
-# echo 'Installing kpt'
-# #curl --silent --show-error --location --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url $(curl --silent --show-error --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url https://api.github.com/repos/GoogleContainerTools/kpt/releases/latest | jq -r '.assets[] | select(.name == "kpt_linux_amd64") | .browser_download_url') --output kpt
-# curl --silent --show-error --location --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url https://github.com/GoogleContainerTools/kpt/releases/download/v0.39.2/kpt_linux_amd64 --output kpt
-# sudo mv kpt /usr/bin/kpt
-# sudo chmod a+rx /usr/bin/kpt
-# sudo chown root:root /usr/bin/kpt
-
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling hadolint (Dockerfile linter)\e[0m"
-curl --silent --show-error --location --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url $(curl --silent --show-error --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url https://api.github.com/repos/hadolint/hadolint/releases/latest | jq -r '.assets[] | select(.name == "hadolint-Linux-x86_64") | .browser_download_url') --output hadolint
-sudo mv hadolint /usr/bin/hadolint
-sudo chmod a+rx /usr/bin/hadolint
-sudo chown root:root /usr/bin/hadolint
-
-
-# echo ''
-# echo -e "\e[1;36m------\e[0m"
-# echo -e "\e[1;36mInstalling aws-cli\e[0m"
-# curl --silent --show-error --location --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip --output awscliv2.zip
-# unzip -q awscliv2.zip
-# sudo ./aws/install --update
-# sudo chmod a+rx -R /usr/local/aws-cli
-# rm awscliv2.zip
-# rm -rf aws
-# echo ''
-
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling docker compose\e[0m"
-curl --silent --show-error --location --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url $(curl --silent --show-error --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url https://api.github.com/repos/docker/compose/releases/latest | jq -r '.assets[] | select(.name == "docker-compose-linux-x86_64") | .browser_download_url') --output docker-compose
-sudo mv docker-compose /usr/bin/docker-compose
-sudo chmod a+rx /usr/bin/docker-compose
-sudo chown root:root /usr/bin/docker-compose
-
-
-# echo ''
-# echo -e "\e[1;36m------\e[0m"
-# KUBECTL_VERSION=$(curl --silent --show-error https://storage.googleapis.com/kubernetes-release/release/stable.txt)
-# echo -e "\e[1;36mInstalling kubectl $KUBECTL_VERSION\e[0m"
-# curl --silent --show-error --location --url "https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl" --output kubectl
-# sudo mv kubectl /usr/bin/kubectl
-# sudo chown root:root /usr/bin/kubectl
-# sudo chmod a+rx /usr/bin/kubectl
-# kubectl completion bash > kubectl && sudo mv kubectl /etc/bash_completion.d/kubectl
-# sudo chmod a+r /etc/bash_completion.d/kubectl
-# echo ''
-
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-HELM_VERSION=$(curl --silent --show-error --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url https://api.github.com/repos/helm/helm/releases/latest | jq -r '.tag_name')
-echo -e "\e[1;36mInstalling helm $HELM_VERSION\e[0m"
-curl --silent --show-error --location --url "https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz" --output helm.tar.gz
-tar -xvzf helm.tar.gz linux-amd64/helm --strip-components 1
-sudo mv helm /usr/bin/helm
-sudo chmod a+rx /usr/bin/helm
-sudo chown root:root /usr/bin/helm
-rm helm.tar.gz
-helm completion bash > helm && sudo mv helm /etc/bash_completion.d/helm
-sudo chmod a+r /etc/bash_completion.d/helm
-
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-ISTIO_VERSION=$(curl --silent --show-error --location --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url https://api.github.com/repos/istio/istio/releases | grep tag_name | sed "s/ *\"tag_name\": *\"\\(.*\\)\",*/\\1/" | grep -v -E "(alpha|beta|rc)\.[0-9]$" | sort -t"." -k 1,1 -k 2,2 -k 3,3 -k 4,4 | tail -n 1)
-echo -e "\e[1;36mInstalling istioctl $ISTIO_VERSION\e[0m"
-curl --silent --show-error --location --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url "https://github.com/istio/istio/releases/download/${ISTIO_VERSION}/istioctl-${ISTIO_VERSION}-linux-amd64.tar.gz" --output istioctl.tar.gz
-tar -xvzf istioctl.tar.gz
-sudo mv istioctl /usr/bin/istioctl
-sudo chmod a+rx /usr/bin/istioctl
-sudo chown root:root /usr/bin/istioctl
-rm istioctl.tar.gz
-echo ''
-
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling oh-my-posh for custom prompt\e[0m"
-curl --silent --show-error --location --header "${ACCEPT_HEADER}" --header "${AUTH_HEADER}" --url https://github.com/JanDeDobbeleer/oh-my-posh3/releases/latest/download/posh-linux-amd64 --output oh-my-posh
-sudo mv oh-my-posh /usr/bin/oh-my-posh
-sudo chmod a+rx /usr/bin/oh-my-posh
-
-
-
-#echo ''
-#echo -e "\e[1;36m------\e[0m"
-#echo -e "\e[1;36mInitialize Powershell\e[0m"
-#chmod +x /tmp/provisioner-files/powershell-init.ps1
-#sudo -- sh -c 'umask 002; /tmp/provisioner-files/powershell-init.ps1'
-#sudo rm /tmp/provisioner-files/powershell-init.ps1
-#sudo chmod -R a+rx /usr/local/share/powershell
-
-# Fix issue with NuGet lock files produced by running as root
-#sudo rm -rf /tmp/NuGetScratch/lock
-#sudo rm -rf ~/.nuget
-
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mTools installation complete\e[0m"
+echo -e "\e[1;32m------\e[0m"
+echo -e "\e[1;32mTools Update Complete\e[0m"

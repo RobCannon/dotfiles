@@ -7,7 +7,7 @@ if [ -f ~/.bashrc ]; then
 fi
 
 # User specific environment and startup programs
-export PATH=$PATH:$HOME/.local/bin
+export PATH=$PATH:/home/linuxbrew/.linuxbrew/bin:$HOME/.local/bin
 export KUBECONFIG=$HOME/.kube/config
 
 export SSLKEYLOGFILE=~/.ssl-key.log
