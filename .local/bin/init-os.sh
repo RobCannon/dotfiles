@@ -26,9 +26,6 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
   file \
   gcc \
   git \
-  auditd \
-  audispd-plugins \
-  lsyncd \
   bash \
   bash-completion \
   tldr \
@@ -37,21 +34,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
   gnupg-agent \
   inetutils-traceroute \
   tcpdump \
-  libssl-dev \
-  libghc-zlib-dev \
-  libcurl4-gnutls-dev \
-  libexpat1-dev \
-  libncurses5-dev \
-  libgdbm-dev \
-  libnss3-dev \
-  libreadline-dev \
-  libffi-dev \
-  libsqlite3-dev \
-  libbz2-dev \
-  libgdiplus \
-  libc6-dev \
   libstdc++ \
-  zlib1g-dev \
   gettext \
   unzip \
   jq \
