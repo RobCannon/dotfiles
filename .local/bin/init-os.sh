@@ -26,6 +26,9 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
   file \
   gcc \
   git \
+  gettext \
+  unzip \
+  jq \
   bash \
   bash-completion \
   tldr \
@@ -34,10 +37,6 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
   gnupg-agent \
   inetutils-traceroute \
   tcpdump \
-  libstdc++ \
-  gettext \
-  unzip \
-  jq \
   openssh-client
 
 
