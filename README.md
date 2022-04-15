@@ -3,6 +3,8 @@ Based on https://www.atlassian.com/git/tutorials/dotfiles
 Authenticate with GH command line (interactive) from the desktop (not WSL)
 ```
 gh auth login
+wsl --install -d Ubuntu
+wsl --set-default Ubuntu
 ```
 
 Then, enter this batch of commands
