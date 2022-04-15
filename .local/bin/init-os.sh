@@ -123,62 +123,62 @@ NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Ho
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling yq for yaml parsing\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install yq
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install yq
 
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling github command line\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install gh
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install gh
 
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling Hashicorp packer\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install packer
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install packer
 
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling Hashicorp vault\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install vault
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install vault
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling Hashicorp terraform\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install terraform
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install terraform
 
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling terraform-docs\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install terraform-docs
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install terraform-docs
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling Helm\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install docker-compose
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install docker-compose
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling Helm\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install helm
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install helm
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling Istio cli\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install istioctl
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install istioctl
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling FluxCD cli\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install flux
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install flux
 
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling Oh-My-Posh\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install oh-my-posh
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install oh-my-posh
 
 echo ''
 echo -e "\e[1;32m------\e[0m"
