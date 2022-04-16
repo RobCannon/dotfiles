@@ -8,10 +8,8 @@
           "background": "#0077c2",
           "foreground": "#ffffff",
           "powerline_symbol": "\ue0b0",
-          "properties": {
-            "template": " \ufcb5 {{ .Name }} "
-          },
           "style": "powerline",
+          "template": " \ufcb5 {{ .Name }} ",
           "type": "shell"
         },
         {
@@ -19,20 +17,18 @@
           "foreground": "#100e23",
           "powerline_symbol": "\ue0b0",
           "properties": {
-            "root_icon": "\ufab6",
-            "template": " \uf0e7 "
+            "root_icon": "\ufab6"
           },
           "style": "powerline",
+          "template": " \uf0e7 ",
           "type": "root"
         },
         {
           "background": "#ffffff",
           "foreground": "#100e23",
           "powerline_symbol": "\ue0b0",
-          "properties": {
-            "template": " {{ if .SSHSession }}\uf817 {{ end }}{{ .UserName }}@{{ .HostName }} "
-          },
           "style": "powerline",
+          "template": " {{ if .SSHSession }}\uf817 {{ end }}{{ .UserName }}@{{ .HostName }} ",
           "type": "session"
         },
         {
@@ -44,10 +40,10 @@
             "folder_separator_icon": "\ue0b1",
             "home_icon": "~",
             "style": "short",
-            "template": " {{ .Path }} ",
             "windows_registry_icon": "\uf071"
           },
           "style": "powerline",
+          "template": " {{ .Path }} ",
           "type": "path"
         },
         {
@@ -59,30 +55,26 @@
             "branch_behind_icon": "\u2193",
             "branch_gone_icon": "\u2262",
             "branch_icon": "\ue0a0",
-            "branch_identical_icon": "\u2261",
-            "template": " {{ .HEAD }} {{ .BranchStatus }}{{ if .Working.Changed }}\uf044{{ .Working.String }}{{ end }}{{ if and (.Staging.Changed) (.Working.Changed) }} |{{ end }}{{ if .Staging.Changed }}\uf046{{ .Staging.String }}{{ end }}{{ if gt .StashCount 0}} \uf692 {{ .StashCount }}{{ end }}{{ if gt .WorktreeCount 0}} \uf1bb {{ .WorktreeCount }}{{ end }} "
+            "branch_identical_icon": "\u2261"
           },
           "style": "powerline",
+          "template": " {{ .HEAD }} {{ .BranchStatus }}{{ if .Working.Changed }}\uf044{{ .Working.String }}{{ end }}{{ if and (.Staging.Changed) (.Working.Changed) }} |{{ end }}{{ if .Staging.Changed }}\uf046{{ .Staging.String }}{{ end }}{{ if gt .StashCount 0}} \uf692 {{ .StashCount }}{{ end }}{{ if gt .WorktreeCount 0}} \uf1bb {{ .WorktreeCount }}{{ end }} ",
           "type": "git"
         },
         {
           "background": "#ebcc34",
           "foreground": "#000000",
           "powerline_symbol": "\ue0b0",
-          "properties": {
-            "template": " \ufd31 {{ .Context }}{{ if .Namespace }} :: {{ .Namespace }}{{ end }} "
-          },
           "style": "powerline",
+          "template": " \ufd31 {{ .Context }}{{ if .Namespace }} :: {{ .Namespace }}{{ end }} ",
           "type": "kubectl"
         },
         {
           "background": "#ff8080",
           "foreground": "#ffffff",
           "powerline_symbol": "\ue0b0",
-          "properties": {
-            "template": "\ue20f{{ if gt .Code 0 }}\uf00d {{ .Meaning }}{{ else }}\uf42e{{ end }} "
-          },
           "style": "powerline",
+          "template": "\ue20f{{ if gt .Code 0 }}\uf00d {{ .Meaning }}{{ else }}\uf42e{{ end }} ",
           "type": "exit"
         }
       ],
@@ -96,10 +88,8 @@
       "segments": [
         {
           "foreground": "#007ACC",
-          "properties": {
-            "template": "\ue285 "
-          },
           "style": "plain",
+          "template": "\ue285 ",
           "type": "text"
         }
       ],
@@ -107,5 +97,5 @@
     }
   ],
   "final_space": true,
-  "version": 1
+  "version": 2
 }
