@@ -29,7 +29,7 @@ if ($env:APPDATA) {
 
 $headers = @{ Authorization = "token $token" }
 
-$repos = Invoke-RestMethod -Headers $headers "https://api.github.com/orgs/Equifax/teams/$TeamName/repos"
+$repos = Invoke-RestMethod -Headers $headers "https://api.github.com/orgs/AccelerateLearning/teams/$TeamName/repos"
 foreach($repo in $repos) {
   $clone_url = $repo.clone_url
   $folder = Join-Path $Path $repo.name.Replace("$TeamName-",'')

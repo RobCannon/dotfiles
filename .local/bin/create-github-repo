@@ -46,7 +46,7 @@ try {
 
   $parent = $path | Split-Path -Parent | Split-Path -Leaf
   $repo_name = "$($parent)-$Name"
-  $repo_url = "https://github.com/Equifax/$repo_name.git"
+  $repo_url = "https://github.com/AccelerateLearning/$repo_name.git"
 
   Write-Host "Create new repo at $repo_url"
 
@@ -59,15 +59,15 @@ try {
     }
 
     # Check if team exists
-    if (-Not (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/orgs/Equifax/teams/$Team" -SkipHttpErrorCheck).slug) {
-      throw "Team $Team not found in the Equifax organization"
+    if (-Not (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/orgs/AccelerateLearning/teams/$Team" -SkipHttpErrorCheck).slug) {
+      throw "Team $Team not found in the AccelerateLearning organization"
     }
 
 
     if ($(git remote)) {
       git fetch --all
     }
-    gh repo create Equifax/$repo_name --internal --push --remote origin --source . --team $team
+    gh repo create AccelerateLearning/$repo_name --internal --push --remote origin --source . --team $team
     git push --set-upstream origin main
     git push -f --mirror origin
   }
@@ -75,12 +75,7 @@ try {
     Write-Warning "Remote GitHub repo already exists at $remote"
   }
 
-  # Build a uri that prefills all of these value for a CICD ticket
-
-  Write-Host "Link to Self Service Job to add repo to GitHub application"
-  Write-Host 'https://cicd-tools.us.equifax.com/cicd-mbps-jenkins/job/public_jobs/job/cicd_self_service_Add_GithubRepo_to_GithubApp/build?delay=0sec'
-  Write-Host ''
-  Write-Host "https://github.com/Equifax/$repo_name.git"
+  Write-Host "https://github.com/AccelerateLearning/$repo_name.git"
 }
 catch {
   Write-Error $_
