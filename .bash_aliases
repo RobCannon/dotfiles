@@ -106,21 +106,3 @@ alias dockerkillall='docker kill $(docker ps -q) || true && docker rm $(docker p
 
 
 alias topcpu='ps -eo pid,ppid,user,%mem,%cpu,cmd --sort=-%cpu | head -n 20'
-
-if [[ -n $PS1 ]]; then
-  # This should only run for interactive shells
-  if [ -f "$USERPROFILE/scoop/apps/ssh-agent-wsl/2.5/ssh-agent-wsl" ]
-  then
-    eval $($USERPROFILE/scoop/apps/ssh-agent-wsl/2.5/ssh-agent-wsl -r)
-  fi
-
-  eval "$(oh-my-posh --init --shell bash --config ~/.config/oh-my-posh/my-posh.json)"
-fi
-
-# Use bash-completion, if available
-[[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && source /usr/share/bash-completion/bash_completion
-[[ $PS1 && -f /usr/share/bash-completion/completions/git ]] && source /usr/share/bash-completion/completions/git
-complete -F __start_kubectl k
-#complete -C aws_completer aws
-
-

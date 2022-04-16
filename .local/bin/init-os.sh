@@ -174,11 +174,16 @@ echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling FluxCD cli\e[0m"
 HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install flux
 
-
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling Oh-My-Posh\e[0m"
 HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install oh-my-posh
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInstalling AWS cli\e[0m"
+ulimit -n 1024
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install awscli
 
 echo ''
 echo -e "\e[1;32m------\e[0m"
