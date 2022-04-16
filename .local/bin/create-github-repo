@@ -49,15 +49,11 @@ try {
   $repo_name = $Name
   $repo_url = "https://github.com/AccelerateLearning/$repo_name.git"
 
-  Write-Host "Create new repo at $repo_url"
+  Write-Host "Creating new repo at $repo_url"
 
   $remote = git remote get-url origin 2>$null
 
   if (-Not $remote) {
-    if (-Not $Team) {
-      $Team = $parent
-      Write-Host "Team parameter not specified, using -Team $Team"
-    }
 
     # Check if team exists
     if (-Not (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/orgs/AccelerateLearning/teams/$Team" -SkipHttpErrorCheck).slug) {
@@ -68,9 +64,11 @@ try {
     if ($(git remote)) {
       git fetch --all
     }
-    gh repo create AccelerateLearning/$repo_name --internal --push --remote origin --source . --team $team
+    gh repo create AccelerateLearning/$repo_name --private --push --remote origin --source . --team $team
     git push --set-upstream origin main
     git push -f --mirror origin
+
+    gh api --method PUT -H "Accept: application/vnd.github.v3+json" /orgs/AccelerateLearning/teams/$team/repos/AccelerateLearning/$repo_name --field permission=admin
   }
   else {
     Write-Warning "Remote GitHub repo already exists at $remote"
