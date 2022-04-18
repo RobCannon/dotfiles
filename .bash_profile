@@ -6,6 +6,7 @@ if [ -f ~/.bashrc ]; then
         . ~/.bashrc
 fi
 
+echo "Setting environment variables"
 # User specific environment and startup programs
 export PATH=$PATH:/home/linuxbrew/.linuxbrew/bin:$HOME/.local/bin
 export KUBECONFIG=$HOME/.kube/config
@@ -21,6 +22,7 @@ export PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin${PAT
 export MANPATH="/home/linuxbrew/.linuxbrew/share/man${MANPATH+:$MANPATH}:";
 export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:${INFOPATH:-}";
 
+echo "Setting prompt"
 if [[ -n $PS1 ]]; then
   # This should only run for interactive shells
   if [ -f "$USERPROFILE/scoop/apps/ssh-agent-wsl/2.5/ssh-agent-wsl" ]
@@ -31,6 +33,7 @@ if [[ -n $PS1 ]]; then
   eval "$(oh-my-posh --init --shell bash --config ~/.config/oh-my-posh/my-posh.json)"
 fi
 
+echo "Setting bash completions"
 # Use bash-completion, if available
 [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && source /usr/share/bash-completion/bash_completion
 [[ $PS1 && -f /usr/share/bash-completion/completions/git ]] && source /usr/share/bash-completion/completions/git
