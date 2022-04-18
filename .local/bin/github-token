@@ -1,9 +1,10 @@
-#!/usr/bin/env pwsh
-if ($env:APPDATA) {
-  $token = (Get-Content "$($env:APPDATA)/GitHub CLI/hosts.yml" | ConvertFrom-Yaml).'github.com'.oauth_token
-} elseif ($env:HOME) {
-  $token = (Get-Content "$($env:HOME)/.config/gh/hosts.yml" | ConvertFrom-Yaml).'github.com'.oauth_token
-} else {
-  throw "Unable to locate GitHub token, try gh auth login"
-}
-Write-Output $token
+#!/usr/bin/env bash
+if [ -f "$APPDATA//GitHub CLI/hosts.yml" ]
+then
+  cat "$APPDATA/GitHub CLI/hosts.yml" | yq '."github.com".oauth_token'
+elif [ -f "$HOME/.config/gh/hosts.yml" ]
+then
+  cat "$HOME/.config/gh/hosts.yml" | yq '."github.com".oauth_token'
+else
+  echo ''
+fi
