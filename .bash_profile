@@ -1,6 +1,4 @@
 # .bash_profile
-echo "Executing my bash profile"
-
 # Get the aliases and functions
 if [ -f ~/.bashrc ]; then
         . ~/.bashrc
