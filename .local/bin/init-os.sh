@@ -3,6 +3,13 @@
 #!/bin/bash
 set -e
 
+# Set correct permissions for mount Windows drive
+sudo tee /etc/wsl.conf > /dev/null <<'EOF'
+[automount]
+enabled = true
+options = "metadata,umask=0077,fmask=0077"
+EOF
+
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mUpdate apt\e[0m"
@@ -96,6 +103,7 @@ Install-PSResource PSReadLine -Reinstall
 Install-PSResource Powershell-yaml -Reinstall
 cls
 EOF
+
 
 
 
