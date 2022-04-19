@@ -29,7 +29,7 @@ if [[ -n $PS1 ]]; then
     eval $($USERPROFILE/scoop/apps/ssh-agent-wsl/2.5/ssh-agent-wsl -r)
   fi
 
-  eval "$(oh-my-posh --init --shell bash --config ~/.config/oh-my-posh/my-posh.json)"
+  eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/my-posh.json)"
 fi
 
 # Use bash-completion, if available
