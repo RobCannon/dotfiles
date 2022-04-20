@@ -90,6 +90,11 @@ alias kru='k rollout undo'
 # Logs
 alias kl='k logs'
 
+# Kustomize
+alias kz='kustomize'
+alias kzb='kustomize build'
+alias wkz='watch flux get kustomizations'
+
 # Terraform aliases
 alias tfi='terraform init -upgrade=true'
 alias tfv='terraform validate'
