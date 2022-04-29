@@ -40,6 +40,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
   bash-completion \
   tldr \
   nano \
+  xclip \
   openssl \
   gnupg-agent \
   inetutils-traceroute \
@@ -197,6 +198,12 @@ echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling AWS cli\e[0m"
 ulimit -n 1000000
 HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install awscli
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInstalling AWS cli\e[0m"
+ulimit -n 1000000
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install eksctl
 
 
 echo ''

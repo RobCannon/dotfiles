@@ -42,6 +42,8 @@ brew cleanup
 #rm -rf /tmp/provisioner-files/terraform-providers
 
 
+source ~/.bash_profile
+
 echo ''
 echo -e "\e[1;32m------\e[0m"
 echo -e "\e[1;32mTools Update Complete\e[0m"
