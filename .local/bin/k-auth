@@ -9,34 +9,32 @@ param (
 
 $sw = [Diagnostics.Stopwatch]::StartNew()
 while ( $sw.Elapsed.TotalMinutes -lt 20) {
-    $clusters =  (aws eks list-clusters --output json | ConvertFrom-Json).clusters
-    if ($ClusterName -in $clusters) 
-    {
+    $clusters = (aws eks list-clusters --output json | ConvertFrom-Json).clusters
+    if ($ClusterName -in $clusters) {
         break
     }
-    Write-Progress "Waiting for cluster to be built"
+    Write-Progress -Activity "Waiting for cluster to be built" -PercentComplete ($sw.Elapsed.TotalSeconds / 30 % 100)
     Start-Sleep -Seconds 30
 }
+Write-Progress -Activity "Waiting for cluster to be built" -Completed
 
-if (-Not $ClusterName -in $clusters) 
-{
+if (-Not $ClusterName -in $clusters) {
     Write-Error "Cluster $ClusterName is not available after 20 minutes"
     exit 1
 }
 
 $sw = [Diagnostics.Stopwatch]::StartNew()
 while ( $sw.Elapsed.TotalMinutes -lt 5) {
-    $cluster_info =  (aws eks describe-cluster --name $ClusterName --output json | ConvertFrom-Json).cluster
-    if ($cluster_info.status -eq "ACTIVE") 
-    {
+    $cluster_info = (aws eks describe-cluster --name $ClusterName --output json | ConvertFrom-Json).cluster
+    if ($cluster_info.status -eq "ACTIVE") {
         break
     }
-    Write-Progress "Waiting for cluster to be active"
+    Write-Progress "Waiting for cluster to be active" -PercentComplete ($sw.Elapsed.TotalSeconds / 5 % 100)
     Start-Sleep -Seconds 5
 }
+Write-Progress "Waiting for cluster to be active" -Completed
 
-if (-Not $cluster_info.status -eq "ACTIVE") 
-{
+if (-Not $cluster_info.status -eq "ACTIVE") {
     Write-Error "Cluster $ClusterName is not active after 5 minutes.  Status = $($cluster_info.status)"
     exit 1
 }
