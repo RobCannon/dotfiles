@@ -95,19 +95,11 @@ alias kz='kustomize'
 alias kzb='kustomize build'
 alias wkz='watch flux get kustomizations'
 
-# Terraform aliases
-alias tfi='terraform init -upgrade=true'
-alias tfv='terraform validate'
-alias tfp='terraform plan'
-alias tfa='terraform apply -auto-approve'
-alias tff='terraform fmt -recursive'
-alias tfo='terraform output'
-alias tfws='terraform workspace select'
-alias tft='terraform init -upgrade=true && terraform validate && terraform plan'
-
 alias dockerclean='docker kill $(docker ps -q) || true && docker rm $(docker ps -a -q) || true && docker rmi $(docker images -q -f dangling=true)'
 alias dockercleanall='docker kill $(docker ps -q) || true && docker rm $(docker ps -a -q) || true && docker rmi --force $(docker images -q)'
 alias dockerkillall='docker kill $(docker ps -q) || true && docker rm $(docker ps -a -q) || true'
 
 
 alias topcpu='ps -eo pid,ppid,user,%mem,%cpu,cmd --sort=-%cpu | head -n 20'
+
+alias sbp='source ~/.bash_profile'

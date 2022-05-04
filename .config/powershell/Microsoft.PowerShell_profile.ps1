@@ -5,16 +5,6 @@ if ([Environment]::GetCommandLineArgs().Length -gt 1) {
 
 oh-my-posh init pwsh --config $HOME/.config/oh-my-posh/my-posh-pwsh.json | Invoke-Expression
 
-function invoke-terraforminit { & terraform init -upgrade=true }
-function invoke-terraformvalidate { & terraform validate }
-function invoke-terraformplan { & terraform plan }
-function invoke-terraformapply { & terraform apply --auto-approve }
-
-set-alias tfi invoke-terraforminit
-set-alias tfv invoke-terraformvalidate
-set-alias tfp invoke-terraformplan
-set-alias tfa invoke-terraformapply
-
 
 # This is an example profile for PSReadLine.
 #
