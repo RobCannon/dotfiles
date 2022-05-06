@@ -33,67 +33,59 @@ alias gitsync='git pull --tags origin --rebase -f && git fetch --prune && git br
 alias gitmergetest='gh-open && git checkout main && git merge test && git push && git checkout test'
 alias dtf='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
-# This command is used ALOT both below and in daily life
-alias k='kubectl'
-
 # Apply a YML file
-alias kaf='k apply -f'
-alias kdf='k delete -f'
+alias kaf='kubectl apply -f'
+alias kdf='kubectl delete -f'
 
 # Drop into an interactive terminal on a container
-alias keti='k exec -ti'
+alias keti='kubectl exec -ti'
 
 # Manage configuration quickly to switch contexts between local, dev ad staging.
-alias kcgc='k config get-contexts'
-alias kcuc='k config use-context'
-alias kcsc='k config set-context'
-alias kcdc='k config delete-context'
-alias kccc='k config current-context'
-alias kgn='k get namespaces'
+alias kcgc='kubectl config get-contexts'
+alias kcuc='kubectl config use-context'
+alias kcsc='kubectl config set-context'
+alias kcdc='kubectl config delete-context'
+alias kccc='kubectl config current-context'
+alias kgn='kubectl get namespaces'
 
 # Pod management.
-alias kgp='k get pods'
-alias kep='k edit pods'
-alias kdp='k describe pods'
-alias kdelp='k delete pods'
+alias kgp='kubectl get pods'
+alias kep='kubectl edit pods'
+alias kdp='kubectl describe pods'
+alias kdelp='kubectl delete pods'
 
 # Service management.
-alias kgs='k get svc'
-alias kes='k edit svc'
-alias kds='k describe svc'
-alias kdels='k delete svc'
+alias kgs='kubectl get svc'
+alias kes='kubectl edit svc'
+alias kds='kubectl describe svc'
+alias kdels='kubectl delete svc'
 
 # Ingress management
-alias kgi='k get ingress'
-alias kei='k edit ingress'
-alias kdi='k describe ingress'
-alias kdeli='k delete ingress'
+alias kgi='kubectl get ingress'
+alias kei='kubectl edit ingress'
+alias kdi='kubectl describe ingress'
+alias kdeli='kubectl delete ingress'
 
 # Secret management
-alias kgsec='k get secret'
-alias kdsec='k describe secret'
-alias kdelsec='k delete secret'
+alias kgsec='kubectl get secret'
+alias kdsec='kubectl describe secret'
+alias kdelsec='kubectl delete secret'
 
 # Deployment management.
-alias kgd='k get deployment'
-alias ked='k edit deployment'
-alias kdd='k describe deployment'
-alias kdeld='k delete deployment'
-alias ksd='k scale deployment'
-alias krsd='k rollout status deployment'
+alias kgd='kubectl get deployment'
+alias ked='kubectl edit deployment'
+alias kdd='kubectl describe deployment'
+alias kdeld='kubectl delete deployment'
+alias ksd='kubectl scale deployment'
+alias krsd='kubectl rollout status deployment'
 
 # Rollout management.
-alias kgrs='k get rs'
-alias krh='k rollout history'
-alias kru='k rollout undo'
+alias kgrs='kubectl get rs'
+alias krh='kubectl rollout history'
+alias kru='kubectl rollout undo'
 
 # Logs
-alias kl='k logs'
-
-# Kustomize
-alias kz='kustomize'
-alias kzb='kustomize build'
-alias wkz='watch flux get kustomizations'
+alias kl='kubectl logs'
 
 alias dockerclean='docker kill $(docker ps -q) || true && docker rm $(docker ps -a -q) || true && docker rmi $(docker images -q -f dangling=true)'
 alias dockercleanall='docker kill $(docker ps -q) || true && docker rm $(docker ps -a -q) || true && docker rmi --force $(docker images -q)'

@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-terraform apply -auto-approve
+watch flux get kustomizations

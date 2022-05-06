@@ -29,7 +29,12 @@ if [[ -n $PS1 ]]; then
     eval $($USERPROFILE/scoop/apps/ssh-agent-wsl/2.5/ssh-agent-wsl -r)
   fi
 
-  eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/my-posh.json)"
+  # eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/my-posh.json)"
+
+  export POSH_THEME='/home/rcannon/.config/oh-my-posh/my-posh.json'
+  export POWERLINE_COMMAND="oh-my-posh"
+  export CONDA_PROMPT_MODIFIER=false
+  PS1="$(oh-my-posh print primary --config="$POSH_THEME" --shell=bash --shell-version="$BASH_VERSION" --error="$?" | tr -d '\0')"
 fi
 
 # Use bash-completion, if available
