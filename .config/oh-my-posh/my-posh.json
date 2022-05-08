@@ -72,12 +72,7 @@
           "properties": {
             "fetch_status": true,
             "fetch_stash_count": true,
-            "fetch_upstream_icon": true,
-            "branch_ahead_icon": "\u2191",
-            "branch_behind_icon": "\u2193",
-            "branch_gone_icon": "\u2262",
-            "branch_icon": "\ue0a0",
-            "branch_identical_icon": "\u2261"
+            "fetch_upstream_icon": true
           }
         },
         {
@@ -86,7 +81,7 @@
           "powerline_symbol": "\uE0B0",
           "foreground": "#000000",
           "background": "#ebcc34",
-          "template": " \uFD31 {{.Context}}{{if .Namespace}} :: {{.Namespace}}{{end}} "
+          "template": " \uF09B {{.Context}}{{if .Namespace}} :: {{.Namespace}}{{end}} "
         }
       ]
     },
