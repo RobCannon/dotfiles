@@ -5,12 +5,17 @@
       "alignment": "left",
       "segments": [
         {
+          "type": "shell",
           "background": "#0077c2",
           "foreground": "#ffffff",
           "powerline_symbol": "\ue0b0",
           "style": "powerline",
           "template": " \ufcb5 {{ .Name }} ",
-          "type": "shell"
+          "properties": {
+            "mapped_shell_names": {
+              "pwsh": "PS"
+            }
+          }
         },
         {
           "background": "#ffe9aa",
