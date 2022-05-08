@@ -62,20 +62,12 @@
           "type": "git"
         },
         {
-          "background": "#ebcc34",
+          "type": "kubectl",
+          "style": "powerline",
+          "powerline_symbol": "\uE0B0",
           "foreground": "#000000",
-          "powerline_symbol": "\ue0b0",
-          "style": "powerline",
-          "template": " \ufd31 {{ .Context }}{{ if .Namespace }} :: {{ .Namespace }}{{ end }} ",
-          "type": "kubectl"
-        },
-        {
-          "background": "#ff8080",
-          "foreground": "#ffffff",
-          "powerline_symbol": "\ue0b0",
-          "style": "powerline",
-          "template": "\ue20f{{ if gt .Code 0 }}\uf00d {{ .Meaning }}{{ else }}\uf42e{{ end }} ",
-          "type": "exit"
+          "background": "#ebcc34",
+          "template": " \uFD31 {{.Context}}{{if .Namespace}} :: {{.Namespace}}{{end}} "
         }
       ],
       "type": "prompt"
@@ -83,6 +75,14 @@
     {
       "alignment": "left",
       "segments": [
+        {
+          "background": "#ff8080",
+          "foreground": "#ffffff",
+          "powerline_symbol": "\ue0b0",
+          "style": "powerline",
+          "template": "\ue20f{{ if gt .Code 0 }}\uf00d {{ .Meaning }}{{ else }}\uf42e{{ end }} ",
+          "type": "exit"
+        },
         {
           "foreground": "#007ACC",
           "style": "plain",
