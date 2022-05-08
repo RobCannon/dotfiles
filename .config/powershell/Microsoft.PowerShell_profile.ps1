@@ -3,7 +3,7 @@ if ([Environment]::GetCommandLineArgs().Length -gt 1) {
   return
 }
 
-oh-my-posh init pwsh --config $HOME/.config/oh-my-posh/my-pwsh.json | Invoke-Expression
+oh-my-posh init pwsh --config $HOME/.config/oh-my-posh/my-pwsh.json -s | Invoke-Expression
 
 
 # This is an example profile for PSReadLine.
