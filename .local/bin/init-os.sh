@@ -175,6 +175,11 @@ HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInstalling Istio cli\e[0m"
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install kubectl
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling Helm\e[0m"
 HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install helm
 

@@ -8,7 +8,7 @@ if [ -f ~/.bashrc ]; then
 fi
 
 # User specific environment and startup programs
-export PATH=$PATH:/home/linuxbrew/.linuxbrew/bin:$HOME/.local/bin
+export PATH="$HOME/.local/bin:$PATH"
 export KUBECONFIG=$HOME/.kube/config
 
 export SSLKEYLOGFILE=~/.ssl-key.log
@@ -61,3 +61,4 @@ complete -F __start_kubectl k
 #complete -C aws_completer aws
 
 
+export KUBERNETES_EXEC_INFO='{"apiVersion": "client.authentication.k8s.io/v1beta1"}'
