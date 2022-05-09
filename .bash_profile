@@ -7,14 +7,7 @@ if [ -f ~/.bashrc ]; then
         . ~/.bashrc
 fi
 
-# User specific environment and startup programs
-export PATH="$HOME/.local/bin:$PATH"
-export KUBECONFIG=$HOME/.kube/config
-
-export SSLKEYLOGFILE=~/.ssl-key.log
-
-export GITHUB_TOKEN=$(~/.local/bin/github-token)
-
+# HomeBrew configuration
 export HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew";
 export HOMEBREW_CELLAR="/home/linuxbrew/.linuxbrew/Cellar";
 export HOMEBREW_REPOSITORY="/home/linuxbrew/.linuxbrew/Homebrew";
@@ -29,6 +22,8 @@ if [[ -n $PS1 ]]; then
     eval $($USERPROFILE/scoop/apps/ssh-agent-wsl/2.5/ssh-agent-wsl -r)
   fi
 
+
+  # Configure for oh-my-posh
   # eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/my-posh.json -s)"
 
   export POSH_THEME='/home/rcannon/.config/oh-my-posh/my-posh.json'
@@ -60,5 +55,13 @@ fi
 complete -F __start_kubectl k
 #complete -C aws_completer aws
 
+
+# User specific environment and startup programs
+export PATH="$HOME/.local/bin:$PATH"
+export KUBECONFIG=$HOME/.kube/config
+
+export SSLKEYLOGFILE=~/.ssl-key.log
+
+export GITHUB_TOKEN=$(~/.local/bin/github-token)
 
 export KUBERNETES_EXEC_INFO='{"apiVersion": "client.authentication.k8s.io/v1beta1"}'
