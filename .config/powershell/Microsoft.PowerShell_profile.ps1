@@ -25,4 +25,3 @@ Set-PSReadLineOption -HistorySearchCursorMovesToEnd
 # string you started the search on.
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
-Set-PSReadLineKeyHandler -Key Tab -Function Complete
