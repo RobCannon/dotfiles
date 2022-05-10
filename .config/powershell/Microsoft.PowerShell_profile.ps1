@@ -14,8 +14,6 @@ oh-my-posh init pwsh --config $HOME/.config/oh-my-posh/my-posh.json -s | Invoke-
 Import-Module PSReadLine
 Set-PSReadLineOption -PredictionSource History
 Set-PSReadLineOption -PredictionViewStyle ListView
-Set-PSReadLineOption -EditMode Emacs
-Set-PSReadLineOption -HistorySearchCursorMovesToEnd
 
 # Searching for commands with up/down arrow is really handy.  The
 # option "moves to end" is useful if you want the cursor at the end
@@ -25,3 +23,5 @@ Set-PSReadLineOption -HistorySearchCursorMovesToEnd
 # string you started the search on.
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
+Set-PSReadLineOption -HistorySearchCursorMovesToEnd
+Set-PSReadLineOption -EditMode Emacs
