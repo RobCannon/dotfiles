@@ -23,11 +23,18 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --yes -o Dpkg::Options::="--force-co
 echo ''
 
 
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mUpdate brew formulas\e[0m"
 brew update
-
 brew upgrade
-
 brew cleanup
+
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mUpdate nodejs\e[0m"
+nvm install node
 
 
 #echo ''
