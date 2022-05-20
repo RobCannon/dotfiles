@@ -88,16 +88,6 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get -yq install \
   virtualenv \
   dotnet-sdk-6.0
 
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstall Node\e[0m"
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-nvm install node
-  
-
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
@@ -158,9 +148,10 @@ HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew
   oh-my-posh \
   awscli \
   eksctl \
+  nvm \
   node \
   go \
-  goreleaser
+  goreleaser 
 
 
 
