@@ -31,24 +31,6 @@ brew upgrade
 brew cleanup
 
 
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mUpdate nodejs\e[0m"
-nvm install node
-
-
-#echo ''
-#echo -e "\e[1;36m------\e[0m"
-#echo -e "\e[1;36mInstalling terraform providers\e[0m"
-# # https://www.terraform.io/docs/commands/providers/mirror.html
-# # https://www.terraform.io/docs/commands/cli-config.html#explicit-installation-method-configuration
-#pushd /tmp/provisioner-files/terraform-providers
-#sudo terraform providers mirror /usr/share/terraform/plugins
-#sudo chmod a+rx -R /usr/share/terraform/plugins
-#popd
-#rm -rf /tmp/provisioner-files/terraform-providers
-
-
 source ~/.bash_profile
 
 echo ''
