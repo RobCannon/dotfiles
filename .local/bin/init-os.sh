@@ -140,89 +140,28 @@ NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Ho
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling yq for yaml parsing\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install yq
+echo -e "\e[1;36mInstalling brew formulas\e[0m"
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install yq \
+  gh \
+  git \
+  packer \
+  vault \
+  terraform \
+  terraform-docs \
+  pulumi \
+  docker-compose \
+  kubectl \
+  helm \
+  istioctl \
+  kustomize \
+  fluxcd/tap/flux \
+  oh-my-posh \
+  awscli \
+  eksctl \
+  node \
+  go \
+  goreleaser
 
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling github command line\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install gh
-
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling Hashicorp packer\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install packer
-
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling Hashicorp vault\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install vault
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling Hashicorp terraform\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install terraform
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling terraform-docs\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install terraform-docs
-
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling terraform-docs\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install pulumi
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling Helm\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install docker-compose
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling Istio cli\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install kubectl
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling Helm\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install helm
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling Istio cli\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install istioctl
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling Kustomize\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install kustomize
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling FluxCD cli\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install fluxcd/tap/flux
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling Oh-My-Posh\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install oh-my-posh
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling AWS cli\e[0m"
-ulimit -n 1000000
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install awscli
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling AWS cli\e[0m"
-ulimit -n 1000000
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install eksctl
 
 
 echo ''
