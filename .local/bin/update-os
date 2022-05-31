@@ -23,6 +23,12 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --yes -o Dpkg::Options::="--force-co
 echo ''
 
 
+pwsh -NoProfile -Command - <<'EOF'
+Get-PSResource | Update-PSResource
+cls
+EOF
+
+
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mUpdate brew formulas\e[0m"
