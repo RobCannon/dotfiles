@@ -69,4 +69,5 @@ export SSLKEYLOGFILE=~/.ssl-key.log
 
 export GITHUB_TOKEN=$(~/.local/bin/github-token)
 
+export DOCKER_BUILDKIT=1
 export KUBERNETES_EXEC_INFO='{"apiVersion": "client.authentication.k8s.io/v1beta1"}'
