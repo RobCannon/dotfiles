@@ -2,8 +2,9 @@
 [CmdletBinding()]
 param (
   [Parameter()]
-  [String]
-  $Name
+  [String]$Name,
+  [Parameter()]
+  [Switch]$Public
 )
 
 if (-Not $Name) {
@@ -42,7 +43,12 @@ try {
     if ($(git remote)) {
       git fetch --all
     }
-    gh repo create AccelerateLearning/$repo_name --private --push --remote origin --source . --team cloud-engineering-team-leads
+    if ($Public.IsPresent) {
+      gh repo create AccelerateLearning/$repo_name --public --push --remote origin --source . --team cloud-engineering-team-leads
+    }
+    else {
+      gh repo create AccelerateLearning/$repo_name --private --push --remote origin --source . --team cloud-engineering-team-leads
+    }
     git push --set-upstream origin main
     git push -f --mirror origin
 
