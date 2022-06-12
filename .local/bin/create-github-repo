@@ -42,12 +42,12 @@ try {
     if ($(git remote)) {
       git fetch --all
     }
-    gh repo create AccelerateLearning/$repo_name --private --push --remote origin --source . --team cloud-engineering-team-leads --team cloud-engineering-developers --team cloud-engineering-stakeholders
+    gh repo create AccelerateLearning/$repo_name --private --push --remote origin --source . --team cloud-engineering-team-leads
     git push --set-upstream origin main
     git push -f --mirror origin
 
     gh api --method PUT -H "Accept: application/vnd.github.v3+json" /orgs/AccelerateLearning/teams/cloud-engineering-team-leads/repos/AccelerateLearning/$repo_name --field permission=admin
-    gh api --method PUT -H "Accept: application/vnd.github.v3+json" /orgs/AccelerateLearning/teams/cloud-engineering-developers/repos/AccelerateLearning/$repo_name --field permission=write
+    gh api --method PUT -H "Accept: application/vnd.github.v3+json" /orgs/AccelerateLearning/teams/cloud-engineering-developers/repos/AccelerateLearning/$repo_name --field permission=push
     gh api --method PUT -H "Accept: application/vnd.github.v3+json" /orgs/AccelerateLearning/teams/cloud-engineering-stakeholders/repos/AccelerateLearning/$repo_name --field permission=triage
   }
   else {
