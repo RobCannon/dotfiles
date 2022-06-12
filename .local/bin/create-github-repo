@@ -1,23 +1,10 @@
 #!/usr/bin/env pwsh
 [CmdletBinding()]
 param (
-    [Parameter()]
-    [String]
-    $Name,
-
-    [Parameter()]
-    [String]
-    $Team = 'cloud-services-admin'
+  [Parameter()]
+  [String]
+  $Name
 )
-
-if ($env:APPDATA) {
-  $token = (Get-Content "$($env:APPDATA)/GitHub CLI/hosts.yml" | ConvertFrom-Yaml).'github.com'.oauth_token
-} elseif ($env:HOME) {
-  $token = (Get-Content "$($env:HOME)/.config/gh/hosts.yml" | ConvertFrom-Yaml).'github.com'.oauth_token
-} else {
-  throw "Unable to locate GitHub token, try gh auth login"
-}
-$headers = @{ Authorization = "token $token" }
 
 if (-Not $Name) {
   $path = Get-Location
@@ -44,8 +31,6 @@ try {
     throw "Repository has uncommited files.  Please make sure the local repository is up to date before creating a remote repo"
   }
 
-  #$parent = $path | Split-Path -Parent | Split-Path -Leaf
-  #$repo_name = "$($parent)-$Name"
   $repo_name = $Name
   $repo_url = "https://github.com/AccelerateLearning/$repo_name.git"
 
@@ -54,21 +39,16 @@ try {
   $remote = git remote get-url origin 2>$null
 
   if (-Not $remote) {
-
-    # Check if team exists
-    if (-Not (Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/orgs/AccelerateLearning/teams/$Team" -SkipHttpErrorCheck).slug) {
-      throw "Team $Team not found in the AccelerateLearning organization"
-    }
-
-
     if ($(git remote)) {
       git fetch --all
     }
-    gh repo create AccelerateLearning/$repo_name --private --push --remote origin --source . --team $team
+    gh repo create AccelerateLearning/$repo_name --private --push --remote origin --source . --team cloud-engineering-team-leads --team cloud-engineering-developers --team cloud-engineering-stakeholders
     git push --set-upstream origin main
     git push -f --mirror origin
 
-    gh api --method PUT -H "Accept: application/vnd.github.v3+json" /orgs/AccelerateLearning/teams/$team/repos/AccelerateLearning/$repo_name --field permission=admin
+    gh api --method PUT -H "Accept: application/vnd.github.v3+json" /orgs/AccelerateLearning/teams/cloud-engineering-team-leads/repos/AccelerateLearning/$repo_name --field permission=admin
+    gh api --method PUT -H "Accept: application/vnd.github.v3+json" /orgs/AccelerateLearning/teams/cloud-engineering-developers/repos/AccelerateLearning/$repo_name --field permission=write
+    gh api --method PUT -H "Accept: application/vnd.github.v3+json" /orgs/AccelerateLearning/teams/cloud-engineering-stakeholders/repos/AccelerateLearning/$repo_name --field permission=triage
   }
   else {
     Write-Warning "Remote GitHub repo already exists at $remote"
