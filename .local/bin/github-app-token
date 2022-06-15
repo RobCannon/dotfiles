@@ -1,8 +1,7 @@
 #!/usr/bin/env pwsh
 param (
-    [Parameter(Mandatory)]
-    [int] $GitHubAppId,
-    [Parameter(Mandatory)]
+    [int] $GitHubAppId = $ENV:GITHUB_APP_ID,
+    [String] $GitHubAppKey = $ENV:GITHUB_APP_KEY,
     [String] $GitHubAppKeyPath
 )
 
@@ -16,10 +15,15 @@ function Base64UrlEncodeJson([Object] $object) {
   
 # https://docs.github.com/en/developers/apps/building-github-apps/authenticating-with-github-apps
 # https://www.jerriepelser.com/blog/obtain-access-token-github-app-webhook/
-$GitHubAppKey = (Get-Content $GitHubAppKeyPath | Where-Object { $_ -notmatch '----' }) -join ''
+if ($GitHubAppKeyPath) {
+    GitHubAppKey = Get-Content $GitHubAppKeyPath -Raw
+}
+# Remove newline characters and the cert header/footers (-----BEGIN RSA PRIVATE KEY-----)
+$KeyData = ($GitHubAppKey -replace '\n', '') -replace '-+[A-Z ]+-+', ''
+
 $rsa = [System.Security.Cryptography.RSA]::Create()
 [int]$bytesRead = 0
-$rsa.ImportRSAPrivateKey([Convert]::FromBase64String($GitHubAppKey), [ref]$bytesRead)
+$rsa.ImportRSAPrivateKey([Convert]::FromBase64String($KeyData), [ref]$bytesRead)
 
 $header = Base64UrlEncodeJson(@{alg = 'RS256'; typ = 'JWT' })
 $payload = Base64UrlEncodeJson(@{iat = [DateTimeOffset]::Now.ToUnixTimeSeconds(); exp = [DateTimeOffset]::Now.AddSeconds(600).ToUnixTimeSeconds(); iss = $GitHubAppId })
