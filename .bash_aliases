@@ -26,11 +26,7 @@ alias ping='ping -c 5'
 alias fastping='ping -c 100 -s.2'
 
 # Git aliases
-alias gitrebase='git rebase --interactive @{u}'
-alias gitreset='git fetch origin -p && git reset --hard @{u} && git clean -xfd'
 alias giturl='git remote get-url origin'
-alias gitsync='git pull --tags origin --rebase -f && git fetch --prune && git branch -r | awk "{print \$1}" | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk "{print \$1}" | xargs git branch -D'
-alias gitmergetest='gh-open && git checkout main && git merge test && git push && git checkout test'
 alias dtf='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
 # Apply a YML file
