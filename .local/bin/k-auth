@@ -3,7 +3,7 @@
 param (
     [Parameter()]
     [String]
-    $ClusterName = 'ali-test'
+    $ClusterName = 'sandbox-cluster'
 )
 
 

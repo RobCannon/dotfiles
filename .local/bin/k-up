@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-gh workflow run build-cluster.yaml --repo AccelerateLearning/aws-kubernetes
+gh workflow run pulumi-up.yaml --repo AccelerateLearning/sandbox-kubernetes

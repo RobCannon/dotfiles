@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-gh workflow run destroy-cluster.yaml --repo AccelerateLearning/aws-kubernetes
+gh workflow run pulumi-destroy.yaml --repo AccelerateLearning/sandbox-kubernetes
