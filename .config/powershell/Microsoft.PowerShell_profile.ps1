@@ -12,7 +12,6 @@ oh-my-posh init pwsh --config $HOME/.config/oh-my-posh/my-posh.json -s | Invoke-
 # but most of these bindings make sense in Windows mode as well.
 
 Import-Module PSReadLine
-Set-PSReadLineOption -PredictionSource History
 Set-PSReadLineOption -PredictionViewStyle ListView
 
 # Searching for commands with up/down arrow is really handy.  The
