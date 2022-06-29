@@ -45,7 +45,8 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
   gnupg-agent \
   inetutils-traceroute \
   tcpdump \
-  openssh-client
+  openssh-client \
+  xdg-utils
 
 
 echo ''

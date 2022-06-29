@@ -1,2 +1,19 @@
-#!/usr/bin/env bash
-gh workflow run pulumi-up.yaml --repo AccelerateLearning/sandbox-kubernetes
+#!/usr/bin/env pwsh
+
+if ($env:APPDATA) {
+    $token = (Get-Content "$($env:APPDATA)/GitHub CLI/hosts.yml" | ConvertFrom-Yaml).'github.com'.oauth_token
+} elseif ($env:HOME) {
+    $token = (Get-Content "$($env:HOME)/.config/gh/hosts.yml" | ConvertFrom-Yaml).'github.com'.oauth_token
+} else {
+    throw "Unable to locate GitHub token, try gh auth login"
+}
+
+$headers = @{ Authorization = "token $token"; Accept = 'application/vnd.github.v3+json' }
+
+$result = Invoke-RestMethod -Headers $headers -Method Post "https://api.github.com/repos/AccelerateLearning/sandbox-kubernetes/actions/workflows/pulumi-up.yaml/dispatches" -Body '{"ref":"main"}'
+
+$runs = Invoke-RestMethod -Headers $headers "https://api.github.com/repos/AccelerateLearning/sandbox-kubernetes/actions/runs"
+$html_url = $runs.workflow_runs | Where-Object { $_.path -eq '.github/workflows/pulumi-up.yaml' } | Select-Object -First 1 | ForEach-Object { $_.html_url }
+if ($html_url) {
+    xdg-open $html_url
+}
