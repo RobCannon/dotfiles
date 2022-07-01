@@ -102,6 +102,8 @@ Set-PSResourceRepository -Name PSGallery -Trusted
 
 Install-PSResource PSReadLine -Reinstall
 Install-PSResource Powershell-yaml -Reinstall
+Install-PSResource posh-git -Reinstall
+Install-PSResource PowerShellForGitHub -Reinstall
 cls
 EOF
 
