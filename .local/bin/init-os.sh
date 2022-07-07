@@ -165,6 +165,8 @@ then
 fi
 
 
+ln -sf $USERPROFILE/.aws $HOME/.aws
+
 echo ''
 echo -e "\e[1;32m------\e[0m"
 echo -e "\e[1;32mOS Initialization Complete\e[0m"

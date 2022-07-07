@@ -1,12 +1,10 @@
 Based on https://www.atlassian.com/git/tutorials/dotfiles
 
-Authenticate with GH command line (interactive) from the desktop (not WSL)
-```
-gh auth login
-wsl --install -d Ubuntu && wsl --set-default Ubuntu
-```
+First, follow the instructions for the Window Boxstart scripts
+https://github.com/RobCannon/boxstarter
 
-Then, enter this batch of commands
+Then, enter this batch of commands from a WSL session
+
 ```
 alias dtf='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 git config --global credential.helper "/mnt/c/Program\ Files/Git/mingw64/libexec/git-core/git-credential-manager-core.exe"
