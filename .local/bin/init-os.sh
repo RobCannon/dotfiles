@@ -97,7 +97,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --yes -o Dpkg::Options::="--force-co
 echo ''
 
 pwsh -NoProfile -Command - <<'EOF'
-Install-Module -Name PowerShellGet -RequiredVersion 3.0.12-beta -Force -AllowPrerelease
+Install-Module -Name PowerShellGet -RequiredVersion 3.0.14-beta -Force -AllowPrerelease
 Set-PSResourceRepository -Name PSGallery -Trusted
 
 Install-PSResource PSReadLine -Reinstall
@@ -137,17 +137,12 @@ echo -e "\e[1;36mInstalling brew formulas\e[0m"
 HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install yq \
   gh \
   git \
-  packer \
-  vault \
-  terraform \
-  terraform-docs \
   pulumi \
   docker-compose \
   kubectl \
   helm \
   istioctl \
   kustomize \
-  fluxcd/tap/flux \
   oh-my-posh \
   awscli \
   eksctl \
