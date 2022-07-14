@@ -1,4 +1,8 @@
 #!/usr/bin/env pwsh
+param (
+    [string]$RepoName = 'sandbox-kubernetes',
+    [string]$WorkflowName = 'pulumi-up.yaml'
+)
 
 if ($env:APPDATA) {
     $token = (Get-Content "$($env:APPDATA)/GitHub CLI/hosts.yml" | ConvertFrom-Yaml).'github.com'.oauth_token
@@ -11,15 +15,15 @@ else {
 }
 
 $headers = @{ Authorization = "token $token"; Accept = 'application/vnd.github.v3+json' }
-$repo_name = 'sandbox-kubernetes'
-$workflow_name = 'pulumi-up.yaml'
+$RepoName = 'sandbox-kubernetes'
+$WorkflowName = 'pulumi-up.yaml'
 
-Invoke-RestMethod -Headers $headers -Method Post "https://api.github.com/repos/AccelerateLearning/$repo_name/actions/workflows/$workflow_name/dispatches" -Body '{"ref":"main"}' | Out-Null
+Invoke-RestMethod -Headers $headers -Method Post "https://api.github.com/repos/AccelerateLearning/$RepoName/actions/workflows/$WorkflowName/dispatches" -Body '{"ref":"main"}' | Out-Null
 
 # Creating a run doesn't return any information about it, so look for the next in_progress run to show up.
 while (-Not $html_url) {
-    $runs = Invoke-RestMethod -Headers $headers "https://api.github.com/repos/AccelerateLearning/$repo_name/actions/runs"
-    $html_url = $runs.workflow_runs | Where-Object { $_.path -eq ".github/workflows/$workflow_name" -and $_.status -in @('pending', 'in_progress') } | Select-Object -First 1 | ForEach-Object { $_.html_url }
+    $runs = Invoke-RestMethod -Headers $headers "https://api.github.com/repos/AccelerateLearning/$RepoName/actions/runs"
+    $html_url = $runs.workflow_runs | Where-Object { $_.path -eq ".github/workflows/$WorkflowName" -and $_.status -in @('pending', 'in_progress') } | Select-Object -First 1 | ForEach-Object { $_.html_url }
     if ($html_url) {
         xdg-open $html_url
         exit 0
