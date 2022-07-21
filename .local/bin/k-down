@@ -1,6 +1,6 @@
 #!/usr/bin/env pwsh
 param (
-    [string]$RepoName = 'sandbox-kubernetes',
+    [string]$RepoName = 'kubernetes-sandbox',
     [string]$WorkflowName = 'pulumi-destroy.yaml'
 )
 

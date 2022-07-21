@@ -1,6 +1,6 @@
 #!/usr/bin/env pwsh
 param (
-    [string]$RepoName = 'sandbox-kubernetes',
+    [string]$RepoName = 'kubernetes-sandbox',
     [string]$WorkflowName = 'pulumi-up.yaml'
 )
 
@@ -15,8 +15,6 @@ else {
 }
 
 $headers = @{ Authorization = "token $token"; Accept = 'application/vnd.github.v3+json' }
-$RepoName = 'sandbox-kubernetes'
-$WorkflowName = 'pulumi-up.yaml'
 
 Invoke-RestMethod -Headers $headers -Method Post "https://api.github.com/repos/AccelerateLearning/$RepoName/actions/workflows/$WorkflowName/dispatches" -Body '{"ref":"main"}' | Out-Null
 
