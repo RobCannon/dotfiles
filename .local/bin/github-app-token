@@ -1,7 +1,8 @@
 #!/usr/bin/env pwsh
 param (
     [string] $GitHubAppId = $ENV:GITHUB_APP_ID,
-    [String] $GitHubAppKey = $ENV:GITHUB_APP_KEY
+    [String] $GitHubAppKey = $ENV:GITHUB_APP_KEY,
+    [String] $GitHubAppKeyPath
 )
 
 function Base64UrlEncodeBytes([Byte[]] $bytes) {
@@ -15,6 +16,9 @@ function Base64UrlEncodeJson([Object] $object) {
 try {
     # https://docs.github.com/en/developers/apps/building-github-apps/authenticating-with-github-apps
     # https://www.jerriepelser.com/blog/obtain-access-token-github-app-webhook/
+    if ($GitHubAppKeyPath) {
+        $GitHubAppKey = Get-Content $GitHubAppKeyPath -Raw
+    }    
     # Remove newline characters and the cert header/footers (-----BEGIN RSA PRIVATE KEY-----)
     $KeyData = ($GitHubAppKey -replace '\n', '') -replace '-+[A-Z ]+-+', ''
 
