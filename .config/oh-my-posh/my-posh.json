@@ -91,6 +91,14 @@
       "newline": true,
       "segments": [
         {
+          "type": "exit",
+          "style": "powerline",
+          "powerline_symbol": "\ue0b0",
+          "foreground": "#ffffff",
+          "background": "#ff8080",
+          "template": "\ue20f{{ if gt .Code 0 }}\uf00d {{ .Meaning }}{{ else }}\uf42e{{ end }} "
+        },
+        {
           "type": "text",
           "style": "powerline",
           "foreground": "#007ACC",
