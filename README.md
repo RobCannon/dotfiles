@@ -15,7 +15,7 @@ dtf push --set-upstream origin main
 
 
 .local/bin/init-os.sh
-.local/bin/init-repos.sh
+.local/bin/init-repos
 
 source ~/.bash_profile
 ```
