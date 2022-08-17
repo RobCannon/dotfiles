@@ -13,11 +13,6 @@ EOF
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mAdding PPA for WSLU \e[0m"
-sudo add-apt-repository -y ppa:wslutilities/wslu
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mUpdate apt\e[0m"
 sudo DEBIAN_FRONTEND=noninteractive apt-get -yq update
 
@@ -53,8 +48,13 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
   tcpdump \
   openssh-client \
   xdg-utils \
-  wslu
+  dotnet-sdk-6.0
 
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mAdding PPA for WSLU \e[0m"
+sudo add-apt-repository -y ppa:wslutilities/wslu
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
@@ -94,7 +94,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get -yq install \
   python3-pip \
   python3-crcmod \
   virtualenv \
-  dotnet-sdk-6.0
+  wslu
 
 
 echo ''
