@@ -34,5 +34,5 @@ $repos = @(
 CloneRepos "GitHub" $repos
 
 
-$repos = gh repo list AccelerateLearning --json "name,url" -limit 300 | ConvertFrom-json
+$repos = gh repo list AccelerateLearning --json "name,url" --limit 300 | ConvertFrom-json
 CloneRepos "AccelerateLearning" $repos
