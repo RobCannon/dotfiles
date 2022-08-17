@@ -10,6 +10,12 @@ enabled = true
 options = "metadata,umask=0077,fmask=0077"
 EOF
 
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mAdding PPA for WSLU \e[0m"
+sudo add-apt-repository -y ppa:wslutilities/wslu
+
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mUpdate apt\e[0m"
@@ -46,7 +52,8 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
   inetutils-traceroute \
   tcpdump \
   openssh-client \
-  xdg-utils
+  xdg-utils \
+  wslu
 
 
 echo ''

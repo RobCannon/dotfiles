@@ -2,7 +2,7 @@
 Get-ChildItem ~/src/AccelerateLearning -Directory | ForEach-Object {
     [PSCustomObject]@{
         name     = $_.Name
-        rootPath = "vscode-remote://wsl+ubuntu/home/rcannon/src/AccelerateLearning/$($_.Name)"
+        rootPath = "vscode-remote://wsl+ubuntu-22.04/home/rcannon/src/AccelerateLearning/$($_.Name)"
         paths    = @()
         tags     = @()
         enabled  = $true
