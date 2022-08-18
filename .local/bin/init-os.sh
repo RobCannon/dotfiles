@@ -159,7 +159,6 @@ HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew
   goreleaser 
 
 
-
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mConfigure docker group\e[0m"
@@ -172,7 +171,32 @@ then
 fi
 
 
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mCreate symlinks to host\e[0m"
+rm -rf ~/.kube
+mkdir -p ~/.kube
+ln -sf $USERPROFILE/.kube/config $HOME/.kube/config
+rm -rf ~/.aws
 ln -sf $USERPROFILE/.aws $HOME/.aws
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mAdding permissions for docker\e[0m"
+sudo addgroup --system docker
+sudo adduser $USER docker
+if [ ! -S /var/run/docker.sock ]
+then
+  sudo ln -sf /mnt/wsl/rancher-desktop/run/docker.sock /var/run/docker.sock
+fi
+
+if [ -S /var/run/docker.sock ]
+then
+  sudo chown root:docker /var/run/docker.sock
+  sudo chmod g+w /var/run/docker.sock
+fi
+
+
 
 echo ''
 echo -e "\e[1;32m------\e[0m"
