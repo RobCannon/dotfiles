@@ -47,8 +47,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
   inetutils-traceroute \
   tcpdump \
   openssh-client \
-  xdg-utils \
-  dotnet-sdk-6.0
+  xdg-utils
 
 
 echo ''
@@ -58,10 +57,16 @@ sudo add-apt-repository -y ppa:wslutilities/wslu
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstall Microsoft GPG keys\e[0m"
+echo -e "\e[1;36mInstall Microsoft Packages source\e[0m"
 wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
 sudo dpkg -i packages-microsoft-prod.deb
 rm packages-microsoft-prod.deb
+
+sudo tee /etc/apt/preferences > /dev/null <<'EOF'
+Package: *
+Pin: origin "packages.microsoft.com"
+Pin-Priority: 400
+EOF
 
 
 echo ''
@@ -88,6 +93,7 @@ echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling common tools via apt\e[0m"
 sudo DEBIAN_FRONTEND=noninteractive apt-get -yq install \
+  dotnet-sdk-6.0 \
   powershell \
   python3.11 \
   python3.11-venv \

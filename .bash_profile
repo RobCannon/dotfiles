@@ -23,7 +23,32 @@ if [[ -n $PS1 ]]; then
   fi
 
   # Configure for oh-my-posh
-  eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/my-posh.json)"
+  # This causes problem when oh-my-posh is installed with brew since the installation location changes
+  # So do it all manually
+  # eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/my-posh.json -s)"
+
+  export POSH_THEME='/home/rcannon/.config/oh-my-posh/my-posh.json'
+  export POWERLINE_COMMAND="oh-my-posh"
+  export CONDA_PROMPT_MODIFIER=false
+
+  # set secondary prompt
+  PS2="$(oh-my-posh print secondary --config="$POSH_THEME" --shell=bash --shell-version="$BASH_VERSION")"
+
+  function _omp_hook() {
+      local ret=$?
+
+      omp_stack_count=$((${#DIRSTACK[@]} - 1))
+      omp_elapsed=-1
+      PS1="$(oh-my-posh print primary --config="$POSH_THEME" --shell=bash --shell-version="$BASH_VERSION" --error="$ret" --execution-time="$omp_elapsed" --stack-count="$omp_stack_count" | tr -d '\0')"
+
+      return $ret
+  }
+
+  if [ "$TERM" != "linux" ] && [ -x "$(command -v oh-my-posh)" ] && ! [[ "$PROMPT_COMMAND" =~ "_omp_hook" ]]; then
+      PROMPT_COMMAND="_omp_hook; $PROMPT_COMMAND"
+  fi
+
+  eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/my-posh.json)"  
 fi
 
 # Use bash-completion, if available
