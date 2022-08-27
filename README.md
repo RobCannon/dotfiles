@@ -1,6 +1,6 @@
 Based on https://www.atlassian.com/git/tutorials/dotfiles
 
-First, follow the instructions for the Window Boxstart scripts
+First, follow the instructions for the Window Boxstarter scripts
 https://github.com/RobCannon/boxstarter
 
 Then, enter this batch of commands from a WSL session
@@ -13,9 +13,9 @@ dtf config --local status.showUntrackedFiles no
 dtf checkout -f main
 dtf push --set-upstream origin main
 
-
 .local/bin/init-os.sh
+source ~/.bash_profile
+
 .local/bin/init-repos
 
-source ~/.bash_profile
 ```
