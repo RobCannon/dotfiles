@@ -14,8 +14,11 @@ dtf checkout -f main
 dtf push --set-upstream origin main
 
 .local/bin/init-os.sh
-source ~/.bash_profile
+```
 
+When that is complete, run this batch of commands
+```
+source ~/.bash_profile
 .local/bin/init-repos
 
 ```
