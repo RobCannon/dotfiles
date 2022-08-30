@@ -165,6 +165,10 @@ HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew
   go \
   goreleaser 
 
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInstalling node tools\e[0m"
+npm install -g npm-check
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
