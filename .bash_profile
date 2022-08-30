@@ -74,3 +74,9 @@ export GITHUB_TOKEN=$(~/.local/bin/github-token)
 export DOCKER_BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1
 export KUBERNETES_EXEC_INFO='{"apiVersion": "client.authentication.k8s.io/v1beta1"}'
+
+update_clock () {
+        echo '[ROOT] Updating clock (sudo hwclock --hctosys)'
+        sudo hwclock -s
+        sudo ntpdate time.windows.com
+}
