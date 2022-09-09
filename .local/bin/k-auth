@@ -3,7 +3,7 @@
 param (
     [Parameter()]
     [String]
-    $ClusterName = 'sandbox-cluster'
+    $ClusterName = 'sandbox-stemscopes-cluster'
 )
 
 
