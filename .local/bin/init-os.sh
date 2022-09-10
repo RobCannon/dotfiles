@@ -110,7 +110,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --yes -o Dpkg::Options::="--force-co
 echo ''
 
 pwsh -NoProfile -Command - <<'EOF'
-Install-Module -Name PowerShellGet -RequiredVersion 3.0.14-beta14 -Force -AllowPrerelease
+Install-Module -Name PowerShellGet -RequiredVersion 3.0.17-beta17 -Force -AllowPrerelease
 Set-PSResourceRepository -Name PSGallery -Trusted
 
 Install-PSResource PSReadLine -Reinstall
