@@ -50,6 +50,11 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
   xdg-utils
 
 
+# Fix landscape-sysinfo.cache error in WSL
+# https://askubuntu.com/questions/1414483/landscape-sysinfo-cache-permission-denied-when-i-start-ubuntu-22-04-in-wsl
+sudo DEBIAN_FRONTEND=noninteractive apt-get --assume-yes remove landscape-common
+rm ~/.motd_shown
+
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mAdding PPA for WSLU \e[0m"
@@ -121,13 +126,6 @@ cls
 EOF
 
 
-
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mUpgrade packages from apt\e[0m"
-sudo DEBIAN_FRONTEND=noninteractive apt-get --yes -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
-echo ''
 
 
 echo ''
