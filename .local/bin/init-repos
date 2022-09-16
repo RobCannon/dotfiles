@@ -13,6 +13,9 @@ function CloneRepos([string]$folder, [Object[]]$repos) {
             Write-Host "Cloning $($_.name)"
             git clone "$($_.url).git" $path
         }
+        else {
+            git pull
+        }
     }    
 }
 
