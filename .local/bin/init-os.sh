@@ -5,6 +5,8 @@ set -e
 
 # Set correct permissions for mount Windows drive
 sudo tee /etc/wsl.conf > /dev/null <<'EOF'
+[boot]
+systemd=true
 [automount]
 enabled = true
 options = "metadata,umask=0077,fmask=0077"
