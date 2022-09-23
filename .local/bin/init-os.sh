@@ -55,7 +55,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
 # Fix landscape-sysinfo.cache error in WSL
 # https://askubuntu.com/questions/1414483/landscape-sysinfo-cache-permission-denied-when-i-start-ubuntu-22-04-in-wsl
 sudo DEBIAN_FRONTEND=noninteractive apt-get --assume-yes remove landscape-common
-rm ~/.motd_shown
+rm -f ~/.motd_shown
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
@@ -67,7 +67,7 @@ echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstall Microsoft Packages source\e[0m"
 wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
 sudo dpkg -i packages-microsoft-prod.deb
-rm packages-microsoft-prod.deb
+rm -f packages-microsoft-prod.deb
 
 sudo tee /etc/apt/preferences > /dev/null <<'EOF'
 Package: *
