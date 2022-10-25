@@ -27,7 +27,7 @@ if [[ -n $PS1 ]]; then
   # So do it all manually
   # eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/my-posh.json -s)"
 
-  export POSH_THEME='/home/rcannon/.config/oh-my-posh/my-posh.json'
+  export POSH_THEME="$HOME/.config/oh-my-posh/my-posh.json"
   export POWERLINE_COMMAND="oh-my-posh"
   export CONDA_PROMPT_MODIFIER=false
 
