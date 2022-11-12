@@ -13,12 +13,12 @@ dtf config --local status.showUntrackedFiles no
 dtf checkout -f main
 dtf push --set-upstream origin main
 
-.local/bin/init-os.sh
+~/.local/bin/init-os.sh
 ```
 
 When that is complete, run this batch of commands
 ```
 source ~/.bash_profile
-.local/bin/init-repos
+~/.local/bin/init-repos
 
 ```
