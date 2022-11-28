@@ -43,6 +43,13 @@ $repos = gh repo list AccelerateLearning --json "name,url" --limit 300 | Convert
 CloneRepos "AccelerateLearning" $repos
 
 
+if (-Not (Test-Path "$($env:USERPROFILE)/AppData/Roaming/Code/User/globalStorage/alefragnani.project-manager")) {
+    New-Item -ItemType Directory "$($env:USERPROFILE)/AppData/Roaming/Code" -ErrorAction SilentlyContinue | Out-Null
+    New-Item -ItemType Directory "$($env:USERPROFILE)/AppData/Roaming/Code/User" -ErrorAction SilentlyContinue | Out-Null
+    New-Item -ItemType Directory "$($env:USERPROFILE)/AppData/Roaming/Code/User/globalStorage" -ErrorAction SilentlyContinue | Out-Null
+    New-Item -ItemType Directory "$($env:USERPROFILE)/AppData/Roaming/Code/User/globalStorage/alefragnani.project-manager" -ErrorAction SilentlyContinue | Out-Null
+}
+
 Get-ChildItem ~/src/AccelerateLearning -Directory | ForEach-Object {
     [PSCustomObject]@{
         name     = $_.Name
