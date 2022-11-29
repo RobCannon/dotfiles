@@ -10,10 +10,11 @@ function CloneRepos([string]$folder, [Object[]]$repos) {
     $repos | ForEach-Object {
         $path = Join-Path ~/src $folder $_.name
         if (-Not (Test-Path $path)) {
-            Write-Host "Cloning $($_.name)"
+            Write-Host -ForegroundColor Cyan "Cloning $($_.name)"
             git clone "$($_.url).git" $path
         }
         else {
+            Write-Host -ForegroundColor Cyan "Updating $($_.name)"
             Push-Location $path
             git pull
             Pop-Location
