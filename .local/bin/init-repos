@@ -23,13 +23,23 @@ function CloneRepos([string]$folder, [Object[]]$repos) {
 }
 
 
+if ($env:APPDATA) {
+    $github_profile = (Get-Content "$($env:APPDATA)/GitHub CLI/hosts.yml" | ConvertFrom-Yaml).'github.com'.user
+}
+elseif ($env:HOME) {
+    $github_profile = (Get-Content "$($env:HOME)/.config/gh/hosts.yml" | ConvertFrom-Yaml).'github.com'.user
+}
+else {
+    throw "Unable to locate GitHub user profile name, try gh auth login"
+}
+
 $repos = @(
     @{
         name = "dotfiles"
-        url  = "https://github.com/RobCannon/dotfiles"
+        url  = "https://github.com/$github_profile/dotfiles"
     }
 )
-CloneRepos "RobCannon" $repos
+CloneRepos $github_profile $repos
 
 $repos = @(
     @{

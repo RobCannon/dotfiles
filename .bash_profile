@@ -1,6 +1,6 @@
 # .bash_profile
 # This prevents rendering issues when it the prompt is the first line in Windows Terminal
-echo "Loading Rob's bash profile"
+echo "Loading bash profile"
 
 # Get the aliases and functions
 if [ -f ~/.bashrc ]; then
@@ -23,7 +23,7 @@ if [[ -n $PS1 ]]; then
   fi
 
   # Configure for oh-my-posh
-  # This causes problem when oh-my-posh is installed with brew since the installation location changes
+  # This causes an issue when oh-my-posh is installed with brew since the installation location changes
   # So do it all manually
   # eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/my-posh.json -s)"
 
