@@ -27,7 +27,7 @@ alias fastping='ping -c 100 -s.2'
 
 # Git aliases
 alias giturl='git remote get-url origin'
-alias dtf='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
 # Apply a YML file
 alias kaf='kubectl apply -f'
