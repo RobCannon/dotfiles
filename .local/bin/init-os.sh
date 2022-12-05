@@ -26,6 +26,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
   apt-transport-https \
   ca-certificates \
   lsb-release \
+  systemd-timesyncd \
   gnupg \
   curl \
   wget \
@@ -50,6 +51,16 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
   tcpdump \
   openssh-client \
   xdg-utils
+
+# Fix time sync issues in WSL
+# https://github.com/microsoft/WSL/issues/8204#issuecomment-1338334154
+sudo mkdir -p /etc/systemd/system/systemd-timesyncd.service.d
+sudo tee /etc/systemd/system/systemd-timesyncd.service.d/override.conf > /dev/null <<'EOF'
+[Unit]
+ConditionVirtualization=
+EOF
+sudo systemctl start systemd-timesyncd
+
 
 
 # Fix landscape-sysinfo.cache error in WSL
