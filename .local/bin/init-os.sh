@@ -81,9 +81,9 @@ sudo dpkg -i packages-microsoft-prod.deb
 rm -f packages-microsoft-prod.deb
 
 sudo tee /etc/apt/preferences > /dev/null <<'EOF'
-Package: *
+Package: dotnet-sdk-7.0
 Pin: origin "packages.microsoft.com"
-Pin-Priority: 400
+Pin-Priority: 999
 EOF
 
 
@@ -111,7 +111,7 @@ echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling common tools via apt\e[0m"
 sudo DEBIAN_FRONTEND=noninteractive apt-get -yq install \
-  dotnet-sdk-6.0 \
+  dotnet-sdk-7.0 \
   powershell \
   python3.11 \
   python3.11-venv \
