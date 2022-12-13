@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+pushd ~/src/AccelerateLearning/aws-account-stemscopes-v4-dev
+git-sync
+popd
+
+pushd ~/src/AccelerateLearning/aws-account-stemscopes-v4-dev-data
+git-sync
+popd
+
+pushd ~/src/AccelerateLearning/kubernetes-stemscopes-v4-dev
+git-sync
+popd
+
+pushd ~/src/AccelerateLearning/kubernetes-stemscopes-v4-dev-config
+git-sync
+popd
+
+pushd ~/src/AccelerateLearning/kubernetes-stemscopes-v4-dev-app
+git-sync
+popd
+
+
+
+pushd ~/src/AccelerateLearning/aws-account-stemscopes-v4-prod
+git-sync
+code .
+popd
+
+pushd ~/src/AccelerateLearning/aws-account-stemscopes-v4-prod-data
+git-sync
+code .
+popd
+
+pushd ~/src/AccelerateLearning/kubernetes-stemscopes-v4-prod
+git-sync
+code .
+popd
+
+pushd ~/src/AccelerateLearning/kubernetes-stemscopes-v4-prod-config
+git-sync
+code .
+popd
+
+pushd ~/src/AccelerateLearning/kubernetes-stemscopes-v4-prod-app
+git-sync
+code .
+popd
+
+
