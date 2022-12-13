@@ -17,7 +17,7 @@ popd
 
 pushd ~/src/AccelerateLearning/kubernetes-stemscopes-v4-dev-app
 git-sync
-popd
+popdchmod 
 
 
 
