@@ -135,6 +135,7 @@ Install-PSResource PSReadLine -Reinstall
 Install-PSResource Powershell-yaml -Reinstall
 Install-PSResource posh-git -Reinstall
 Install-PSResource PowerShellForGitHub -Reinstall
+Install-PSResource ImportExcel -Reinstall
 cls
 EOF
 
