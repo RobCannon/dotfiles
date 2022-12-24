@@ -104,6 +104,13 @@ sudo add-apt-repository -y ppa:deadsnakes/ppa
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInstall Hashicorp GPG keys\e[0m"
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+sudo DEBIAN_FRONTEND=noninteractive apt-add-repository -y "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mUpdate apt based on new repos\e[0m"
 sudo DEBIAN_FRONTEND=noninteractive apt-get -yq update
 
@@ -118,6 +125,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get -yq install \
   python3-pip \
   python3-crcmod \
   virtualenv \
+  packer \
   wslu
 
 
