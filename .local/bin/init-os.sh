@@ -181,6 +181,7 @@ HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew
   awscli \
   eksctl \
   nvm \
+  yarn \
   node \
   go \
   goreleaser 
