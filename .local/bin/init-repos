@@ -1,8 +1,14 @@
 #!/usr/bin/env pwsh
+[CmdletBinding()]
+param (
+    [Parameter()]
+    [Switch]
+    $Refresh    # Update folders that are already present
+)
 
 New-Item ~/src -ItemType Directory -Force | Out-Null
 
-function CloneRepos([string]$folder, [Object[]]$repos) {
+function CloneRepos([string]$folder, [Object[]]$repos, [bool]$refresh) {
     $path = Join-Path ~/src $folder
     if (-Not (Test-Path $path)) {
         New-Item $path -ItemType Directory -Force | Out-Null
@@ -14,10 +20,12 @@ function CloneRepos([string]$folder, [Object[]]$repos) {
             git clone "$($_.url).git" $path
         }
         else {
-            Write-Host -ForegroundColor Cyan "Updating $($_.name)"
-            Push-Location $path
-            git pull
-            Pop-Location
+            if ($refresh) {
+                Write-Host -ForegroundColor Cyan "Updating $($_.name)"
+                Push-Location $path
+                git pull
+                Pop-Location
+            }
         }
     }    
 }
@@ -39,7 +47,7 @@ $repos = @(
         url  = "https://github.com/$github_profile/dotfiles"
     }
 )
-CloneRepos $github_profile $repos
+CloneRepos $github_profile $repos $Refresh.IsPresent
 
 $repos = @(
     @{
@@ -47,13 +55,13 @@ $repos = @(
         url  = "https://github.com/slashdevops/idp-scim-sync"
     }
 )
-CloneRepos "GitHub" $repos
+CloneRepos "GitHub" $repos $Refresh.IsPresent
 
 
 $repos = gh repo list AccelerateLearning --json "name,url" --limit 300 | ConvertFrom-Json | Sort-Object name
-CloneRepos "AccelerateLearning" $repos
+CloneRepos "AccelerateLearning" $repos $Refresh.IsPresent
 
-
+# Create project manager file
 if (-Not (Test-Path "$($env:USERPROFILE)/AppData/Roaming/Code/User/globalStorage/alefragnani.project-manager")) {
     New-Item -ItemType Directory "$($env:USERPROFILE)/AppData/Roaming/Code" -ErrorAction SilentlyContinue | Out-Null
     New-Item -ItemType Directory "$($env:USERPROFILE)/AppData/Roaming/Code/User" -ErrorAction SilentlyContinue | Out-Null
