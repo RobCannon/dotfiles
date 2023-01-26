@@ -90,5 +90,8 @@ alias dockerkillall='docker kill $(docker ps -q) || true && docker rm $(docker p
 
 alias topcpu='ps -eo pid,ppid,user,%mem,%cpu,cmd --sort=-%cpu | head -n 20'
 
+# Yarn
+alias yup='yarn install && yarn upgrade --latest'
+
 alias sbp='source ~/.bash_profile'
 alias slo='source ./login.sh'
