@@ -188,11 +188,6 @@ HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling node tools\e[0m"
-npm install -g npm-check npkill npm
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mConfigure docker group\e[0m"
 sudo addgroup --system docker
 sudo adduser $USER docker

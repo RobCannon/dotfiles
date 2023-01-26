@@ -36,11 +36,6 @@ brew update
 brew upgrade
 brew cleanup
 
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mUpdate npm tools\e[0m"
-npm-check --global --update-all
-
 
 source ~/.bash_profile
 
