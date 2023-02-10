@@ -55,7 +55,14 @@
             "style": "short",
             "windows_registry_icon": "\uf071"
           }
-        },
+        }
+      ]
+    },
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "newline": true,
+      "segments": [
         {
           "type": "git",
           "style": "powerline",
@@ -68,7 +75,7 @@
             "{{ if gt .Ahead 0 }}#B388FF{{ end }}",
             "{{ if gt .Behind 0 }}#B388FB{{ end }}"
           ],
-          "template": "{{ .UpstreamIcon }}{{ .HEAD }}{{ .BranchStatus }}{{ if .Working.Changed }} \uF044 {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uF046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} \uF692 {{ .StashCount }}{{ end }}",
+          "template": "\u00A0{{ .UpstreamIcon }}{{ .HEAD }}{{ .BranchStatus }}{{ if .Working.Changed }} \uF044 {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uF046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} \uF692 {{ .StashCount }}{{ end }}\u00A0",
           "properties": {
             "fetch_status": true,
             "fetch_stash_count": true,
@@ -76,12 +83,31 @@
           }
         },
         {
+          "type": "aws",
+          "style": "powerline",
+          "powerline_symbol": "\uE0B0",
+          "foreground": "#000",
+          "background": "#FFA400",
+          "template": "\u00A0\udb83\ude0f {{.Profile}}{{if .Region}}@{{.Region}}{{end}}"
+        },
+        {
           "type": "kubectl",
           "style": "powerline",
           "powerline_symbol": "\uE0B0",
-          "foreground": "#000000",
-          "background": "#ebcc34",
-          "template": " \uF09B {{.Context}}{{if .Namespace}} :: {{.Namespace}}{{end}} "
+          "foreground": "#000",
+          "background": "#4891b8",
+          "template": "\u00A0\uFD31 {{.Context}}{{if .Namespace}} :: {{.Namespace}}{{end}} "
+        },
+        {
+          "type": "command",
+          "style": "powerline",
+          "powerline_symbol": "\uE0B0",
+          "foreground": "#000",
+          "background": "#7c47a9",
+          "properties": {
+            "shell": "bash",
+            "command": "if [[ -f 'Pulumi.yaml' ]]; then echo -n \uf1b3\u00A0\u00A0; pulumi stack ls --json | jq -r .[].name; fi"
+          }
         }
       ]
     },
@@ -102,7 +128,7 @@
           "type": "text",
           "style": "powerline",
           "foreground": "#007ACC",
-          "template": "\ue285 "
+          "template": "\ue285\u00A0"
         }
       ]
     }
