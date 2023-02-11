@@ -106,7 +106,7 @@
           "background": "#7c47a9",
           "properties": {
             "shell": "bash",
-            "command": "if [[ -f 'Pulumi.yaml' ]]; then echo -n \uf1b3\u00A0\u00A0; pulumi stack ls --json | jq -r .[].name; fi"
+            "command": "if [[ -f 'Pulumi.yaml' ]]; then echo -n \uf1b3\u00A0\u00A0; pulumi stack ls --json | jq -r '.[] | select(.current == true) | .name'; fi"
           }
         }
       ]
@@ -121,9 +121,16 @@
           "style": "powerline",
           "powerline_symbol": "\ue0b0",
           "foreground": "#ffffff",
-          "background": "#ff8080",
+          "background": "#ff3131",
           "template": "\ue20f{{ if gt .Code 0 }}\uf00d {{ .Meaning }}{{ else }}\uf42e{{ end }} "
-        },
+        }
+      ]
+    },
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "newline": true,
+      "segments": [
         {
           "type": "text",
           "style": "powerline",
