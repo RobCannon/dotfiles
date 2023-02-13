@@ -106,7 +106,7 @@
           "background": "#7c47a9",
           "properties": {
             "shell": "bash",
-            "command": "if [[ -f 'Pulumi.yaml' ]]; then echo -n \uf1b3\u00A0\u00A0; pulumi stack ls --json | jq -r '.[] | select(.current == true) | .name'; fi"
+            "command": "pulumi-current-stack"
           }
         }
       ]
