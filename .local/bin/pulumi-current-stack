@@ -2,6 +2,6 @@
 if [[ -f 'Pulumi.yaml' ]]
 then
     stack_name=$(yq e '.name' Pulumi.yaml)
-    workspace=$(find ~/.pulumi/workspaces -type f -name "${stack_name}*.json")
+    workspace=$(find ~/.pulumi/workspaces -type f -regex ".*\/${stack_name}-[a-f0-9]+-workspace\.json")
     jq -r .stack $workspace
 fi
