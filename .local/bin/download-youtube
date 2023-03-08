@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+mkdir -p "$USERPROFILE/Videos/YouTube"
+yt-dlp --yes-playlist --output "$USERPROFILE/Videos/YouTube/%(title)s [%(id)s].%(ext)s" https://www.youtube.com/playlist?list=PLvnxQqu1341lUepwKchlXj_t2E8OWkqoh
