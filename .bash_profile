@@ -1,7 +1,4 @@
 # .bash_profile
-# This prevents rendering issues when it the prompt is the first line in Windows Terminal
-echo "Loading bash profile"
-
 # Get the aliases and functions
 if [ -f ~/.bashrc ]; then
         . ~/.bashrc
