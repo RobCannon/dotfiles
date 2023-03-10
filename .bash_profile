@@ -77,3 +77,5 @@ update_clock () {
         sudo hwclock -s
         sudo ntpdate time.windows.com
 }
+
+eval $(ssh-agent) > nul
