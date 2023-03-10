@@ -78,4 +78,4 @@ update_clock () {
         sudo ntpdate time.windows.com
 }
 
-eval $(ssh-agent) > nul
+eval $(ssh-agent) 1>/dev/null
