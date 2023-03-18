@@ -66,7 +66,7 @@ export KUBECONFIG=$HOME/.kube/config
 
 export SSLKEYLOGFILE=~/.ssl-key.log
 
-export GITHUB_TOKEN=$(~/.local/bin/github-token)
+export GITHUB_TOKEN=$(gh auth token)
 
 export DOCKER_BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1

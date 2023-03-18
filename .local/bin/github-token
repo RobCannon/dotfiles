@@ -1,10 +1,2 @@
 #!/usr/bin/env bash
-if [ -f "$APPDATA//GitHub CLI/hosts.yml" ]
-then
-  cat "$APPDATA/GitHub CLI/hosts.yml" | yq '."github.com".oauth_token'
-elif [ -f "$HOME/.config/gh/hosts.yml" ]
-then
-  cat "$HOME/.config/gh/hosts.yml" | yq '."github.com".oauth_token'
-else
-  echo ''
-fi
+gh auth token
