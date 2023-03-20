@@ -1,21 +1,15 @@
 #!/usr/bin/env pwsh
-if ($env:APPDATA) {
-  $token = (Get-Content "$($env:APPDATA)/GitHub CLI/hosts.yml" | ConvertFrom-Yaml).'github.com'.oauth_token
-} elseif ($env:HOME) {
-  $token = (Get-Content "$($env:HOME)/.config/gh/hosts.yml" | ConvertFrom-Yaml).'github.com'.oauth_token
-} else {
-  throw "Unable to locate GitHub token, try gh auth login"
-}
+$token = gh auth token
 $headers = @{ Authorization = "token $token" }
 
-$owner,$repo=$(([Uri]$(git remote get-url origin)).PathAndQuery | Select-String -Pattern '\/([^\/]*)\/([^\/\.]*)').Matches.Groups | ? Name -ne 0 | % Value
+$owner, $repo = $(([Uri]$(git remote get-url origin)).PathAndQuery | Select-String -Pattern '\/([^\/]*)\/([^\/\.]*)').Matches.Groups | ? Name -ne 0 | % Value
 $default_branch = (Invoke-RestMethod -Headers $headers "https://api.github.com/repos/$owner/$repo").default_branch
 
 git checkout $default_branch
 git fetch --prune --prune-tags --force
 git pull --tags origin --rebase
 $local_branches = $(git for-each-ref --format='%(refname:short)' refs/heads)
-$remove_branches = $(git for-each-ref --format='%(refname:short)' refs/remotes/origin) | %{ $_ -replace '^origin/','' }
-$local_branches | ?{ $_ -notin $remove_branches } | %{
+$remove_branches = $(git for-each-ref --format='%(refname:short)' refs/remotes/origin) | % { $_ -replace '^origin/', '' }
+$local_branches | ? { $_ -notin $remove_branches } | % {
   git branch -D $_
 }
