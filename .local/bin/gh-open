@@ -1,13 +1,7 @@
 #!/usr/bin/env pwsh
-$owner,$repo=$(([Uri]$(git remote get-url origin)).PathAndQuery | Select-String -Pattern '\/([^\/]*)\/([^\/\.]*)').Matches.Groups | ? Name -ne 0 | % Value
+$owner, $repo = $(([Uri]$(git remote get-url origin)).PathAndQuery | Select-String -Pattern '\/([^\/]*)\/([^\/\.]*)').Matches.Groups | ? Name -ne 0 | % Value
 
-if ($env:APPDATA) {
-  $token = (Get-Content "$($env:APPDATA)/GitHub CLI/hosts.yml" | ConvertFrom-Yaml).'github.com'.oauth_token
-} elseif ($env:HOME) {
-  $token = (Get-Content "$($env:HOME)/.config/gh/hosts.yml" | ConvertFrom-Yaml).'github.com'.oauth_token
-} else {
-  throw "Unable to locate GitHub token, try gh auth login"
-}
+$token = gh auth token
 $headers = @{ Authorization = "token $token" }
 
 (Invoke-RestMethod -Headers $headers "https://api.github.com/repos/$owner/$repo/branches").where{ $_.protected -eq $True } | % {
@@ -15,21 +9,21 @@ $headers = @{ Authorization = "token $token" }
   Write-Host "Opening $BranchName branch for $owner/$repo"
 
   $protection = @{
-    restrictions = @{
+    restrictions                  = @{
       users = @()
       teams = @()
-      apps = @()
+      apps  = @()
     }
     required_pull_request_reviews = @{
-      dismiss_stale_reviews = $true
+      dismiss_stale_reviews      = $true
       require_code_owner_reviews = $true
-      dismissal_restrictions = @{
+      dismissal_restrictions     = @{
         users = @()
         teams = @()
       }
     }
-    enforce_admins = $false
-    required_status_checks = $null
+    enforce_admins                = $false
+    required_status_checks        = $null
   }
 
   Invoke-RestMethod -Headers $headers -Method Put -Body ($protection | ConvertTo-Json -Depth 10) "https://api.github.com/repos/$owner/$repo/branches/$BranchName/protection" | Out-Null

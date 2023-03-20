@@ -12,16 +12,9 @@ function Unblock-GitHubBranch {
     [string]$BranchName
   )
 
-  $owner,$repo=$(([Uri]$(git remote get-url origin)).PathAndQuery | Select-String -Pattern '\/([^\/]*)\/([^\/\.]*)').Matches.Groups | ? Name -ne 0 | % Value
+  $owner, $repo = $(([Uri]$(git remote get-url origin)).PathAndQuery | Select-String -Pattern '\/([^\/]*)\/([^\/\.]*)').Matches.Groups | ? Name -ne 0 | % Value
 
-  if ($env:APPDATA) {
-    $token = (Get-Content "$($env:APPDATA)/GitHub CLI/hosts.yml" | ConvertFrom-Yaml).'github.com'.oauth_token
-  } elseif ($env:HOME) {
-    $token = (Get-Content "$($env:HOME)/.config/gh/hosts.yml" | ConvertFrom-Yaml).'github.com'.oauth_token
-  } else {
-    throw "Unable to locate GitHub token, try gh auth login"
-  }
-
+  $token = gh auth token
   $headers = @{ Authorization = "token $token" }
 
   $protection = @{

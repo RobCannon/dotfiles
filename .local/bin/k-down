@@ -4,16 +4,7 @@ param (
     [string]$WorkflowName = 'pulumi-destroy.yaml'
 )
 
-if ($env:APPDATA) {
-    $token = (Get-Content "$($env:APPDATA)/GitHub CLI/hosts.yml" | ConvertFrom-Yaml).'github.com'.oauth_token
-}
-elseif ($env:HOME) {
-    $token = (Get-Content "$($env:HOME)/.config/gh/hosts.yml" | ConvertFrom-Yaml).'github.com'.oauth_token
-}
-else {
-    throw "Unable to locate GitHub token, try gh auth login"
-}
-
+$token = gh auth token
 $headers = @{ Authorization = "token $token"; Accept = 'application/vnd.github.v3+json' }
 
 Invoke-RestMethod -Headers $headers -Method Post "https://api.github.com/repos/AccelerateLearning/$RepoName/actions/workflows/$WorkflowName/dispatches" -Body '{"ref":"main"}' | Out-Null

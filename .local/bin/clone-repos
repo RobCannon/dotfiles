@@ -1,6 +1,6 @@
 #!/usr/bin/env pwsh
 Param (
-  [Parameter(Mandatory=$true)]
+  [Parameter(Mandatory = $true)]
   [string]$TeamName,
 
   [string]$Path
@@ -19,20 +19,13 @@ if (-Not (Test-Path $Path)) {
   New-Item -Path $Path -ItemType Directory | Out-Null
 }
 
-if ($env:APPDATA) {
-  $token = (Get-Content "$($env:APPDATA)/GitHub CLI/hosts.yml" | ConvertFrom-Yaml).'github.com'.oauth_token
-} elseif ($env:HOME) {
-  $token = (Get-Content "$($env:HOME)/.config/gh/hosts.yml" | ConvertFrom-Yaml).'github.com'.oauth_token
-} else {
-  throw "Unable to locate GitHub token, try gh auth login"
-}
-
+$token = gh auth token
 $headers = @{ Authorization = "token $token" }
 
 $repos = Invoke-RestMethod -Headers $headers "https://api.github.com/orgs/AccelerateLearning/teams/$TeamName/repos"
-foreach($repo in $repos) {
+foreach ($repo in $repos) {
   $clone_url = $repo.clone_url
-  $folder = Join-Path $Path $repo.name.Replace("$TeamName-",'')
+  $folder = Join-Path $Path $repo.name.Replace("$TeamName-", '')
 
   if (-Not (Test-Path $folder)) {
     Write-Host "Cloning $clone_url to $folder"
