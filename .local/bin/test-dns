@@ -1,0 +1,19 @@
+#!/usr/bin/env pwsh
+[CmdletBinding()]
+param (
+  [Parameter()]
+  [String]
+  $DnsName
+)
+
+while ($true) {
+  try {
+    $ip = [System.Net.Dns]::GetHostAddresses($DnsName)
+    break
+  }
+  catch {
+    Write-Warning "Waiting for DNS to resolve $DnsName"
+    Start-Sleep -Seconds 5
+  }  
+}
+Write-Host "DNS resolved $DnsName to $ip"
