@@ -49,16 +49,8 @@ $repos = @(
 )
 CloneRepos $github_profile $repos $Refresh.IsPresent
 
-$repos = @(
-    @{
-        name = "idp-scim-sync"
-        url  = "https://github.com/slashdevops/idp-scim-sync"
-    }
-)
-CloneRepos "GitHub" $repos $Refresh.IsPresent
 
-
-$repos = gh repo list AccelerateLearning --json "name,url" --limit 300 | ConvertFrom-Json | Sort-Object name
+$repos = gh repo list AccelerateLearning --no-archived --json "name,url" --limit 300 | ConvertFrom-Json | Sort-Object name
 CloneRepos "AccelerateLearning" $repos $Refresh.IsPresent
 
 # Create project manager file
