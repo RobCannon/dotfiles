@@ -1,76 +1,76 @@
 #!/usr/bin/env pwsh
 Param (
-  [Parameter(Mandatory = $true)]
-  [string]$BranchName
+    [Parameter(Mandatory = $true)]
+    [string]$BranchName
 )
 
 Import-Module posh-git
 
 function Unblock-GitHubBranch {
-  Param (
-    [Parameter(Mandatory = $true)]
-    [string]$BranchName
-  )
+    Param (
+        [Parameter(Mandatory = $true)]
+        [string]$BranchName
+    )
 
-  $owner, $repo = $(([Uri]$(git remote get-url origin)).PathAndQuery | Select-String -Pattern '\/([^\/]*)\/([^\/\.]*)').Matches.Groups | ? Name -ne 0 | % Value
+    $owner, $repo = $(([Uri]$(git remote get-url origin)).PathAndQuery | Select-String -Pattern '\/([^\/]*)\/([^\/\.]*)').Matches.Groups | ? Name -ne 0 | % Value
 
-  $token = gh auth token
-  $headers = @{ Authorization = "token $token" }
+    $token = gh auth token
+    $headers = @{ Authorization = "token $token" }
 
-  $protection = @{
-    restrictions                  = @{
-      users = @()
-      teams = @()
-      apps  = @()
+    $protection = @{
+        restrictions                  = @{
+            users = @()
+            teams = @()
+            apps  = @()
+        }
+        required_pull_request_reviews = @{
+            dismiss_stale_reviews      = $true
+            require_code_owner_reviews = $true
+            dismissal_restrictions     = @{
+                users = @()
+                teams = @()
+            }
+        }
+        enforce_admins                = $false
+        required_status_checks        = $null
     }
-    required_pull_request_reviews = @{
-      dismiss_stale_reviews      = $true
-      require_code_owner_reviews = $true
-      dismissal_restrictions     = @{
-        users = @()
-        teams = @()
-      }
-    }
-    enforce_admins                = $false
-    required_status_checks        = $null
-  }
 
   (Invoke-RestMethod -Headers $headers "https://api.github.com/repos/$owner/$repo/branches").where{ $_.name -eq $BranchName -and $_.protected -eq $True } | % {
-    Write-Host "Opening $BranchName branch for $owner/$repo"
-    Invoke-RestMethod -Headers $headers -Method Put -Body ($protection | ConvertTo-Json -Depth 10) "https://api.github.com/repos/$owner/$repo/branches/$BranchName/protection" | Out-Null
-  }
+        Write-Host "Opening $BranchName branch for $owner/$repo"
+        Invoke-RestMethod -Headers $headers -Method Put -Body ($protection | ConvertTo-Json -Depth 10) "https://api.github.com/repos/$owner/$repo/branches/$BranchName/protection" | Out-Null
+    }
 }
 
 function Merge-GitBranch {
-  Param (
-    [Parameter(Mandatory = $true)]
-    [string]$BranchName
-  )
+    Param (
+        [Parameter(Mandatory = $true)]
+        [string]$BranchName
+    )
 
-  # Is there a way to figure out if a merge is needed
+    # Is there a way to figure out if a merge is needed
 
-  $current_branch = (Get-GitStatus).Branch
-  $merge_base = git merge-base FETCH_HEAD $BranchName
-  $merge_results = git merge-tree $merge_base $BranchName FETCH_HEAD
-  if ($merge_results) {
-    $conflict = $merge_results | ? { $_ -match '^+<* \.our$' }
+    $current_branch = (Get-GitStatus).Branch
+    $merge_base = git merge-base FETCH_HEAD $BranchName
+    $merge_results = git merge-tree $merge_base $BranchName FETCH_HEAD
+    if ($merge_results) {
+        $conflict = $merge_results | ? { $_ -match '^+<* \.our$' }
 
-    if ($conflict) {
-      Write-Warning "There are merge conflict merging $BranchName to $current_branch"
-      exit
+        if ($conflict) {
+            Write-Warning "There are merge conflict merging $BranchName to $current_branch"
+            exit
+        }
     }
-  }
 
-  $message = "Merging $BranchName to $current_branch"
-  Write-Host -ForegroundColor Green $message
-  git merge $BranchName -m "$message"
+    $message = "Merging $BranchName to $current_branch"
+    Write-Host -ForegroundColor Green $message
+    git merge $BranchName -m "$message"
 
-  $status = Get-GitStatus
-  if ($status.AheadBy -gt 0) {
-    Write-Host -ForegroundColor Green "Pushing merge changes to origin/$current_branch"
-    Unblock-GitHubBranch $current_branch
-    git push
-  }
+    $status = Get-GitStatus
+    if ($status.AheadBy -gt 0) {
+        Write-Host -ForegroundColor Green "Pushing merge changes to origin/$current_branch"
+        Unblock-GitHubBranch $current_branch
+        git push
+    }
 }
 
 git fetch && git fetch origin
@@ -79,59 +79,70 @@ $status = Get-GitStatus
 $current_branch = $status.Branch
 
 if ($status.HasWorking -or $status.HasUntracked) {
-  Write-Warning "There are uncommited changes in $current_branch"
-  exit
+    Write-Warning "There are uncommited changes in $current_branch"
+    exit
 }
 
 if ($status.BehindBy -gt 0) {
-  Write-Host -ForegroundColor Green "Pulling upstream changes to $current_branch"
-  git pull
+    Write-Host -ForegroundColor Green "Pulling upstream changes to $current_branch"
+    git pull
 }
 
 
 $status = Get-GitStatus
 if ($status.AheadBy -gt 0) {
-  Unblock-GitHubBranch $current_branch
-  Write-Host -ForegroundColor Green "Pushing changes to origin/$current_branch"
-  git push
+    Unblock-GitHubBranch $current_branch
+    Write-Host -ForegroundColor Green "Pushing changes to origin/$current_branch"
+    git push
 }
 
-Merge-GitBranch $BranchName
+$Branches = $BranchName -split ',' | % { $_.Trim() }  
 
-git checkout $BranchName
+$Branches | % {
+    $BranchName = $_
 
-$status = Get-GitStatus
-if ($status.HasWorking -or $status.HasUntracked) {
-  Write-Warning "There are uncommited changes in $BranchName"
-  exit
+    Write-Host -ForegroundColor Cyan "====================================="
+    Write-Host -ForegroundColor Cyan "Start processing branch $BranchName"
+
+    Merge-GitBranch $BranchName
+
+    git checkout $BranchName
+  
+    $status = Get-GitStatus
+    if ($status.HasWorking -or $status.HasUntracked) {
+        Write-Warning "There are uncommited changes in $BranchName"
+        exit
+    }
+  
+    if ($status.BehindBy -gt 0) {
+        Write-Host -ForegroundColor Green "Pulling upstream changes to $BranchName"
+        git pull
+    }
+  
+    $status = Get-GitStatus
+    if ($status.BehindBy -gt 0) {
+        Unblock-GitHubBranch $BranchName
+        Write-Host -ForegroundColor Green "Pushing changes to origin/$BranchName"
+        git push
+    }
+  
+    Merge-GitBranch $current_branch
+  
+    git checkout $current_branch
+  
+    if ($status.BehindBy -gt 0) {
+        Write-Host -ForegroundColor Green "Pulling upstream changes to $current_branch"
+        git pull
+    }
+  
+    $status = Get-GitStatus
+    if ($status.BehindBy -gt 0) {
+        Unblock-GitHubBranch $current_branch
+        Write-Host -ForegroundColor Green "Pushing changes to origin/$current_branch"
+        git push
+    }
+  
+    Merge-GitBranch $BranchName
+    Write-Host -ForegroundColor Cyan "====================================="
+    Write-Host ""
 }
-
-if ($status.BehindBy -gt 0) {
-  Write-Host -ForegroundColor Green "Pulling upstream changes to $BranchName"
-  git pull
-}
-
-$status = Get-GitStatus
-if ($status.BehindBy -gt 0) {
-  Unblock-GitHubBranch $BranchName
-  Write-Host -ForegroundColor Green "Pushing changes to origin/$BranchName"
-  git push
-}
-
-Merge-GitBranch $current_branch
-
-git checkout $current_branch
-
-if ($status.BehindBy -gt 0) {
-  Write-Host -ForegroundColor Green "Pulling upstream changes to $current_branch"
-  git pull
-}
-
-$status = Get-GitStatus
-if ($status.BehindBy -gt 0) {
-  Unblock-GitHubBranch $current_branch
-  Write-Host -ForegroundColor Green "Pushing changes to origin/$current_branch"
-  git push
-}
-
-Merge-GitBranch $BranchName
