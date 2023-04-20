@@ -12,7 +12,7 @@ function Unblock-GitHubBranch {
         [string]$BranchName
     )
 
-    $owner, $repo = $(([Uri]$(git remote get-url origin)).PathAndQuery | Select-String -Pattern '\/([^\/]*)\/([^\/\.]*)').Matches.Groups | ? Name -ne 0 | % Value
+    $owner, $repo = $(([Uri]$(git remote get-url origin)).PathAndQuery | Select-String -Pattern '\/([^\/]*)\/([^\/\.]*)').Matches.Groups | Where-Object Name -ne 0 | ForEach-Object Value
 
     $token = gh auth token
     $headers = @{ Authorization = "token $token" }
@@ -35,7 +35,7 @@ function Unblock-GitHubBranch {
         required_status_checks        = $null
     }
 
-  (Invoke-RestMethod -Headers $headers "https://api.github.com/repos/$owner/$repo/branches").where{ $_.name -eq $BranchName -and $_.protected -eq $True } | % {
+  (Invoke-RestMethod -Headers $headers "https://api.github.com/repos/$owner/$repo/branches").where{ $_.name -eq $BranchName -and $_.protected -eq $True } | ForEach-Object {
         Write-Host "Opening $BranchName branch for $owner/$repo"
         Invoke-RestMethod -Headers $headers -Method Put -Body ($protection | ConvertTo-Json -Depth 10) "https://api.github.com/repos/$owner/$repo/branches/$BranchName/protection" | Out-Null
     }
@@ -53,7 +53,7 @@ function Merge-GitBranch {
     $merge_base = git merge-base FETCH_HEAD $BranchName
     $merge_results = git merge-tree $merge_base $BranchName FETCH_HEAD
     if ($merge_results) {
-        $conflict = $merge_results | ? { $_ -match '^+<* \.our$' }
+        $conflict = $merge_results | Where-Object { $_ -match '^+<* \.our$' }
 
         if ($conflict) {
             Write-Warning "There are merge conflict merging $BranchName to $current_branch"
@@ -96,10 +96,20 @@ if ($status.AheadBy -gt 0) {
     git push
 }
 
-$Branches = $BranchName -split ',' | % { $_.Trim() }  
+$Branches = $BranchName -split ',' | ForEach-Object { $_.Trim() }  
 
-$Branches | % {
+# Verify that all branches exist
+$RemoteBranches = git branch --remotes --list --format='%(refname:short)' | Where-Object { $_ -match 'origin\/' } | ForEach-Object { $_.Replace('origin/', '') }
+$Branches | ForEach-Object {
+    if (-not $RemoteBranches.Contains($_)) {
+        Write-Warning "Branch $_ does not exist"
+        exit
+    }
+}
+
+$Branches | ForEach-Object {
     $BranchName = $_
+
 
     Write-Host -ForegroundColor Cyan "====================================="
     Write-Host -ForegroundColor Cyan "Start processing branch $BranchName"
