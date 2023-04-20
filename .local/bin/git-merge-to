@@ -1,7 +1,7 @@
 #!/usr/bin/env pwsh
 Param (
-    [Parameter(Mandatory = $true)]
-    [string]$BranchName
+    [string]$BranchName,
+    [switch]$AllRemoteBranches
 )
 
 Import-Module posh-git
@@ -96,16 +96,22 @@ if ($status.AheadBy -gt 0) {
     git push
 }
 
-$Branches = $BranchName -split ',' | ForEach-Object { $_.Trim() }  
-
-# Verify that all branches exist
 $RemoteBranches = git branch --remotes --list --format='%(refname:short)' | Where-Object { $_ -match 'origin\/' } | ForEach-Object { $_.Replace('origin/', '') }
-$Branches | ForEach-Object {
-    if (-not $RemoteBranches.Contains($_)) {
-        Write-Warning "Branch $_ does not exist"
-        exit
+
+if ($AllRemoteBranches) {
+    $Branches = $RemoteBranches | Where-Object { $_ -ne $current_branch }
+}
+else {
+    $Branches = $BranchName -split ',' | ForEach-Object { $_.Trim() }
+    # Verify that all of the specified branches exist
+    $Branches | ForEach-Object {
+        if (-not $RemoteBranches.Contains($_)) {
+            Write-Warning "Branch $_ does not exist"
+            exit
+        }
     }
 }
+
 
 $Branches | ForEach-Object {
     $BranchName = $_
