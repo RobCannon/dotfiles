@@ -12,6 +12,20 @@ if (-not $Vpc) {
     throw "VPC $VpcId does not exist"
 }
 
+
+$things = aws ec2 describe-network-interfaces --region $Region --filter "Name=vpc-id,Values='$VpcId'" --query "NetworkInterfaces[].NetworkInterfaceId" --output json | ConvertFrom-Json
+if ($things) {
+    Write-Host "Cleaning up Network Interfaces for $VpcId"
+    $things | ForEach-Object { 
+        Write-Host "Deleting network interface $_"
+        aws ec2 delete-network-interface --network-interface-id $_ --region $Region
+        if ($?) {
+            Write-Error "Network Interface $_ is in use.  Aborting..."
+            exit
+        }
+    }
+}
+
 # Clean up loadbalancers create for Istio Gateways
 $things = aws elb describe-load-balancers --region $Region --query "LoadBalancerDescriptions[?VPCId=='$VpcId']|[].LoadBalancerName" --output json | ConvertFrom-Json
 if ($things) {
@@ -28,15 +42,6 @@ if ($things) {
     $things | ForEach-Object { 
         Write-Host "Deleting NAT gateway $($_.NatGatewayId)"
         aws ec2 delete-nat-gateway --nat-gateway-id $_.NatGatewayId --region $Region
-    }
-}
-
-$things = aws ec2 describe-network-interfaces --region $Region --filter "Name=vpc-id,Values='$VpcId'" --query "NetworkInterfaces[].NetworkInterfaceId" --output json | ConvertFrom-Json
-if ($things) {
-    Write-Host "Cleaning up Network Interfaces for $VpcId"
-    $things | ForEach-Object { 
-        Write-Host "Deleting network interface $_"
-        aws ec2 delete-network-interface --network-interface-id $_ --region $Region
     }
 }
 
