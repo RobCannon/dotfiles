@@ -5,10 +5,10 @@
     aws ec2 describe-vpcs --region $region --output json | ConvertFrom-Json | ForEach-Object { $_.Vpcs } | ForEach-Object {
         [PSCustomObject]@{
             VpcId      = $_.VpcId
+            Region     = $region
             Name       = $_.Tags | Where-Object { $_.Key -eq 'Name' } | Select-Object -ExpandProperty Value
             CidrBlock  = $_.CidrBlock    
             DefaultVpc = $_.IsDefault
-            Region     = $region
         }
     }
 } | format-table -AutoSize
