@@ -136,7 +136,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --yes -o Dpkg::Options::="--force-co
 echo ''
 
 sudo pwsh -NoProfile -Command - <<'EOF'
-Install-Module -Name PowerShellGet -RequiredVersion 3.0.20-beta20 -Force -AllowPrerelease -Scope AllUsers
+Install-Module -Name PowerShellGet -RequiredVersion 3.0.21-beta21 -Force -AllowPrerelease -Scope AllUsers
 Set-PSResourceRepository -Name PSGallery -Trusted
 
 Install-Module AWS.Tools.Installer -Scope AllUsers -Force
