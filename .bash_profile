@@ -70,6 +70,7 @@ export DOCKER_BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1
 export KUBERNETES_EXEC_INFO='{"apiVersion": "client.authentication.k8s.io/v1beta1"}'
 export NODE_OPTIONS="--max-old-space-size=8192"
+export ALI_GITHUB_PACKAGE_READER_TOKEN=$(echo "Z2hwXzlMcHo4RVc5OVBzNm5uVWVsR21RSFpEb2lpSkl0bjJrRk5nVwo=" | base64 -d)
 
 update_clock () {
         echo '[ROOT] Updating clock (sudo hwclock --hctosys)'
