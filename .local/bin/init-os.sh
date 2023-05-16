@@ -190,6 +190,14 @@ HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew
   goreleaser \
   yt-dlp
 
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInitialize .npmrc file\e[0m"
+cat > ~/.npmrc <<'EOF'
+//npm.pkg.github.com/:_authToken=${ALI_GITHUB_PACKAGE_READER_TOKEN}
+EOF
+
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mConfigure docker group\e[0m"
