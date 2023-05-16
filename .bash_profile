@@ -69,6 +69,7 @@ export SSLKEYLOGFILE=~/.ssl-key.log
 export DOCKER_BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1
 export KUBERNETES_EXEC_INFO='{"apiVersion": "client.authentication.k8s.io/v1beta1"}'
+export NODE_OPTIONS="--max-old-space-size=8192"
 
 update_clock () {
         echo '[ROOT] Updating clock (sudo hwclock --hctosys)'
