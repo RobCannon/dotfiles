@@ -6,26 +6,49 @@ param (
     $Refresh    # Update folders that are already present
 )
 
-New-Item ~/src -ItemType Directory -Force | Out-Null
-
 function CloneRepos([string]$folder, [Object[]]$repos, [bool]$refresh) {
-    $path = Join-Path ~/src $folder
-    if (-Not (Test-Path $path)) {
-        New-Item $path -ItemType Directory -Force | Out-Null
-    }
+    $folder_list = @(
+        "action",
+        "aws-account",
+        "container",
+        "github",
+        "kubernetes",
+        "packer",
+        "php-lib",
+        "platform",
+        "pulumi",
+        "repository-template",
+        "workflow"
+    )
+
     $repos | ForEach-Object {
-        $path = Join-Path ~/src $folder $_.name
+        $repo_name = $_.name
+        $sub_folder = $folder_list | Where-Object { $repo_name.StartsWith($_) }
+        $path = Join-Path $env:HOME "src" $folder $sub_folder
         if (-Not (Test-Path $path)) {
-            Write-Host -ForegroundColor Cyan "Cloning $($_.name)"
-            git clone "$($_.url).git" $path
+            New-Item $path -ItemType Directory -Force | Out-Null
         }
-        else {
+        $path = Join-Path $path $repo_name
+        if (-Not (Test-Path $path)) {
+            Write-Host -ForegroundColor Cyan "Cloning $repo_name"
+            git clone "$($_.url).git" $path
+        } else {
             if ($refresh) {
-                Write-Host -ForegroundColor Cyan "Updating $($_.name)"
+                Write-Host -ForegroundColor Cyan "Updating $repo_name"
                 Push-Location $path
                 git pull
                 Pop-Location
             }
+        }
+        $tags = @()
+        if ($sub_folder) {
+            $tags += $sub_folder
+        }
+        [PSCustomObject]@{
+            name     = $repo_name
+            rootPath = "vscode-remote://wsl+ubuntu-22.04/$path"
+            tags     = $tags
+            enabled  = $true
         }
     }    
 }
@@ -33,40 +56,29 @@ function CloneRepos([string]$folder, [Object[]]$repos, [bool]$refresh) {
 
 if ($env:APPDATA) {
     $github_profile = (Get-Content "$($env:APPDATA)/GitHub CLI/hosts.yml" | ConvertFrom-Yaml).'github.com'.user
-}
-elseif ($env:HOME) {
+} elseif ($env:HOME) {
     $github_profile = (Get-Content "$($env:HOME)/.config/gh/hosts.yml" | ConvertFrom-Yaml).'github.com'.user
-}
-else {
+} else {
     throw "Unable to locate GitHub user profile name, try gh auth login"
 }
 
+$project_items = @()
 $repos = @(
     @{
         name = "dotfiles"
         url  = "https://github.com/$github_profile/dotfiles"
     }
 )
-CloneRepos $github_profile $repos $Refresh.IsPresent
+$project_items += CloneRepos $github_profile $repos $Refresh.IsPresent
 
 
 $repos = gh repo list AccelerateLearning --no-archived --json "name,url" --limit 300 | ConvertFrom-Json | Sort-Object name
-CloneRepos "AccelerateLearning" $repos $Refresh.IsPresent
+$project_items += CloneRepos "AccelerateLearning" $repos $Refresh.IsPresent
 
 # Create project manager file
-if (-Not (Test-Path "$($env:USERPROFILE)/AppData/Roaming/Code/User/globalStorage/alefragnani.project-manager")) {
-    New-Item -ItemType Directory "$($env:USERPROFILE)/AppData/Roaming/Code" -ErrorAction SilentlyContinue | Out-Null
-    New-Item -ItemType Directory "$($env:USERPROFILE)/AppData/Roaming/Code/User" -ErrorAction SilentlyContinue | Out-Null
-    New-Item -ItemType Directory "$($env:USERPROFILE)/AppData/Roaming/Code/User/globalStorage" -ErrorAction SilentlyContinue | Out-Null
-    New-Item -ItemType Directory "$($env:USERPROFILE)/AppData/Roaming/Code/User/globalStorage/alefragnani.project-manager" -ErrorAction SilentlyContinue | Out-Null
+$path = "$($env:USERPROFILE)/AppData/Roaming/Code/User/globalStorage/alefragnani.project-manager"
+if (-Not (Test-Path $path)) {
+    New-Item -ItemType Directory $path -Force -ErrorAction SilentlyContinue | Out-Null
 }
 
-Get-ChildItem ~/src/AccelerateLearning -Directory | ForEach-Object {
-    [PSCustomObject]@{
-        name     = $_.Name
-        rootPath = "vscode-remote://wsl+ubuntu-22.04/$($env:HOME)/src/AccelerateLearning/$($_.Name)"
-        paths    = @()
-        tags     = @()
-        enabled  = $true
-    }
-} | ConvertTo-Json | Set-Content "$($env:USERPROFILE)/AppData/Roaming/Code/User/globalStorage/alefragnani.project-manager/projects.json"
+$project_items | ConvertTo-Json | Set-Content "$path/projects.json"
