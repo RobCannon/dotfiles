@@ -31,7 +31,10 @@ function CloneRepos([string]$folder, [Object[]]$repos, [bool]$refresh) {
         $path = Join-Path $path $repo_name
         if (-Not (Test-Path $path)) {
             Write-Host -ForegroundColor Cyan "Cloning $repo_name"
-            git clone "$($_.url).git" $path
+            # Update the URL to use username/password
+            $account = if ($folder -eq "AccelerateLearning") { "189862" } else { $folder }
+            $git_url = ($_.url -replace "https://", "https://$account@") + ".git"
+            git clone $git_url $path
         } else {
             if ($refresh) {
                 Write-Host -ForegroundColor Cyan "Updating $repo_name"
