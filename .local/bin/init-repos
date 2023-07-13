@@ -10,6 +10,7 @@ function CloneRepos([string]$folder, [Object[]]$repos, [bool]$refresh) {
     $folder_list = @(
         "action",
         "aws-account",
+        "cloud-engineering",
         "container",
         "github",
         "kubernetes",
