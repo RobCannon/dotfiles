@@ -1,0 +1,130 @@
+#!/usr/bin/env pwsh
+Param (
+    [string]$BranchName
+)
+
+Import-Module posh-git
+
+function Unblock-GitHubBranch {
+    Param (
+        [Parameter(Mandatory = $true)]
+        [string]$BranchName
+    )
+
+    $owner, $repo = $(([Uri]$(git remote get-url origin)).PathAndQuery | Select-String -Pattern '\/([^\/]*)\/([^\/\.]*)').Matches.Groups | Where-Object Name -ne 0 | ForEach-Object Value
+
+    $token = gh auth token
+    $headers = @{ Authorization = "token $token" }
+
+    $protection = @{
+        restrictions                  = @{
+            users = @()
+            teams = @()
+            apps  = @()
+        }
+        required_pull_request_reviews = @{
+            dismiss_stale_reviews      = $true
+            require_code_owner_reviews = $true
+            dismissal_restrictions     = @{
+                users = @()
+                teams = @()
+            }
+        }
+        enforce_admins                = $false
+        required_status_checks        = $null
+    }
+
+  (Invoke-RestMethod -Headers $headers "https://api.github.com/repos/$owner/$repo/branches").where{ $_.name -eq $BranchName -and $_.protected -eq $True } | ForEach-Object {
+        Write-Host "Opening $BranchName branch for $owner/$repo"
+        Invoke-RestMethod -Headers $headers -Method Put -Body ($protection | ConvertTo-Json -Depth 10) "https://api.github.com/repos/$owner/$repo/branches/$BranchName/protection" | Out-Null
+    }
+}
+
+function Merge-GitBranch {
+    Param (
+        [Parameter(Mandatory = $true)]
+        [string]$BranchName
+    )
+
+    # Is there a way to figure out if a merge is needed
+
+    $current_branch = (Get-GitStatus).Branch
+    $merge_base = git merge-base FETCH_HEAD $BranchName
+    $merge_results = git merge-tree $merge_base $BranchName FETCH_HEAD
+    if ($merge_results) {
+        $conflict = $merge_results | Where-Object { $_ -match '^+<* \.our$' }
+
+        if ($conflict) {
+            Write-Warning "There are merge conflict merging $BranchName to $current_branch"
+            exit
+        }
+    }
+
+    $message = "Merging $BranchName to $current_branch"
+    Write-Host -ForegroundColor Green $message
+    git merge $BranchName -m "$message"
+
+    $status = Get-GitStatus
+    if ($status.AheadBy -gt 0) {
+        Write-Host -ForegroundColor Green "Pushing merge changes to origin/$current_branch"
+        Unblock-GitHubBranch $current_branch
+        git push
+    }
+}
+
+git fetch && git fetch origin
+
+$status = Get-GitStatus
+$current_branch = $status.Branch
+
+if ($status.HasWorking -or $status.HasUntracked) {
+    Write-Warning "There are uncommited changes in $current_branch"
+    exit
+}
+
+if ($status.BehindBy -gt 0) {
+    Write-Host -ForegroundColor Green "Pulling upstream changes to $current_branch"
+    git pull
+}
+
+
+$status = Get-GitStatus
+if ($status.AheadBy -gt 0) {
+    Unblock-GitHubBranch $current_branch
+    Write-Host -ForegroundColor Green "Pushing changes to origin/$current_branch"
+    git push
+}
+
+$RemoteBranches = git branch --remotes --list --format='%(refname:short)' | Where-Object { $_ -match 'origin\/' } | ForEach-Object { $_.Replace('origin/', '') }
+
+# Verify that all of the specified branches exist
+if (-not $RemoteBranches.Contains($BranchName)) {
+    Write-Warning "Branch $BranchName does not exist"
+    exit
+}
+
+git checkout $BranchName
+$status = Get-GitStatus
+if ($status.HasWorking -or $status.HasUntracked) {
+    Write-Warning "There are uncommited changes in $BranchName"
+    exit
+}
+
+if ($status.BehindBy -gt 0) {
+    Write-Host -ForegroundColor Green "Pulling upstream changes to $BranchName"
+    git pull
+}
+
+git checkout $current_branch
+
+Merge-GitBranch $BranchName
+
+  
+
+$status = Get-GitStatus
+if ($status.BehindBy -gt 0) {
+    Unblock-GitHubBranch $BranchName
+    Write-Host -ForegroundColor Green "Pushing changes to origin/$BranchName"
+    git push
+}
+ 
