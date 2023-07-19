@@ -68,7 +68,6 @@ function Merge-GitBranch {
     $status = Get-GitStatus
     if ($status.AheadBy -gt 0) {
         Write-Host -ForegroundColor Green "Pushing merge changes to origin/$current_branch"
-        Unblock-GitHubBranch $current_branch
         git push
     }
 }
@@ -91,7 +90,6 @@ if ($status.BehindBy -gt 0) {
 
 $status = Get-GitStatus
 if ($status.AheadBy -gt 0) {
-    Unblock-GitHubBranch $current_branch
     Write-Host -ForegroundColor Green "Pushing changes to origin/$current_branch"
     git push
 }
@@ -137,7 +135,6 @@ $Branches | ForEach-Object {
   
     $status = Get-GitStatus
     if ($status.BehindBy -gt 0) {
-        Unblock-GitHubBranch $BranchName
         Write-Host -ForegroundColor Green "Pushing changes to origin/$BranchName"
         git push
     }
@@ -153,7 +150,6 @@ $Branches | ForEach-Object {
   
     $status = Get-GitStatus
     if ($status.BehindBy -gt 0) {
-        Unblock-GitHubBranch $current_branch
         Write-Host -ForegroundColor Green "Pushing changes to origin/$current_branch"
         git push
     }
