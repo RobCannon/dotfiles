@@ -99,7 +99,7 @@ $Branches | ForEach-Object {
         git push
     }
 
-    Merge-GitBranch $current_branch
+    Merge-FromGitBranch $current_branch
   
     git checkout $current_branch
     Write-Host -ForegroundColor Cyan "====================================="
