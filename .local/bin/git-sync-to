@@ -6,13 +6,48 @@ Param (
 
 Import-Module posh-git
 
-function Merge-FromGitBranch {
+function Unblock-GitHubBranch {
     Param (
         [Parameter(Mandatory = $true)]
         [string]$BranchName
     )
 
-    # Is there a way to figure out if a merge is needed?
+    $owner, $repo = $(([Uri]$(git remote get-url origin)).PathAndQuery | Select-String -Pattern '\/([^\/]*)\/([^\/\.]*)').Matches.Groups | Where-Object Name -ne 0 | ForEach-Object Value
+
+    $token = gh auth token
+    $headers = @{ Authorization = "token $token" }
+
+    $protection = @{
+        restrictions                  = @{
+            users = @()
+            teams = @()
+            apps  = @()
+        }
+        required_pull_request_reviews = @{
+            dismiss_stale_reviews      = $true
+            require_code_owner_reviews = $true
+            dismissal_restrictions     = @{
+                users = @()
+                teams = @()
+            }
+        }
+        enforce_admins                = $false
+        required_status_checks        = $null
+    }
+
+  (Invoke-RestMethod -Headers $headers "https://api.github.com/repos/$owner/$repo/branches").where{ $_.name -eq $BranchName -and $_.protected -eq $True } | ForEach-Object {
+        Write-Host "Opening $BranchName branch for $owner/$repo"
+        Invoke-RestMethod -Headers $headers -Method Put -Body ($protection | ConvertTo-Json -Depth 10) "https://api.github.com/repos/$owner/$repo/branches/$BranchName/protection" | Out-Null
+    }
+}
+
+function Merge-GitBranch {
+    Param (
+        [Parameter(Mandatory = $true)]
+        [string]$BranchName
+    )
+
+    # Is there a way to figure out if a merge is needed
 
     $current_branch = (Get-GitStatus).Branch
     $merge_base = git merge-base FETCH_HEAD $BranchName
@@ -75,13 +110,18 @@ else {
     }
 }
 
+
 $Branches | ForEach-Object {
     $BranchName = $_
+
 
     Write-Host -ForegroundColor Cyan "====================================="
     Write-Host -ForegroundColor Cyan "Start processing branch $BranchName"
 
+    Merge-GitBranch $BranchName
+
     git checkout $BranchName
+  
     $status = Get-GitStatus
     if ($status.HasWorking -or $status.HasUntracked) {
         Write-Warning "There are uncommited changes in $BranchName"
@@ -92,16 +132,29 @@ $Branches | ForEach-Object {
         Write-Host -ForegroundColor Green "Pulling upstream changes to $BranchName"
         git pull
     }
-
+  
     $status = Get-GitStatus
     if ($status.BehindBy -gt 0) {
         Write-Host -ForegroundColor Green "Pushing changes to origin/$BranchName"
         git push
     }
-
-    Merge-FromGitBranch $current_branch
+  
+    Merge-GitBranch $current_branch
   
     git checkout $current_branch
+  
+    if ($status.BehindBy -gt 0) {
+        Write-Host -ForegroundColor Green "Pulling upstream changes to $current_branch"
+        git pull
+    }
+  
+    $status = Get-GitStatus
+    if ($status.BehindBy -gt 0) {
+        Write-Host -ForegroundColor Green "Pushing changes to origin/$current_branch"
+        git push
+    }
+  
+    Merge-GitBranch $BranchName
     Write-Host -ForegroundColor Cyan "====================================="
     Write-Host ""
 }
