@@ -86,6 +86,10 @@ Pin: origin "packages.microsoft.com"
 Pin-Priority: 999
 EOF
 
+sudo tee /usr/lib/binfmt.d/WSLInterop.conf > /dev/null <<'EOF'
+:WSLInterop:M::MZ::/init:PF
+EOF
+
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
