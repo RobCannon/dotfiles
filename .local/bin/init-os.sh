@@ -139,18 +139,18 @@ echo -e "\e[1;36mUpgrade packages from apt\e[0m"
 sudo DEBIAN_FRONTEND=noninteractive apt-get --yes -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
 echo ''
 
-sudo pwsh -NoProfile -Command - <<'EOF'
-Install-Module -Name PowerShellGet -RequiredVersion 3.0.21-beta21 -Force -AllowPrerelease -Scope AllUsers
+pwsh -NoProfile -Command - <<'EOF'
+Install-Module -Name Microsoft.PowerShell.PSResourceGet -AllowPrerelease -Force
 Set-PSResourceRepository -Name PSGallery -Trusted
 
-Install-Module AWS.Tools.Installer -Scope AllUsers -Force
-Install-AWSToolsModule AWS.Tools.SecurityToken,AWS.Tools.SSO,AWS.Tools.SSOOIDC,AWS.Tools.EC2,AWS.Tools.S3,AWS.Tools.SimpleNotificationService,AWS.Tools.SQS,AWS.Tools.DynamoDBv2 -CleanUp -Scope AllUsers -Force
+Install-PSResource AWS.Tools.Installer -Reinstall
+Install-AWSToolsModule AWS.Tools.SecurityToken,AWS.Tools.SSO,AWS.Tools.SSOOIDC,AWS.Tools.EC2,AWS.Tools.S3,AWS.Tools.SimpleNotificationService,AWS.Tools.SQS,AWS.Tools.DynamoDBv2 -CleanUp -Force
 
-Install-PSResource PSReadLine -Reinstall -Scope AllUsers
-Install-PSResource Powershell-yaml -Reinstall -Scope AllUsers
-Install-PSResource posh-git -Reinstall -Scope AllUsers
-Install-PSResource PowerShellForGitHub -Reinstall -Scope AllUsers
-Install-PSResource ImportExcel -Reinstall -Scope AllUsers
+Install-PSResource PSReadLine -Reinstall
+Install-PSResource Powershell-yaml -Reinstall
+Install-PSResource posh-git -Reinstall
+Install-PSResource PowerShellForGitHub -Reinstall
+Install-PSResource ImportExcel -Reinstall
 cls
 EOF
 
