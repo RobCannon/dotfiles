@@ -80,11 +80,18 @@ wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-pr
 sudo dpkg -i packages-microsoft-prod.deb
 rm -f packages-microsoft-prod.deb
 
-sudo tee /etc/apt/preferences > /dev/null <<'EOF'
-Package: dotnet-sdk-7.0
-Pin: origin "packages.microsoft.com"
-Pin-Priority: 999
-EOF
+# https://stackoverflow.com/questions/76536379/ubuntu-22-cannot-find-net-core
+sudo sh -c "cat > /etc/apt/preferences.d/dotnet <<'EOF'
+Package: dotnet*
+Pin: origin packages.microsoft.com
+Pin-Priority: 1001
+EOF"
+
+sudo sh -c "cat > /etc/apt/preferences.d/aspnet <<'EOF'
+Package: aspnet*
+Pin: origin packages.microsoft.com
+Pin-Priority: 1001
+EOF"
 
 sudo tee /usr/lib/binfmt.d/WSLInterop.conf > /dev/null <<'EOF'
 :WSLInterop:M::MZ::/init:PF
