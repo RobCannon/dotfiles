@@ -24,8 +24,8 @@ echo ''
 
 
 pwsh -NoProfile -Command - <<'EOF'
-Get-PSResource | Update-PSResource
-cls
+Install-Module -Name Microsoft.PowerShell.PSResourceGet -AllowPrerelease
+Get-PSResource | ?{ $_.Name -ne 'Microsoft.PowerShell.PSResourceGet' } | %{ $_.Name } | Sort-Object | Get-Unique | %{ Update-PSResource $_ }
 EOF
 
 
