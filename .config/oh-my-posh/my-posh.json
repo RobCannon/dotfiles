@@ -88,7 +88,7 @@
           "powerline_symbol": "\uE0B0",
           "foreground": "#000",
           "background": "#FFA400",
-          "template": "\u00A0\udb83\ude0f {{.Profile}}{{if .Region}}@{{.Region}}{{end}}"
+          "template": "\u00A0\ue7ad {{.Profile}}{{if .Region}}@{{.Region}}{{end}} "
         },
         {
           "type": "kubectl",
