@@ -223,12 +223,14 @@ fi
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mCreate symlinks to host\e[0m"
+echo -e "\e[1;36mCreate symlinks to Windows host\e[0m"
 rm -rf ~/.kube
 mkdir -p ~/.kube
 ln -sf $USERPROFILE/.kube/config $HOME/.kube/config
 rm -rf ~/.aws
 ln -sf $USERPROFILE/.aws $HOME/.aws
+rm -rf ~/.ssh
+ln -sf $USERPROFILE/.ssh $HOME/.ssh
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
