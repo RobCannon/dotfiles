@@ -147,7 +147,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --yes -o Dpkg::Options::="--force-co
 echo ''
 
 pwsh -NoProfile -Command - <<'EOF'
-Install-Module -Name Microsoft.PowerShell.PSResourceGet -AllowPrerelease -Force
+Install-Module -Name Microsoft.PowerShell.PSResourceGet -Force
 Set-PSResourceRepository -Name PSGallery -Trusted
 
 Install-PSResource AWS.Tools.Installer -Reinstall
