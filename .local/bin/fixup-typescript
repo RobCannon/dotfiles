@@ -1,0 +1,105 @@
+#!/usr/bin/env pwsh
+
+Write-Host "Adding yarn packages"
+cat > ./.yarnrc.yml <<'EOF'
+nodeLinker: node-modules
+npmScopes:
+  acceleratelearning:
+    npmRegistryServer: https://npm.pkg.github.com
+    npmAuthToken: ${ALI_GITHUB_PACKAGE_READER_TOKEN}
+EOF
+
+yarn set version stable
+yarn install
+yarn add -D @tsconfig/recommended @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint eslint-config-prettier eslint-plugin-prettier prettier typescript
+
+New-Item ".vscode" -ItemType Directory -Force
+$file = ".vscode/extensions.json"
+Write-Host "Updating $file"
+$config = Get-Content $file -ErrorAction:SilentlyContinue | ConvertFrom-Json -AsHashTable
+if (-Not $config ) { $config = @{} }
+if (-Not $config.recommendations) { $config.recommendations = @() }
+if ($config.recommendations -notcontains "dbaeumer.vscode-eslint") { $config.recommendations += "dbaeumer.vscode-eslint" }
+if ($config.recommendations -notcontains "rvest.vs-code-prettier-eslint") { $config.recommendations += "rvest.vs-code-prettier-eslint" }
+$config | ConvertTo-Json -Depth 10 | Set-Content $file
+
+$file = ".vscode/settings.json"
+Write-Host "Updating $file"
+$config = Get-Content $file -ErrorAction:SilentlyContinue | ConvertFrom-Json -AsHashTable
+if (-Not $config ) { $config = @{} }
+$config["yaml.schemas"] = @{
+    "https://json.schemastore.org/github-workflow.json" = @("file:.github/workflows/*.yaml")
+}
+$config["eslint.validate"] =  @("javascript","javascriptreact","typescript","typescriptreact")
+$config["editor.codeActionsOnSave"] = @{
+    "source.fixAll.eslint" = $true
+}
+$config["editor.formatOnPaste"] = $false
+$config["editor.formatOnType"] = $false
+$config["editor.formatOnSave"] = $true
+$config["editor.formatOnSaveMode"] = "file"
+$config["editor.insertSpaces"] = $true
+$config["editor.autoIndent"] = "keep"
+$config["files.autoSave"] = "onFocusChange"
+$config["editor.tabSize"] = 2
+$config["vs-code-prettier-eslint.prettierLast"] = $false
+$config["[typescript]"] = @{
+    "editor.defaultFormatter" = "dbaeumer.vscode-eslint"
+    "editor.tabSize" = 2
+}
+$config["[yaml]"] = @{
+    "editor.defaultFormatter" = "ms-kubernetes-tools.vscode-kubernetes-tools"
+}
+$config["[helm]"] = @{
+    "editor.defaultFormatter" = "ms-kubernetes-tools.vscode-kubernetes-tools"
+}
+$config | ConvertTo-Json -Depth 10 | Set-Content $file
+
+$file = ".eslintrc.json"
+Write-Host "Updating $file"
+@{
+    "extends" = @("eslint:recommended","plugin:prettier/recommended","plugin:@typescript-eslint/recommended")
+    "plugins" = @("prettier","@typescript-eslint")
+    "rules" = @{
+        "eqeqeq" = "error"
+        "no-console" = "warn"
+        "no-undef" = "off"
+        "no-unused-vars" = "off"
+        "prettier/prettier" = "error"
+        "@typescript-eslint/explicit-module-boundary-types" = "off"
+        "@typescript-eslint/explicit-function-return-type" = "off"
+        "@typescript-eslint/no-explicit-any" = "error"
+        "@typescript-eslint/no-unused-vars" = "warn"
+    }
+    "parser" = "@typescript-eslint/parser"
+    "parserOptions" = @{
+        "ecmaVersion" = 6
+        "sourceType" = "module"
+    }
+    "env" = @{
+        "browser" = $true
+        "node" = $true
+        "es6" = $true
+        "jest" = $true
+    }
+    "ignorePatterns" = @("node_modules","build","dist","public")
+} | ConvertTo-Json -Depth 10 | Set-Content $file
+
+$file = ".prettierrc"
+Write-Host "Updating $file"
+@{
+    "useTabs" = $false
+    "tabWidth" = 2
+    "singleQuote" = $true
+    "printWidth" = 120
+    "trailingComma" = "es5"
+} | ConvertTo-Json -Depth 10 | Set-Content $file
+Remove-Item "prettierrc" -ErrorAction:SilentlyContinue
+
+$file = "tsconfig.json"
+Write-Host "Updating $file"
+$config = Get-Content $file -ErrorAction:SilentlyContinue | ConvertFrom-Json -AsHashTable
+if (-Not $config ) { $config = @{} }
+if (-Not $config.include) { $config.include = @() }
+if ($config.include -notcontains "*.ts") { $config.include += "*.ts" }
+$config | ConvertTo-Json -Depth 10 | Set-Content $file

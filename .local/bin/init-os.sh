@@ -195,8 +195,8 @@ HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew
   awscli \
   eksctl \
   nvm \
-  yarn \
   node \
+  corepack \
   go \
   goreleaser \
   yt-dlp
@@ -204,10 +204,8 @@ HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInitialize .npmrc file\e[0m"
-cat > ~/.npmrc <<'EOF'
-//npm.pkg.github.com/:_authToken=${ALI_GITHUB_PACKAGE_READER_TOKEN}
-EOF
+echo -e "\e[1;36mInitialize corepack\e[0m"
+corepack enable
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
