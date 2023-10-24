@@ -114,3 +114,30 @@ if (-Not $config ) { $config = @{} }
 if (-Not $config.include) { $config.include = @() }
 if ($config.include -notcontains "*.ts") { $config.include += "*.ts" }
 $config | ConvertTo-Json -Depth 10 | Set-Content $file
+
+Write-Host -ForegroundColor Cyan "Checking for workflow changes"
+Get-ChildItem .github/workflows -ErrorAction SilentlyContinue | ForEach-Object {
+    $workflow = Get-Content $_
+    $changes = $false
+    $workflow = $workflow | ForEach-Object {
+        if ($_ -match 'acceleratelearning/workflow-pull-request-checks/\.github/workflows/shared-workflow.yaml@v1') {
+            $_ -replace '@v1','@v2'
+            $changes = $true
+        }
+        elseif ($_ -match 'acceleratelearning/workflow-pulumi-up/.github/workflows/shared-workflow.yaml@v3') {
+            $_ -replace '@v3','@v4'
+            $changes = $true
+        }
+        elseif ($_ -match 'npm-auth-token') {
+            $_ -replace 'npm-auth-token','yarn-auth-token'
+            $changes = $true
+        }
+        else {
+            $_
+        }
+    }
+    if ($changes) {
+        Write-Host -ForegroundColor Yellow "Updating $($_.Name)"
+        $workflow | Set-Content $_
+    }
+}
