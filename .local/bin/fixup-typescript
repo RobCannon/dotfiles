@@ -1,21 +1,29 @@
 #!/usr/bin/env pwsh
 
-Write-Host "Adding yarn packages"
-cat > ./.yarnrc.yml <<'EOF'
+Write-Host -ForegroundColor Cyan "Updating yarn"
+$content = Get-Content ./.gitignore -ErrorAction SilentlyContinue
+if (-Not $content) { $content = @() }
+if ($content -notcontains "/.yarn") { $content += "/.yarn" }
+$content | Set-Content ./.gitignore
+
+@'
 nodeLinker: node-modules
 npmScopes:
   acceleratelearning:
     npmRegistryServer: https://npm.pkg.github.com
     npmAuthToken: ${ALI_GITHUB_PACKAGE_READER_TOKEN}
-EOF
+'@ | Set-Content ./.yarnrc.yml
 
 yarn set version stable
 yarn install
+
+
+Write-Host -ForegroundColor Cyan "Adding yarn packages"
 yarn add -D @tsconfig/recommended @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint eslint-config-prettier eslint-plugin-prettier prettier typescript
 
 New-Item ".vscode" -ItemType Directory -Force
 $file = ".vscode/extensions.json"
-Write-Host "Updating $file"
+Write-Host -ForegroundColor Cyan "Updating $file"
 $config = Get-Content $file -ErrorAction:SilentlyContinue | ConvertFrom-Json -AsHashTable
 if (-Not $config ) { $config = @{} }
 if (-Not $config.recommendations) { $config.recommendations = @() }
@@ -24,7 +32,7 @@ if ($config.recommendations -notcontains "rvest.vs-code-prettier-eslint") { $con
 $config | ConvertTo-Json -Depth 10 | Set-Content $file
 
 $file = ".vscode/settings.json"
-Write-Host "Updating $file"
+Write-Host -ForegroundColor Cyan "Updating $file"
 $config = Get-Content $file -ErrorAction:SilentlyContinue | ConvertFrom-Json -AsHashTable
 if (-Not $config ) { $config = @{} }
 $config["yaml.schemas"] = @{
@@ -97,7 +105,7 @@ Write-Host "Updating $file"
 Remove-Item "prettierrc" -ErrorAction:SilentlyContinue
 
 $file = "tsconfig.json"
-Write-Host "Updating $file"
+Write-Host -ForegroundColor Cyan "Updating $file"
 $config = Get-Content $file -ErrorAction:SilentlyContinue | ConvertFrom-Json -AsHashTable
 if (-Not $config ) { $config = @{} }
 if (-Not $config.include) { $config.include = @() }
