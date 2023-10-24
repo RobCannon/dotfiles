@@ -23,6 +23,7 @@ yarn install
 
 Write-Host -ForegroundColor Cyan "Adding yarn packages"
 yarn add -D @tsconfig/recommended @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint eslint-config-prettier eslint-plugin-prettier prettier typescript
+npx yarn-upgrade-all
 
 New-Item ".vscode" -ItemType Directory -Force | Out-Null
 $file = ".vscode/extensions.json"
