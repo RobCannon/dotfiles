@@ -3,7 +3,10 @@
 Write-Host -ForegroundColor Cyan "Updating yarn"
 $content = Get-Content ./.gitignore -ErrorAction SilentlyContinue
 if (-Not $content) { $content = @() }
+if ($content -notcontains "/node_modules") { $content += "/node_modules" }
 if ($content -notcontains "/.yarn") { $content += "/.yarn" }
+if ($content -notcontains "yarn-error.log") { $content += "yarn-error.log" }
+if ($content -notcontains "state*.json") { $content += "state*.json" }
 $content | Set-Content ./.gitignore
 
 @'
@@ -21,7 +24,7 @@ yarn install
 Write-Host -ForegroundColor Cyan "Adding yarn packages"
 yarn add -D @tsconfig/recommended @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint eslint-config-prettier eslint-plugin-prettier prettier typescript
 
-New-Item ".vscode" -ItemType Directory -Force
+New-Item ".vscode" -ItemType Directory -Force | Out-Null
 $file = ".vscode/extensions.json"
 Write-Host -ForegroundColor Cyan "Updating $file"
 $config = Get-Content $file -ErrorAction:SilentlyContinue | ConvertFrom-Json -AsHashTable
@@ -64,7 +67,7 @@ $config["[helm]"] = @{
 $config | ConvertTo-Json -Depth 10 | Set-Content $file
 
 $file = ".eslintrc.json"
-Write-Host "Updating $file"
+Write-Host -ForegroundColor Cyan "Updating $file"
 @{
     "extends" = @("eslint:recommended","plugin:prettier/recommended","plugin:@typescript-eslint/recommended")
     "plugins" = @("prettier","@typescript-eslint")
@@ -94,7 +97,7 @@ Write-Host "Updating $file"
 } | ConvertTo-Json -Depth 10 | Set-Content $file
 
 $file = ".prettierrc"
-Write-Host "Updating $file"
+Write-Host -ForegroundColor Cyan "Updating $file"
 @{
     "useTabs" = $false
     "tabWidth" = 2
