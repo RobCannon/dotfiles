@@ -25,6 +25,13 @@ export AWS_PROFILE=$(jq -r '.stacks[] | select(.stackName == "'$STACK'") | .acco
 echo -e "\033[0;36mAuthenticating to the AWS account $AWS_PROFILE\033[0m"
 aws sso login
 
-echo -e "\033[0;36mSelect the $STACK pulumi stack\033[0m"
+CLUSTER=$(aws eks list-clusters --query clusters[0] --output text)
+if [[ "$CLUSTER" != "None" ]]
+then
+    echo -e "\033[0;36mAuthenticating to the $CLUSTER kubernetes cluster\033[0m"
+    aws eks update-kubeconfig --region us-east-2 --name $CLUSTER --alias $CLUSTER
+fi
+
+echo -e "\033[0;36mSelecting the $STACK pulumi stack\033[0m"
 pulumi stack select $STACK
 

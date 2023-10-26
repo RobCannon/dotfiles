@@ -94,5 +94,5 @@ alias topcpu='ps -eo pid,ppid,user,%mem,%cpu,cmd --sort=-%cpu | head -n 20'
 alias yup='npx yarn-upgrade-all'
 
 alias sbp='source ~/.bash_profile'
-alias slo='source ./login.sh'
-alias slo='source ./.local/bin/pulumi-select-stack'
+alias slo='source ~/.local/bin/aws-sso-login'
+alias pss='source ~/.local/bin/pulumi-stack-select'
