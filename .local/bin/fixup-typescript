@@ -17,6 +17,8 @@ npmScopes:
     npmAuthToken: ${ALI_GITHUB_PACKAGE_READER_TOKEN}
 '@ | Set-Content ./.yarnrc.yml
 
+Remove-Item ./.npmrc -ErrorAction SilentlyContinue
+
 yarn set version stable
 yarn install
 
