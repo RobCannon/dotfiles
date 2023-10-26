@@ -125,8 +125,8 @@ Get-ChildItem .github/workflows -ErrorAction SilentlyContinue | ForEach-Object {
             $_ -replace '@v1','@v2'
             $changes = $true
         }
-        elseif ($_ -match 'acceleratelearning/workflow-pulumi-up/.github/workflows/shared-workflow.yaml@v2') {
-            $_ -replace '@v2','@v4'
+        elseif ($_ -match 'acceleratelearning/workflow-pulumi-pull-request/.github/workflows/shared-workflow.yaml@v3') {
+            $_ -replace '@v3','@v4'
             $changes = $true
         }
         elseif ($_ -match 'acceleratelearning/workflow-pulumi-up/.github/workflows/shared-workflow.yaml@v3') {
