@@ -1,0 +1,30 @@
+#!/bin/env bash
+
+# If bootstrap.json does not exist, exit with an error
+if [ ! -f bootstrap.json ]; then
+    echo -e "\033[0;31mThis script relies on bootstrap.json being in the current directory.\033[0m"
+    exit 1
+fi
+
+# If a command line argument is not specified, get the stackName from bootstrap.json
+# where from the first entry in the stacks array that has defaultStack = true
+if [ -z "$1" ]; then
+    export STACK=$(jq -r '.stacks[] | select(.defaultStack == true) | .stackName' < bootstrap.json)
+else
+    export STACK=$1
+    # If a stackName is specified, name sure it exists in the stacks array in bootstrap.json
+    if ! jq -e '.stacks[] | select(.stackName == "'$STACK'")' < bootstrap.json > /dev/null; then
+        echo -e "\033[0;31mStack name $STACK not found in bootstrap.json\033[0m"
+        exit 1
+    fi
+fi
+
+# Get the accountName from the stacks array in bootstrap.json
+export AWS_PROFILE=$(jq -r '.stacks[] | select(.stackName == "'$STACK'") | .accountName' < bootstrap.json)
+
+echo -e "\033[0;36mAuthenticating to the AWS account $AWS_PROFILE\033[0m"
+aws sso login
+
+echo -e "\033[0;36mSelect the $STACK pulumi stack\033[0m"
+pulumi stack select $STACK
+
