@@ -11,9 +11,13 @@ git config --global credential.helper "/mnt/c/Program\ Files/Git/mingw64/bin/git
 git clone --bare "https://github.com/RobCannon/dotfiles.git" $HOME/.cfg
 dotfiles config --local status.showUntrackedFiles no
 dotfiles checkout -f main
-dotfiles push --set-upstream origin main
 
 ~/.local/bin/init-os.sh
+```
+
+Only Rob should run this.  This is to update the repo.
+```
+dotfiles push --set-upstream origin main
 ```
 
 When that is complete, run this batch of commands
