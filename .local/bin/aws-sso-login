@@ -1,4 +1,5 @@
 #!/bin/env bash
+# This script is designed to sourced from your shell to set the AWS_PROFILE variable
 
 if [ $# -eq 0 ]
 then
@@ -14,26 +15,26 @@ fi
 # Verify that AWS_PROFILE exists in ~/.aws/config
 if ! grep -q "\[profile $AWS_PROFILE\]" ~/.aws/config; then
     echo -e "\033[0;31mAWS_PROFILE $AWS_PROFILE not found in ~/.aws/config\033[0m"
-    exit 1
-fi
+else
+    echo -e "\033[0;36mAuthenticating to the AWS account $AWS_PROFILE\033[0m"
+    aws sso login
 
-echo -e "\033[0;36mAuthenticating to the AWS account $AWS_PROFILE\033[0m"
-aws sso login
-
-CLUSTER=$(aws eks list-clusters --query clusters[0] --output text)
-if [[ "$CLUSTER" != "None" ]]
-then
-    echo -e "\033[0;36mAuthenticating to the $CLUSTER kubernetes cluster\033[0m"
-    aws eks update-kubeconfig --region us-east-2 --name $CLUSTER --alias $CLUSTER
-fi
-
-if [ -f bootstrap.json ]; then
-    STACK=$(jq -r '.stacks[] | select(.accountName == "'$AWS_PROFILE'") | .stackName' < bootstrap.json | head -n 1)
-    if [[ "$STACK" != "" ]]
+    CLUSTER=$(aws eks list-clusters --query clusters[0] --output text)
+    if [[ "$CLUSTER" != "None" ]]
     then
-        echo -e "\033[0;36mSelecting the $STACK pulumi stack\033[0m"
-        pulumi stack select $STACK
+        echo -e "\033[0;36mAuthenticating to the $CLUSTER kubernetes cluster\033[0m"
+        aws eks update-kubeconfig --region us-east-2 --name $CLUSTER --alias $CLUSTER
+    fi
+
+    if [ -f bootstrap.json ]; then
+        STACK=$(jq -r '.stacks[] | select(.accountName == "'$AWS_PROFILE'") | .stackName' < bootstrap.json | head -n 1)
+        if [[ "$STACK" != "" ]]
+        then
+            echo -e "\033[0;36mSelecting the $STACK pulumi stack\033[0m"
+            pulumi stack select $STACK
+        fi
     fi
 fi
+
 
 
