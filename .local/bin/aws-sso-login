@@ -3,7 +3,7 @@
 if [ $# -eq 0 ]
 then
     if [ -f bootstrap.json ]; then
-        export AWS_PROFILE=$(jq -r '.stacks[] | select(.defaultStack == true) | .accountName' < bootstrap.json)
+        export AWS_PROFILE=$(jq -r '.stacks[] | select(.workingStack == true) | .accountName' < bootstrap.json)
     else
         export AWS_PROFILE=cloud-sandbox
     fi

@@ -7,9 +7,9 @@ if [ ! -f bootstrap.json ]; then
 fi
 
 # If a command line argument is not specified, get the stackName from bootstrap.json
-# where from the first entry in the stacks array that has defaultStack = true
+# where from the first entry in the stacks array that has workingStack = true
 if [ -z "$1" ]; then
-    export STACK=$(jq -r '.stacks[] | select(.defaultStack == true) | .stackName' < bootstrap.json)
+    export STACK=$(jq -r '.stacks[] | select(.workingStack == true) | .stackName' < bootstrap.json)
 else
     export STACK=$1
     # If a stackName is specified, name sure it exists in the stacks array in bootstrap.json
