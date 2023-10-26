@@ -28,8 +28,7 @@ then
 fi
 
 if [ -f bootstrap.json ]; then
-    export STACK=$(jq -r '.stacks[] | select(.accountName == "'$AWS_PROFILE'") | .stackName' < bootstrap.json)
-    # If the STACK is found, select the stack
+    STACK=$(jq -r '.stacks[] | select(.accountName == "'$AWS_PROFILE'") | .[0] | .stackName' < bootstrap.json | head -n 1)
     if [[ "$STACK" != "" ]]
     then
         echo -e "\033[0;36mSelecting the $STACK pulumi stack\033[0m"
