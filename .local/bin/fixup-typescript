@@ -3,8 +3,8 @@
 Write-Host -ForegroundColor Cyan "Updating yarn"
 $content = Get-Content ./.gitignore -ErrorAction SilentlyContinue
 if (-Not $content) { $content = @() }
-if ($content -notcontains "/node_modules") { $content += "/node_modules" }
-if ($content -notcontains "/.yarn") { $content += "/.yarn" }
+if ($content -notcontains "node_modules") { $content += "node_modules" }
+if ($content -notcontains ".yarn") { $content += ".yarn" }
 if ($content -notcontains "yarn-error.log") { $content += "yarn-error.log" }
 if ($content -notcontains "state*.json") { $content += "state*.json" }
 $content | Set-Content ./.gitignore
