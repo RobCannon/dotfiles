@@ -87,6 +87,9 @@ $project_items += CloneRepos "AccelerateLearning" $repos $Refresh.IsPresent
 $repos = gh repo list StudySocial --no-archived --json "name,url" --limit 300 | ConvertFrom-Json | Sort-Object name
 $project_items += CloneRepos "StudySocial" $repos $Refresh.IsPresent
 
+$repos = gh repo list ali-platform --no-archived --json "name,url" --limit 300 | ConvertFrom-Json | Sort-Object name
+$project_items += CloneRepos "ali-platform" $repos $Refresh.IsPresent
+
 # Create project manager file
 $path = "$($env:USERPROFILE)/AppData/Roaming/Code/User/globalStorage/alefragnani.project-manager"
 if (-Not (Test-Path $path)) {
