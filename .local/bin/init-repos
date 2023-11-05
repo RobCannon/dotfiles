@@ -32,9 +32,6 @@ function CloneRepos([string]$folder, [Object[]]$repos, [bool]$refresh) {
         }
         $path = Join-Path $path $repo_name
         if (-Not (Test-Path $path)) {
-            # Update the URL to use username/password
-            #$account = if ($folder -eq "AccelerateLearning") { "189862" } else { $github_profile }
-            #$git_url = ($_.url -replace "https://", "https://$account@") + ".git"
             $git_url = "$($_.url).git"
             Write-Host -ForegroundColor Cyan "Cloning $git_url"
             git clone $git_url $path
@@ -55,7 +52,7 @@ function CloneRepos([string]$folder, [Object[]]$repos, [bool]$refresh) {
         }
         [PSCustomObject]@{
             name     = $repo_name
-            rootPath = "vscode-remote://wsl+ubuntu-22.04/$path"
+            rootPath = "vscode-remote://wsl+$($env:WSL_DISTRO_NAME)/$path"
             tags     = $tags
             enabled  = $true
         }
