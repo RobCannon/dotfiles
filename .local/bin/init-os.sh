@@ -209,6 +209,19 @@ corepack enable
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mCreate symlinks to Windows host\e[0m"
+rm -rf ~/.aws
+ln -sf $USERPROFILE/.aws $HOME/.aws
+rm -rf ~/.ssh
+ln -sf $USERPROFILE/.ssh $HOME/.ssh
+
+
+# Initialize ssh-agent
+# https://unix.stackexchange.com/questions/339840/how-to-start-and-use-ssh-agent-as-systemd-service
+#systemctl --user enable --now ssh-agent
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mConfigure docker group\e[0m"
 sudo addgroup --system docker
 sudo adduser $USER docker
@@ -218,27 +231,15 @@ then
   sudo chmod g+w /var/run/docker.sock
 fi
 
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mCreate symlinks to Windows host\e[0m"
-rm -rf ~/.kube
-mkdir -p ~/.kube
-ln -sf $USERPROFILE/.kube/config $HOME/.kube/config
-rm -rf ~/.aws
-ln -sf $USERPROFILE/.aws $HOME/.aws
-rm -rf ~/.ssh
-ln -sf $USERPROFILE/.ssh $HOME/.ssh
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mAdding permissions for docker\e[0m"
-sudo addgroup --system docker
-sudo adduser $USER docker
-if [ ! -S /var/run/docker.sock ]
-then
-  sudo ln -sf /mnt/wsl/rancher-desktop/run/docker.sock /var/run/docker.sock
-fi
+# echo ''
+# echo -e "\e[1;36m------\e[0m"
+# echo -e "\e[1;36mAdding permissions for docker\e[0m"
+# sudo addgroup --system docker
+# sudo adduser $USER docker
+# if [ ! -S /var/run/docker.sock ]
+# then
+#   sudo ln -sf /mnt/wsl/rancher-desktop/run/docker.sock /var/run/docker.sock
+# fi
 
 if [ -S /var/run/docker.sock ]
 then
@@ -246,10 +247,6 @@ then
   sudo chmod g+w /var/run/docker.sock
 fi
 sudo curl https://raw.githubusercontent.com/docker/docker-ce/master/components/cli/contrib/completion/bash/docker -o /etc/bash_completion.d/docker.sh
-
-# Initialize ssh-agent
-# https://unix.stackexchange.com/questions/339840/how-to-start-and-use-ssh-agent-as-systemd-service
-systemctl --user enable --now ssh-agent
 
 echo ''
 echo -e "\e[1;32m------\e[0m"
