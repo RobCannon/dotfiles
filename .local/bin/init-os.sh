@@ -205,6 +205,7 @@ HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInitialize corepack\e[0m"
+brew link corepack
 corepack enable
 
 echo ''
