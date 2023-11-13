@@ -171,6 +171,23 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --yes -o Dpkg::Options::="--force-co
 echo ''
 
 
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInstalling snaps\e[0m"
+sudo snap install yq
+sudo snap install gh
+sudo snap install awscli
+sudo snap install kubectl --classic
+sudo snap install helm --classic
+sudo snap install kustomize
+sudo snap install node --classic
+sudo snap install yt-dlp
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInitialize corepack\e[0m"
+sudo npm i -g corepack
+
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
@@ -182,31 +199,11 @@ source ~/.bash_profile
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling brew formulas\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install yq \
-  gh \
+HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install \
   git \
   pulumi \
-  docker-compose \
-  kubectl \
-  helm \
-  istioctl \
-  kustomize \
-  oh-my-posh \
-  awscli \
-  eksctl \
-  nvm \
-  node \
-  corepack \
-  go \
-  goreleaser \
-  yt-dlp
+  oh-my-posh
 
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInitialize corepack\e[0m"
-brew link corepack
-corepack enable
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
