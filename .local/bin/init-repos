@@ -23,48 +23,56 @@ function CloneRepos([string]$folder, [Object[]]$repos, [bool]$refresh) {
         "workflow"
     )
 
-    $repos | ForEach-Object {
-        $repo_name = $_.name
-        $sub_folder = $folder_list | Where-Object { $repo_name.StartsWith($_) }
-        $path = Join-Path $env:HOME "src" $folder $sub_folder
-        if (-Not (Test-Path $path)) {
-            New-Item $path -ItemType Directory -Force | Out-Null
-        }
-        $path = Join-Path $path $repo_name
-        if (-Not (Test-Path $path)) {
-            $git_url = "$($_.url).git"
-            Write-Host -ForegroundColor Cyan "Cloning $git_url"
-            git clone $git_url $path
-        } else {
-            if ($refresh) {
-                Write-Host -ForegroundColor Cyan "Updating $repo_name"
-                Push-Location $path
-                git pull
-                Pop-Location
+    if ($repos) {
+        $repos | ForEach-Object {
+            $repo_name = $_.name
+            $sub_folder = $folder_list | Where-Object { $repo_name.StartsWith($_) }
+            $path = Join-Path $env:HOME "src" $folder $sub_folder
+            if (-Not (Test-Path $path)) {
+                New-Item $path -ItemType Directory -Force | Out-Null
+            }
+            $path = Join-Path $path $repo_name
+            if (-Not (Test-Path $path)) {
+                $git_url = "$($_.url).git"
+                Write-Host -ForegroundColor Cyan "Cloning $git_url"
+                git clone $git_url $path
+            }
+            else {
+                if ($refresh) {
+                    Write-Host -ForegroundColor Cyan "Updating $repo_name"
+                    Push-Location $path
+                    git pull
+                    Pop-Location
+                }
+            }
+            $tags = @()
+            if ($sub_folder) {
+                $tags += "$folder/$sub_folder"
+            }
+            else {
+                $tags += "$folder"
+            }
+            [PSCustomObject]@{
+                name     = $repo_name
+                rootPath = "vscode-remote://wsl+$($env:WSL_DISTRO_NAME)/$path"
+                tags     = $tags
+                enabled  = $true
             }
         }
-        $tags = @()
-        if ($sub_folder) {
-            $tags += "$folder/$sub_folder"
-        }
-        else {
-            $tags += "$folder"
-        }
-        [PSCustomObject]@{
-            name     = $repo_name
-            rootPath = "vscode-remote://wsl+$($env:WSL_DISTRO_NAME)/$path"
-            tags     = $tags
-            enabled  = $true
-        }
+    }
+    else {
+        @()
     }
 }
 
 
 if ($env:APPDATA) {
     $github_profile = (Get-Content "$($env:APPDATA)/GitHub CLI/hosts.yml" | ConvertFrom-Yaml).'github.com'.user
-} elseif ($env:HOME) {
+}
+elseif ($env:HOME) {
     $github_profile = (Get-Content "$($env:HOME)/.config/gh/hosts.yml" | ConvertFrom-Yaml).'github.com'.user
-} else {
+}
+else {
     throw "Unable to locate GitHub user profile name, try gh auth login"
 }
 
