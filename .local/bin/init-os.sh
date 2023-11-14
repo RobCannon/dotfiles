@@ -175,18 +175,13 @@ echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling snaps\e[0m"
 sudo snap install yq
-sudo snap install gh
-sudo snap install awscli
-sudo snap install kubectl --classic
-sudo snap install helm --classic
-sudo snap install kustomize
-sudo snap install node --classic
-sudo snap install yt-dlp
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInitialize corepack\e[0m"
-sudo npm i -g corepack
+sudo snap remove gh
+sudo snap remove aws-cli
+sudo snap remove kubectl
+sudo snap remove helm
+sudo snap remove kustomize
+sudo snap remove node
+sudo snap remove yt-dlp
 
 
 echo ''
@@ -202,7 +197,22 @@ echo -e "\e[1;36mInstalling brew formulas\e[0m"
 HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install \
   git \
   pulumi \
-  oh-my-posh
+  oh-my-posh \
+  yq \
+  gh \
+  kubectl \
+  helm \
+  kustomize \
+  node \
+  corepack \
+  npm \
+  yt-dlp
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInitialize corepack\e[0m"
+brew link --overwrite corepack
+corepack enable
 
 
 echo ''
