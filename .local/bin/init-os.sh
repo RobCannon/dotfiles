@@ -129,7 +129,7 @@ echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling common tools via apt\e[0m"
 sudo DEBIAN_FRONTEND=noninteractive apt-get -yq install \
-  dotnet-sdk-7.0 \
+  dotnet-sdk-8.0 \
   powershell \
   python3.11 \
   python3.11-venv \
@@ -163,25 +163,12 @@ EOF
 
 
 
-
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mClean up packages from apt\e[0m"
 sudo DEBIAN_FRONTEND=noninteractive apt-get --yes -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" auto-remove
 echo ''
 
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling snaps\e[0m"
-sudo snap install yq
-sudo snap remove gh
-sudo snap remove aws-cli
-sudo snap remove kubectl
-sudo snap remove helm
-sudo snap remove kustomize
-sudo snap remove node
-sudo snap remove yt-dlp
 
 
 echo ''
