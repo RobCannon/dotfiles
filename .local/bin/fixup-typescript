@@ -305,3 +305,9 @@ if (Test-Path .yarn/install-state.gz) {
     Write-Host -ForegroundColor Cyan "Removing .yarn/install-state.gz"
     Remove-Item .yarn/install-state.gz
 }
+
+Get-ChildItem *.yaml -ErrorAction SilentlyContinue | ForEach-Object {
+    $file = $_
+    Write-Host -ForegroundColor Cyan "Updating $file"
+    Get-Content $file | yq 'del(.. | select(has("aws-migration-project-id")))' | Set-Content $file
+}
