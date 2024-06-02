@@ -1,6 +1,14 @@
 #!/usr/bin/env pwsh
 
 Write-Host -ForegroundColor Cyan "Updating yarn"
+@'
+nodemodules
+.yarn
+.repo
+yarn-error.log
+state*.json
+'@ | Set-Content ./.gitignore
+
 $content = Get-Content ./.gitignore -ErrorAction SilentlyContinue
 if (-Not $content) { $content = @() }
 if ($content -notcontains "node_modules") { $content += "node_modules" }
