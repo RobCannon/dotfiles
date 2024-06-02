@@ -22,7 +22,6 @@ Remove-Item ./.npmrc -Force -ErrorAction SilentlyContinue
 yarn set version stable
 yarn install
 
-
 Write-Host -ForegroundColor Cyan "Adding yarn packages"
 yarn add -D @tsconfig/recommended @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint eslint-config-prettier eslint-plugin-prettier prettier typescript
 npx yarn-upgrade-all
@@ -46,7 +45,7 @@ $config["yaml.schemas"] = @{
 }
 $config["eslint.validate"] =  @("javascript","javascriptreact","typescript","typescriptreact")
 $config["editor.codeActionsOnSave"] = @{
-    "source.fixAll.eslint" = $true
+    "source.fixAll.eslint" = "explicit"
 }
 $config["editor.formatOnPaste"] = $false
 $config["editor.formatOnType"] = $false
@@ -58,7 +57,7 @@ $config["files.autoSave"] = "onFocusChange"
 $config["editor.tabSize"] = 2
 $config["vs-code-prettier-eslint.prettierLast"] = $false
 $config["[typescript]"] = @{
-    "editor.defaultFormatter" = "dbaeumer.vscode-eslint"
+    "editor.defaultFormatter" = "esbenp.prettier-vscode"
     "editor.tabSize" = 2
 }
 $config["[yaml]"] = @{
@@ -123,16 +122,16 @@ Get-ChildItem .github/workflows -ErrorAction SilentlyContinue | ForEach-Object {
     $workflow = Get-Content $_
     $changes = $false
     $workflow = $workflow | ForEach-Object {
-        if ($_ -match 'acceleratelearning/workflow-pull-request-checks/\.github/workflows/shared-workflow.yaml@v1') {
-            $_ -replace '@v1','@v2'
+        if ($_ -match 'acceleratelearning/workflow-pull-request-checks/\.github/workflows/shared-workflow.yaml@v[1-2]') {
+            $_ -replace '@v[1-3]','@v3'
             $changes = $true
         }
-        elseif ($_ -match 'acceleratelearning/workflow-pulumi-pull-request/.github/workflows/shared-workflow.yaml@v3') {
-            $_ -replace '@v3','@v4'
+        elseif ($_ -match 'acceleratelearning/workflow-pulumi-pull-request/.github/workflows/shared-workflow.yaml@v[1-3]') {
+            $_ -replace '@v[1-3]','@v4'
             $changes = $true
         }
-        elseif ($_ -match 'acceleratelearning/workflow-pulumi-up/.github/workflows/shared-workflow.yaml@v3') {
-            $_ -replace '@v3','@v4'
+        elseif ($_ -match 'acceleratelearning/workflow-pulumi-up/.github/workflows/shared-workflow.yaml@v[1-3]') {
+            $_ -replace '@v[1-3]','@v4'
             $changes = $true
         }
         elseif ($_ -match 'npm-auth-token') {
@@ -147,4 +146,9 @@ Get-ChildItem .github/workflows -ErrorAction SilentlyContinue | ForEach-Object {
         Write-Host -ForegroundColor Yellow "Updating $($_.Name)"
         $workflow | Set-Content $_
     }
+}
+
+if (Test-Path login.sh) {
+    Write-Host -ForegroundColor Cyan "Removing login.sh"
+    Remove-Item login.sh
 }
