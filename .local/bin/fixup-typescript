@@ -152,3 +152,8 @@ if (Test-Path login.sh) {
     Write-Host -ForegroundColor Cyan "Removing login.sh"
     Remove-Item login.sh
 }
+
+if (Test-Path .yarn/install-state.gz) {
+    Write-Host -ForegroundColor Cyan "Removing .yarn/install-state.gz"
+    Remove-Item .yarn/install-state.gz
+}
