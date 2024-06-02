@@ -2,7 +2,7 @@
 
 Write-Host -ForegroundColor Cyan "Updating yarn"
 @'
-nodemodules
+node_modules
 .yarn
 .repo
 yarn-error.log
