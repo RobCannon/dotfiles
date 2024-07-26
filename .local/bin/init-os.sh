@@ -134,14 +134,14 @@ echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling common tools via apt\e[0m"
 sudo DEBIAN_FRONTEND=noninteractive apt-get -yq install \
   dotnet-sdk-8.0 \
-  powershell \
-  python3.11 \
-  python3.11-venv \
+  # powershell \
+  python3.13 \
+  python3.13-venv \
   python3-pip \
   python3-crcmod \
   virtualenv \
+  wslu \
   packer
-#  wslu
 
 
 echo ''
@@ -149,21 +149,6 @@ echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mUpgrade packages from apt\e[0m"
 sudo DEBIAN_FRONTEND=noninteractive apt-get --yes -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
 echo ''
-
-pwsh -NoProfile -Command - <<'EOF'
-Install-Module -Name Microsoft.PowerShell.PSResourceGet -Force
-Set-PSResourceRepository -Name PSGallery -Trusted
-
-Install-PSResource AWS.Tools.Installer -Reinstall
-Install-AWSToolsModule AWS.Tools.SecurityToken,AWS.Tools.SSO,AWS.Tools.SSOOIDC,AWS.Tools.EC2,AWS.Tools.S3,AWS.Tools.SimpleNotificationService,AWS.Tools.SQS,AWS.Tools.DynamoDBv2 -CleanUp -Force
-
-Install-PSResource PSReadLine -Reinstall
-Install-PSResource Powershell-yaml -Reinstall
-Install-PSResource posh-git -Reinstall
-Install-PSResource PowerShellForGitHub -Reinstall
-Install-PSResource ImportExcel -Reinstall
-cls
-EOF
 
 
 
@@ -214,6 +199,22 @@ rm -rf ~/.aws
 ln -sf $USERPROFILE/.aws $HOME/.aws
 rm -rf ~/.ssh
 ln -sf $USERPROFILE/.ssh $HOME/.ssh
+
+
+pwsh -NoProfile -Command - <<'EOF'
+Install-Module -Name Microsoft.PowerShell.PSResourceGet -Force
+Set-PSResourceRepository -Name PSGallery -Trusted
+
+Install-PSResource AWS.Tools.Installer -Reinstall
+Install-AWSToolsModule AWS.Tools.SecurityToken,AWS.Tools.SSO,AWS.Tools.SSOOIDC,AWS.Tools.EC2,AWS.Tools.S3,AWS.Tools.SimpleNotificationService,AWS.Tools.SQS,AWS.Tools.DynamoDBv2 -CleanUp -Force
+
+Install-PSResource PSReadLine -Reinstall
+Install-PSResource Powershell-yaml -Reinstall
+Install-PSResource posh-git -Reinstall
+Install-PSResource PowerShellForGitHub -Reinstall
+Install-PSResource ImportExcel -Reinstall
+cls
+EOF
 
 
 # Initialize ssh-agent
