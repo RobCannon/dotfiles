@@ -76,13 +76,13 @@ rm -f ~/.motd_shown
 # echo -e "\e[1;36mAdding PPA for WSLU \e[0m"
 # sudo add-apt-repository -y ppa:wslutilities/wslu
 
-# echo ''
-# echo -e "\e[1;36m------\e[0m"
-# echo -e "\e[1;36mInstall Microsoft Packages source\e[0m"
-# # https://learn.microsoft.com/en-us/dotnet/core/install/linux-ubuntu#register-the-microsoft-package-repository
-# wget -q https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-# sudo dpkg -i packages-microsoft-prod.deb
-# rm -f packages-microsoft-prod.deb
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInstall Microsoft Packages source\e[0m"
+# https://learn.microsoft.com/en-us/dotnet/core/install/linux-ubuntu#register-the-microsoft-package-repository
+wget -q "https://packages.microsoft.com/config/ubuntu/$(lsb_release -r -s)/packages-microsoft-prod.deb" -O packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
+rm -f packages-microsoft-prod.deb
 
 # https://stackoverflow.com/questions/76536379/ubuntu-22-cannot-find-net-core
 # sudo sh -c "cat > /etc/apt/preferences.d/dotnet <<'EOF'
