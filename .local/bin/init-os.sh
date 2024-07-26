@@ -143,7 +143,6 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get -yq install \
   wslu \
   packer
 
-
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mUpgrade packages from apt\e[0m"
@@ -151,13 +150,11 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --yes -o Dpkg::Options::="--force-co
 echo ''
 
 
-
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mClean up packages from apt\e[0m"
 sudo DEBIAN_FRONTEND=noninteractive apt-get --yes -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" auto-remove
 echo ''
-
 
 
 echo ''
@@ -183,6 +180,7 @@ HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew
   corepack \
   npm \
   awscli \
+  mysql \
   yt-dlp
 
 echo ''
