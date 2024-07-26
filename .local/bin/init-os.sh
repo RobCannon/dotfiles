@@ -52,14 +52,17 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
   openssh-client \
   xdg-utils
 
-# Fix time sync issues in WSL
+# echo ''
+# echo -e "\e[1;36m------\e[0m"
+# echo -e "\e[1;36mFix time sync issues in WSL\e[0m"
 # https://github.com/microsoft/WSL/issues/8204#issuecomment-1338334154
-sudo mkdir -p /etc/systemd/system/systemd-timesyncd.service.d
-sudo tee /etc/systemd/system/systemd-timesyncd.service.d/override.conf > /dev/null <<'EOF'
-[Unit]
-ConditionVirtualization=
-EOF
-sudo systemctl start systemd-timesyncd
+# sudo mkdir -p /etc/systemd/system/systemd-timesyncd.service.d
+# sudo tee /etc/systemd/system/systemd-timesyncd.service.d/override.conf > /dev/null <<'EOF'
+# [Unit]
+# ConditionVirtualization=
+# EOF
+#sudo systemctl start systemd-timesyncd
+#sudo service systemd-timesyncd start
 
 
 
@@ -68,34 +71,35 @@ sudo systemctl start systemd-timesyncd
 sudo DEBIAN_FRONTEND=noninteractive apt-get --assume-yes remove landscape-common
 rm -f ~/.motd_shown
 
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mAdding PPA for WSLU \e[0m"
-sudo add-apt-repository -y ppa:wslutilities/wslu
+# echo ''
+# echo -e "\e[1;36m------\e[0m"
+# echo -e "\e[1;36mAdding PPA for WSLU \e[0m"
+# sudo add-apt-repository -y ppa:wslutilities/wslu
 
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstall Microsoft Packages source\e[0m"
-wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-sudo dpkg -i packages-microsoft-prod.deb
-rm -f packages-microsoft-prod.deb
+# echo ''
+# echo -e "\e[1;36m------\e[0m"
+# echo -e "\e[1;36mInstall Microsoft Packages source\e[0m"
+# # https://learn.microsoft.com/en-us/dotnet/core/install/linux-ubuntu#register-the-microsoft-package-repository
+# wget -q https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+# sudo dpkg -i packages-microsoft-prod.deb
+# rm -f packages-microsoft-prod.deb
 
 # https://stackoverflow.com/questions/76536379/ubuntu-22-cannot-find-net-core
-sudo sh -c "cat > /etc/apt/preferences.d/dotnet <<'EOF'
-Package: dotnet*
-Pin: origin packages.microsoft.com
-Pin-Priority: 1001
-EOF"
+# sudo sh -c "cat > /etc/apt/preferences.d/dotnet <<'EOF'
+# Package: dotnet*
+# Pin: origin packages.microsoft.com
+# Pin-Priority: 1001
+# EOF"
 
-sudo sh -c "cat > /etc/apt/preferences.d/aspnet <<'EOF'
-Package: aspnet*
-Pin: origin packages.microsoft.com
-Pin-Priority: 1001
-EOF"
+# sudo sh -c "cat > /etc/apt/preferences.d/aspnet <<'EOF'
+# Package: aspnet*
+# Pin: origin packages.microsoft.com
+# Pin-Priority: 1001
+# EOF"
 
-sudo tee /usr/lib/binfmt.d/WSLInterop.conf > /dev/null <<'EOF'
-:WSLInterop:M::MZ::/init:PF
-EOF
+# sudo tee /usr/lib/binfmt.d/WSLInterop.conf > /dev/null <<'EOF'
+# :WSLInterop:M::MZ::/init:PF
+# EOF
 
 
 echo ''
@@ -136,8 +140,8 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get -yq install \
   python3-pip \
   python3-crcmod \
   virtualenv \
-  packer \
-  wslu
+  packer
+#  wslu
 
 
 echo ''
