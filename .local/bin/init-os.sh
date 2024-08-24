@@ -180,6 +180,7 @@ echo ''
 
 sudo snap install yq
 sudo snap install yt-dlp
+sudo snap install aws-cli --classic
 sudo snap install helm --classic
 sudo snap install kubectl --classic
 
