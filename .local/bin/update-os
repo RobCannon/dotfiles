@@ -33,7 +33,7 @@ echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling PowerShell from download\e[0m"
 ps_version=$(curl -s "https://api.github.com/repos/PowerShell/PowerShell/releases/latest" | jq -r .tag_name | sed 's/v//')
 ps_current_version=$(xxx --version 2>/dev/null | grep -oP '(\d+\.)+\d+') || true
-if [ "$ps_version" !== "$ps_current_version" ]; then
+if [ "$ps_version" != "$ps_current_version" ]; then
     arch=$(dpkg --print-architecture)
     if [ "$arch" == "arm64" ]; then
         arch="arm64"
