@@ -52,6 +52,7 @@ fi
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mUpdating apps that are not in package managers\e[0m"
+export PATH=$PATH:/home/rcannon/.local/bin:/home/rcannon/.pulumi/bin
 curl -s https://ohmyposh.dev/install.sh | bash -s
 curl -fsSL https://get.pulumi.com | sh
 # curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash -s

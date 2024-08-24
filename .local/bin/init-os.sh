@@ -175,6 +175,7 @@ echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mClean up packages from apt\e[0m"
 sudo DEBIAN_FRONTEND=noninteractive apt-get --yes -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" auto-remove
+sudo systemctl daemon-reload
 echo ''
 
 sudo snap install yq
