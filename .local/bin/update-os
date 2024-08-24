@@ -57,7 +57,7 @@ curl -fsSL https://get.pulumi.com | sh
 # curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash -s
 
 pwsh -NoProfile -Command - <<'EOF'
-Get-PSResource | ?{ $_.Name -ne 'Microsoft.PowerShell.PSResourceGet' } | %{ $_.Name } | Sort-Object | Get-Unique | %{ Update-PSResource $_ }
+Get-InstalledPSResource -ErrorAction:SilentlyContinue | ?{ $_.Name -ne 'Microsoft.PowerShell.PSResourceGet' } | %{ $_.Name } | Sort-Object | Get-Unique | %{ Update-PSResource $_ }
 EOF
 
 
