@@ -40,7 +40,7 @@ if [ "$ps_version" != "$ps_current_version" ]; then
     else
         arch="x64"
     fi
-    curl -L -o /tmp/powershell.tar.gz "https://github.com/PowerShell/PowerShell/releases/download/v$($ps_version)/powershell-$($ps_version)-linux-$($arch).tar.gz"
+    curl -L -o /tmp/powershell.tar.gz "https://github.com/PowerShell/PowerShell/releases/download/v$ps_version/powershell-$ps_version-linux-$arch.tar.gz"
     sudo mkdir -p /opt/microsoft/powershell/7
     sudo tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7
     sudo chmod +x /opt/microsoft/powershell/7/pwsh
