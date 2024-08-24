@@ -177,14 +177,6 @@ echo -e "\e[1;36mClean up packages from apt\e[0m"
 sudo DEBIAN_FRONTEND=noninteractive apt-get --yes -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" auto-remove
 echo ''
 
-# Download the powershell '.tar.gz' archive
-curl -L -o /tmp/powershell.tar.gz https://github.com/PowerShell/PowerShell/releases/download/v7.4.5/powershell-7.4.5-linux-arm64.tar.gz
-sudo mkdir -p /opt/microsoft/powershell/7
-sudo tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7
-sudo chmod +x /opt/microsoft/powershell/7/pwsh
-sudo ln -s --force /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh
-rm /tmp/powershell.tar.gz
-
 sudo snap install yq
 sudo snap install yt-dlp
 sudo snap install helm --classic
@@ -209,7 +201,6 @@ ln -sf $USERPROFILE/.ssh $HOME/.ssh
 
 
 pwsh -NoProfile -Command - <<'EOF'
-Install-Module -Name Microsoft.PowerShell.PSResourceGet -Force
 Set-PSResourceRepository -Name PSGallery -Trusted
 
 Install-PSResource AWS.Tools.Installer -Reinstall

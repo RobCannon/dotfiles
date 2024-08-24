@@ -23,15 +23,18 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --yes -o Dpkg::Options::="--force-co
 echo ''
 
 
-pwsh -NoProfile -Command - <<'EOF'
-Install-Module -Name Microsoft.PowerShell.PSResourceGet -AllowPrerelease -Force
-Get-PSResource | ?{ $_.Name -ne 'Microsoft.PowerShell.PSResourceGet' } | %{ $_.Name } | Sort-Object | Get-Unique | %{ Update-PSResource $_ }
-EOF
-
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mRefreshing snaps\e[0m"
 sudo snap refresh
+
+# Download the powershell '.tar.gz' archive
+curl -L -o /tmp/powershell.tar.gz https://github.com/PowerShell/PowerShell/releases/download/v7.4.5/powershell-7.4.5-linux-arm64.tar.gz
+sudo mkdir -p /opt/microsoft/powershell/7
+sudo tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7
+sudo chmod +x /opt/microsoft/powershell/7/pwsh
+sudo ln -s --force /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh
+rm /tmp/powershell.tar.gz
 
 
 echo ''
@@ -40,6 +43,10 @@ echo -e "\e[1;36mUpdating apps that are not in package managers\e[0m"
 curl -s https://ohmyposh.dev/install.sh | bash -s
 curl -fsSL https://get.pulumi.com | sh
 # curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash -s
+
+pwsh -NoProfile -Command - <<'EOF'
+Get-PSResource | ?{ $_.Name -ne 'Microsoft.PowerShell.PSResourceGet' } | %{ $_.Name } | Sort-Object | Get-Unique | %{ Update-PSResource $_ }
+EOF
 
 
 echo ''
