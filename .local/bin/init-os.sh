@@ -156,12 +156,12 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get -yq install \
   python3-pip \
   python3-crcmod \
   virtualenv \
-  awscli \
   wslu \
   gh \
   packer \
   nodejs \
   mysql-client
+  # awscli \
   # npm \
 
 echo ''
