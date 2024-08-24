@@ -31,12 +31,22 @@ sudo snap refresh
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling PowerShell from download\e[0m"
-curl -L -o /tmp/powershell.tar.gz "https://github.com/PowerShell/PowerShell/releases/download/v7.4.5/powershell-7.4.5-linux-$(dpkg --print-architecture).tar.gz"
-sudo mkdir -p /opt/microsoft/powershell/7
-sudo tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7
-sudo chmod +x /opt/microsoft/powershell/7/pwsh
-sudo ln -s --force /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh
-rm /tmp/powershell.tar.gz
+ps_version=$(curl -s "https://api.github.com/repos/PowerShell/PowerShell/releases/latest" | jq -r .tag_name | sed 's/v//')
+ps_current_version=$(xxx --version 2>/dev/null | grep -oP '(\d+\.)+\d+') || true
+if [ "$ps_version" !== "$ps_current_version" ]; then
+    arch=$(dpkg --print-architecture)
+    if [ "$arch" == "arm64" ]; then
+        arch="arm64"
+    else
+        arch="x64"
+    fi
+    curl -L -o /tmp/powershell.tar.gz "https://github.com/PowerShell/PowerShell/releases/download/v$($ps_version)/powershell-$($ps_version)-linux-$($arch).tar.gz"
+    sudo mkdir -p /opt/microsoft/powershell/7
+    sudo tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7
+    sudo chmod +x /opt/microsoft/powershell/7/pwsh
+    sudo ln -s --force /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh
+    rm /tmp/powershell.tar.gz
+fi
 
 
 echo ''
