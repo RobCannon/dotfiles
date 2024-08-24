@@ -189,9 +189,6 @@ sudo snap install yq
 sudo snap install yt-dlp
 sudo snap install helm --classic
 sudo snap install kubectl --classic
-curl -s https://ohmyposh.dev/install.sh | bash -s
-curl -fsSL https://get.pulumi.com | sh
-# curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash -s
 
 
 echo ''
@@ -200,6 +197,7 @@ echo -e "\e[1;36mInitialize corepack\e[0m"
 sudo npm install -g corepack
 corepack enable
 
+~/.local/bin/update-os
 
 echo ''
 echo -e "\e[1;36m------\e[0m"

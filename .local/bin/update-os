@@ -28,16 +28,19 @@ Install-Module -Name Microsoft.PowerShell.PSResourceGet -AllowPrerelease -Force
 Get-PSResource | ?{ $_.Name -ne 'Microsoft.PowerShell.PSResourceGet' } | %{ $_.Name } | Sort-Object | Get-Unique | %{ Update-PSResource $_ }
 EOF
 
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mRefreshing snaps\e[0m"
+sudo snap refresh
+
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mUpdate brew formulas\e[0m"
-brew update
-brew upgrade
-brew cleanup
+echo -e "\e[1;36mUpdating apps that are not in package managers\e[0m"
+curl -s https://ohmyposh.dev/install.sh | bash -s
+curl -fsSL https://get.pulumi.com | sh
+# curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash -s
 
-
-source ~/.bash_profile
 
 echo ''
 echo -e "\e[1;32m------\e[0m"
