@@ -4,6 +4,16 @@ if [ -f ~/.bashrc ]; then
         . ~/.bashrc
 fi
 
+# User specific environment and startup programs
+export PATH="$HOME/.local/bin:$PATH"
+export KUBECONFIG=$HOME/.kube/config
+
+export DOCKER_BUILDKIT=1
+export COMPOSE_DOCKER_CLI_BUILD=1
+export KUBERNETES_EXEC_INFO='{"apiVersion": "client.authentication.k8s.io/v1beta1"}'
+export NODE_OPTIONS="--max-old-space-size=8192"
+export ALI_GITHUB_PACKAGE_READER_TOKEN=$(echo "Z2hwXzNNVGxYc01WY0dvOTJaTGp0YzNJdzhtdDNUSUZuODRRcW5FVwo=" | base64 -d)
+
 if [[ -n $PS1 ]]; then
   # This should only run for interactive shells
   if [ -f "$USERPROFILE/scoop/apps/ssh-agent-wsl/2.5/ssh-agent-wsl" ]
@@ -37,7 +47,7 @@ if [[ -n $PS1 ]]; then
   #     PROMPT_COMMAND="_omp_hook; $PROMPT_COMMAND"
   # fi
 
-  # eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/my-posh.json)"  
+  # eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/my-posh.json)"
 fi
 
 # Use bash-completion, if available
@@ -48,24 +58,14 @@ complete -C aws_completer aws
 
 
 # Configure nvm
-export NVM_DIR="$HOME/.nvm"
+# export NVM_DIR="$HOME/.nvm"
 # [ -s "/home/linuxbrew/.linuxbrew/opt/nvm/nvm.sh" ] && \. "/home/linuxbrew/.linuxbrew/opt/nvm/nvm.sh"  # This loads nvm
 # [ -s "/home/linuxbrew/.linuxbrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/home/linuxbrew/.linuxbrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
-# User specific environment and startup programs
-export PATH="$HOME/.local/bin:$PATH"
-export KUBECONFIG=$HOME/.kube/config
-
-export DOCKER_BUILDKIT=1
-export COMPOSE_DOCKER_CLI_BUILD=1
-export KUBERNETES_EXEC_INFO='{"apiVersion": "client.authentication.k8s.io/v1beta1"}'
-export NODE_OPTIONS="--max-old-space-size=8192"
-export ALI_GITHUB_PACKAGE_READER_TOKEN=$(echo "Z2hwXzNNVGxYc01WY0dvOTJaTGp0YzNJdzhtdDNUSUZuODRRcW5FVwo=" | base64 -d)
-
-update_clock () {
-        echo '[ROOT] Updating clock (sudo hwclock --hctosys)'
-        sudo hwclock -s
-        sudo ntpdate time.windows.com
-}
+# update_clock () {
+#         echo '[ROOT] Updating clock (sudo hwclock --hctosys)'
+#         sudo hwclock -s
+#         sudo ntpdate time.windows.com
+# }
 
 eval $(ssh-agent) 1>/dev/null
