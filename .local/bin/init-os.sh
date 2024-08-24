@@ -160,9 +160,8 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get -yq install \
   gh \
   packer \
   nodejs \
+  postgresql-client \
   mysql-client
-  # awscli \
-  # npm \
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
@@ -192,6 +191,14 @@ sudo npm install -g corepack
 corepack enable
 
 . ~/.local/bin/update-os
+
+pwsh -NoProfile -Command - <<'EOF'
+Connect-Graph -NoWelcome -Scopes User.Read.All
+$context = Get-MgContext
+$user = Get-MgUser -UserId $context.Account
+git config --global user.email "$($user.Mail)"
+git config --global user.name "$($user.DisplayName)"
+EOF
 
 echo ''
 echo -e "\e[1;36m------\e[0m"

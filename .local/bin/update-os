@@ -59,6 +59,7 @@ Install-PSResource Powershell-yaml -Reinstall
 Install-PSResource posh-git -Reinstall
 Install-PSResource PowerShellForGitHub -Reinstall
 Install-PSResource ImportExcel -Reinstall
+Install-PSResource Microsoft.Graph.Users -Reinstall
 cls
 EOF
 
