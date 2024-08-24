@@ -190,7 +190,7 @@ echo -e "\e[1;36mInitialize corepack\e[0m"
 sudo npm install -g corepack
 corepack enable
 
-~/.local/bin/update-os
+. ~/.local/bin/update-os
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
@@ -199,21 +199,6 @@ rm -rf ~/.aws
 ln -sf $USERPROFILE/.aws $HOME/.aws
 rm -rf ~/.ssh
 ln -sf $USERPROFILE/.ssh $HOME/.ssh
-
-
-pwsh -NoProfile -Command - <<'EOF'
-Set-PSResourceRepository -Name PSGallery -Trusted
-
-Install-PSResource AWS.Tools.Installer -Reinstall
-Install-AWSToolsModule AWS.Tools.SecurityToken,AWS.Tools.SSO,AWS.Tools.SSOOIDC,AWS.Tools.EC2,AWS.Tools.S3,AWS.Tools.SimpleNotificationService,AWS.Tools.SQS,AWS.Tools.DynamoDBv2 -CleanUp -Force
-
-Install-PSResource PSReadLine -Reinstall
-Install-PSResource Powershell-yaml -Reinstall
-Install-PSResource posh-git -Reinstall
-Install-PSResource PowerShellForGitHub -Reinstall
-Install-PSResource ImportExcel -Reinstall
-cls
-EOF
 
 
 # Initialize ssh-agent

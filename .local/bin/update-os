@@ -46,6 +46,22 @@ if [ "$ps_version" != "$ps_current_version" ]; then
     sudo chmod +x /opt/microsoft/powershell/7/pwsh
     sudo ln -s --force /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh
     rm /tmp/powershell.tar.gz
+
+
+pwsh -NoProfile -Command - <<'EOF'
+Set-PSResourceRepository -Name PSGallery -Trusted
+
+Install-PSResource AWS.Tools.Installer -Reinstall
+Install-AWSToolsModule AWS.Tools.SecurityToken,AWS.Tools.SSO,AWS.Tools.SSOOIDC,AWS.Tools.EC2,AWS.Tools.S3,AWS.Tools.SimpleNotificationService,AWS.Tools.SQS,AWS.Tools.DynamoDBv2 -CleanUp -Force
+
+Install-PSResource PSReadLine -Reinstall
+Install-PSResource Powershell-yaml -Reinstall
+Install-PSResource posh-git -Reinstall
+Install-PSResource PowerShellForGitHub -Reinstall
+Install-PSResource ImportExcel -Reinstall
+cls
+EOF
+
 fi
 
 
@@ -53,17 +69,17 @@ echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mUpdating apps that are not in package managers\e[0m"
 export PATH=$PATH:/home/rcannon/.local/bin:/home/rcannon/.pulumi/bin
-# curl -s https://ohmyposh.dev/install.sh | bash -s
-# curl -fsSL https://get.pulumi.com | sh
+curl -s https://ohmyposh.dev/install.sh | bash -s
+curl -fsSL https://get.pulumi.com | sh
 # curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash -s
 
 
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mUpdating PowerShell Modules\e[0m"
-pwsh -NoProfile -Command - <<'EOF'
-Get-InstalledPSResource -ErrorAction:SilentlyContinue | ?{ $_.Name -ne 'Microsoft.PowerShell.PSResourceGet' } | %{ $_.Name } | Sort-Object | Get-Unique | %{ Update-PSResource $_ }
-EOF
+# echo ''
+# echo -e "\e[1;36m------\e[0m"
+# echo -e "\e[1;36mUpdating PowerShell Modules\e[0m"
+# pwsh -NoProfile -Command - <<'EOF'
+# Get-InstalledPSResource -ErrorAction:SilentlyContinue | ?{ $_.Name -ne 'Microsoft.PowerShell.PSResourceGet' } | %{ $_.Name } | Sort-Object | Get-Unique | %{ Update-PSResource $_ }
+# EOF
 
 
 echo ''
