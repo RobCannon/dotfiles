@@ -4,14 +4,6 @@ if [ -f ~/.bashrc ]; then
         . ~/.bashrc
 fi
 
-# HomeBrew configuration
-export HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew";
-export HOMEBREW_CELLAR="/home/linuxbrew/.linuxbrew/Cellar";
-export HOMEBREW_REPOSITORY="/home/linuxbrew/.linuxbrew/Homebrew";
-export PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin${PATH+:$PATH}";
-export MANPATH="/home/linuxbrew/.linuxbrew/share/man${MANPATH+:$MANPATH}:";
-export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:${INFOPATH:-}";
-
 if [[ -n $PS1 ]]; then
   # This should only run for interactive shells
   if [ -f "$USERPROFILE/scoop/apps/ssh-agent-wsl/2.5/ssh-agent-wsl" ]
@@ -22,30 +14,30 @@ if [[ -n $PS1 ]]; then
   # Configure for oh-my-posh
   # This causes an issue when oh-my-posh is installed with brew since the installation location changes
   # So do it all manually
-  # eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/my-posh.json -s)"
+  eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/my-posh.json --strict)"
 
-  export POSH_THEME="$HOME/.config/oh-my-posh/my-posh.json"
-  export POWERLINE_COMMAND="oh-my-posh"
-  export CONDA_PROMPT_MODIFIER=false
+  # export POSH_THEME="$HOME/.config/oh-my-posh/my-posh.json"
+  # export POWERLINE_COMMAND="oh-my-posh"
+  # export CONDA_PROMPT_MODIFIER=false
 
-  # set secondary prompt
-  PS2="$(oh-my-posh print secondary --config="$POSH_THEME" --shell=bash --shell-version="$BASH_VERSION")"
+  # # set secondary prompt
+  # PS2="$(oh-my-posh print secondary --config="$POSH_THEME" --shell=bash --shell-version="$BASH_VERSION")"
 
-  function _omp_hook() {
-      local ret=$?
+  # function _omp_hook() {
+  #     local ret=$?
 
-      omp_stack_count=$((${#DIRSTACK[@]} - 1))
-      omp_elapsed=-1
-      PS1="$(oh-my-posh print primary --config="$POSH_THEME" --shell=bash --shell-version="$BASH_VERSION" --error="$ret" --execution-time="$omp_elapsed" --stack-count="$omp_stack_count" | tr -d '\0')"
+  #     omp_stack_count=$((${#DIRSTACK[@]} - 1))
+  #     omp_elapsed=-1
+  #     PS1="$(oh-my-posh print primary --config="$POSH_THEME" --shell=bash --shell-version="$BASH_VERSION" --error="$ret" --execution-time="$omp_elapsed" --stack-count="$omp_stack_count" | tr -d '\0')"
 
-      return $ret
-  }
+  #     return $ret
+  # }
 
-  if [ "$TERM" != "linux" ] && [ -x "$(command -v oh-my-posh)" ] && ! [[ "$PROMPT_COMMAND" =~ "_omp_hook" ]]; then
-      PROMPT_COMMAND="_omp_hook; $PROMPT_COMMAND"
-  fi
+  # if [ "$TERM" != "linux" ] && [ -x "$(command -v oh-my-posh)" ] && ! [[ "$PROMPT_COMMAND" =~ "_omp_hook" ]]; then
+  #     PROMPT_COMMAND="_omp_hook; $PROMPT_COMMAND"
+  # fi
 
-  eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/my-posh.json)"  
+  # eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/my-posh.json)"  
 fi
 
 # Use bash-completion, if available
@@ -57,8 +49,8 @@ complete -C aws_completer aws
 
 # Configure nvm
 export NVM_DIR="$HOME/.nvm"
-[ -s "/home/linuxbrew/.linuxbrew/opt/nvm/nvm.sh" ] && \. "/home/linuxbrew/.linuxbrew/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/home/linuxbrew/.linuxbrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/home/linuxbrew/.linuxbrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+# [ -s "/home/linuxbrew/.linuxbrew/opt/nvm/nvm.sh" ] && \. "/home/linuxbrew/.linuxbrew/opt/nvm/nvm.sh"  # This loads nvm
+# [ -s "/home/linuxbrew/.linuxbrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/home/linuxbrew/.linuxbrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 # User specific environment and startup programs
 export PATH="$HOME/.local/bin:$PATH"

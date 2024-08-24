@@ -78,11 +78,28 @@ rm -f ~/.motd_shown
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstall Microsoft Packages source\e[0m"
-# https://learn.microsoft.com/en-us/dotnet/core/install/linux-ubuntu#register-the-microsoft-package-repository
-wget -q "https://packages.microsoft.com/config/ubuntu/$(lsb_release -r -s)/packages-microsoft-prod.deb" -O packages-microsoft-prod.deb
-sudo dpkg -i packages-microsoft-prod.deb
-rm -f packages-microsoft-prod.deb
+echo -e "\e[1;36mAdding PPA for Git \e[0m"
+sudo add-apt-repository ppa:git-core/ppa --yes
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mAdding PPA for NodeJs \e[0m"
+curl -fsSL https://deb.nodesource.com/setup_current.x | sudo bash -s
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mAdding GitHub package source \e[0m"
+wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null
+sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+
+# echo ''
+# echo -e "\e[1;36m------\e[0m"
+# echo -e "\e[1;36mInstall Microsoft Packages source\e[0m"
+# # https://learn.microsoft.com/en-us/dotnet/core/install/linux-ubuntu#register-the-microsoft-package-repository
+# wget -q "https://packages.microsoft.com/config/ubuntu/$(lsb_release -r -s)/packages-microsoft-prod.deb" -O packages-microsoft-prod.deb
+# sudo dpkg -i packages-microsoft-prod.deb
+# rm -f packages-microsoft-prod.deb
 
 # https://stackoverflow.com/questions/76536379/ubuntu-22-cannot-find-net-core
 # sudo sh -c "cat > /etc/apt/preferences.d/dotnet <<'EOF'
@@ -102,13 +119,13 @@ rm -f packages-microsoft-prod.deb
 # EOF
 
 
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstall docker GPG keys\e[0m"
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+# echo ''
+# echo -e "\e[1;36m------\e[0m"
+# echo -e "\e[1;36mInstall docker GPG keys\e[0m"
+# curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+# echo \
+#   "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+#   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 
 echo ''
@@ -134,14 +151,18 @@ echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling common tools via apt\e[0m"
 sudo DEBIAN_FRONTEND=noninteractive apt-get -yq install \
   dotnet-sdk-8.0 \
-  # powershell \
   python3.13 \
   python3.13-venv \
   python3-pip \
   python3-crcmod \
   virtualenv \
+  awscli \
   wslu \
-  packer
+  gh \
+  packer \
+  nodejs \
+  mysql-client
+  # npm \
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
@@ -156,37 +177,27 @@ echo -e "\e[1;36mClean up packages from apt\e[0m"
 sudo DEBIAN_FRONTEND=noninteractive apt-get --yes -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" auto-remove
 echo ''
 
+# Download the powershell '.tar.gz' archive
+curl -L -o /tmp/powershell.tar.gz https://github.com/PowerShell/PowerShell/releases/download/v7.4.5/powershell-7.4.5-linux-arm64.tar.gz
+sudo mkdir -p /opt/microsoft/powershell/7
+sudo tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7
+sudo chmod +x /opt/microsoft/powershell/7/pwsh
+sudo ln -s --force /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh
+rm /tmp/powershell.tar.gz
 
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling HomeBrew\e[0m"
-NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-source ~/.bash_profile
+sudo snap install yq
+sudo snap install yt-dlp
+sudo snap install helm --classic
+sudo snap install kubectl --classic
+curl -s https://ohmyposh.dev/install.sh | bash -s
+curl -fsSL https://get.pulumi.com | sh
+# curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash -s
 
-
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mInstalling brew formulas\e[0m"
-HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 /home/linuxbrew/.linuxbrew/bin/brew install \
-  git \
-  pulumi \
-  oh-my-posh \
-  yq \
-  gh \
-  kubectl \
-  helm \
-  kustomize \
-  node \
-  corepack \
-  npm \
-  awscli \
-  mysql \
-  yt-dlp
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInitialize corepack\e[0m"
-brew link --overwrite corepack
+sudo npm install -g corepack
 corepack enable
 
 
@@ -219,16 +230,16 @@ EOF
 # https://unix.stackexchange.com/questions/339840/how-to-start-and-use-ssh-agent-as-systemd-service
 #systemctl --user enable --now ssh-agent
 
-echo ''
-echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mConfigure docker group\e[0m"
-sudo addgroup --system docker
-sudo adduser $USER docker
-if [ -S /var/run/docker.sock ]
-then
-  sudo chown root:docker /var/run/docker.sock
-  sudo chmod g+w /var/run/docker.sock
-fi
+# echo ''
+# echo -e "\e[1;36m------\e[0m"
+# echo -e "\e[1;36mConfigure docker group\e[0m"
+# sudo addgroup --system docker
+# sudo adduser $USER docker
+# if [ -S /var/run/docker.sock ]
+# then
+#   sudo chown root:docker /var/run/docker.sock
+#   sudo chmod g+w /var/run/docker.sock
+# fi
 
 # echo ''
 # echo -e "\e[1;36m------\e[0m"
@@ -240,11 +251,11 @@ fi
 #   sudo ln -sf /mnt/wsl/rancher-desktop/run/docker.sock /var/run/docker.sock
 # fi
 
-if [ -S /var/run/docker.sock ]
-then
-  sudo chown root:docker /var/run/docker.sock
-  sudo chmod g+w /var/run/docker.sock
-fi
+# if [ -S /var/run/docker.sock ]
+# then
+#   sudo chown root:docker /var/run/docker.sock
+#   sudo chmod g+w /var/run/docker.sock
+# fi
 sudo curl https://raw.githubusercontent.com/docker/docker-ce/master/components/cli/contrib/completion/bash/docker -o /etc/bash_completion.d/docker.sh
 
 echo ''
