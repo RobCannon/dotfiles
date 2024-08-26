@@ -48,6 +48,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
   openssl \
   gnupg-agent \
   inetutils-traceroute \
+  bind9-dnsutils \
   tcpdump \
   openssh-client \
   xdg-utils
