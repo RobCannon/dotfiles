@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-
-#!/bin/bash
 set -e
 
 echo ''
@@ -28,19 +26,21 @@ echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mRefreshing snaps\e[0m"
 sudo snap refresh
 
+arch=$(dpkg --print-architecture)
+
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling PowerShell from download\e[0m"
 ps_version=$(curl -s "https://api.github.com/repos/PowerShell/PowerShell/releases/latest" | jq -r .tag_name | sed 's/v//')
 ps_current_version=$(pwsh --version 2>/dev/null | grep -oP '(\d+\.)+\d+') || true
 if [ "$ps_version" != "$ps_current_version" ]; then
-    arch=$(dpkg --print-architecture)
     if [ "$arch" == "arm64" ]; then
-        arch="arm64"
+        ps_arch="arm64"
     else
-        arch="x64"
+        ps_arch="x64"
     fi
-    curl -L -o /tmp/powershell.tar.gz "https://github.com/PowerShell/PowerShell/releases/download/v$ps_version/powershell-$ps_version-linux-$arch.tar.gz"
+    download_url=$(curl -s "https://api.github.com/repos/PowerShell/PowerShell/releases/latest" | jq -r ".assets[] | select(.name | test(\"linux-$ps_arch.tar\")) | .browser_download_url")
+    curl -L $download_url -o /tmp/powershell.tar.gz
     sudo mkdir -p /opt/microsoft/powershell/7
     sudo tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7
     sudo chmod +x /opt/microsoft/powershell/7/pwsh
@@ -59,7 +59,7 @@ Install-PSResource Powershell-yaml -Reinstall
 Install-PSResource posh-git -Reinstall
 Install-PSResource PowerShellForGitHub -Reinstall
 Install-PSResource ImportExcel -Reinstall
-Install-PSResource Microsoft.Graph.Users -Reinstall
+Install-PSResource Microsoft.Graph -Reinstall
 cls
 EOF
 
@@ -68,20 +68,31 @@ fi
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
-echo -e "\e[1;36mUpdating apps that are not in package managers\e[0m"
+echo -e "\e[1;36mUpdating pulumi\e[0m"
 export PATH=$PATH:/home/rcannon/.local/bin:/home/rcannon/.pulumi/bin
-curl -s https://ohmyposh.dev/install.sh | bash -s
 curl -fsSL https://get.pulumi.com | sh
-# curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash -s
 
 
-# echo ''
-# echo -e "\e[1;36m------\e[0m"
-# echo -e "\e[1;36mUpdating PowerShell Modules\e[0m"
-# pwsh -NoProfile -Command - <<'EOF'
-# Get-InstalledPSResource -ErrorAction:SilentlyContinue | ?{ $_.Name -ne 'Microsoft.PowerShell.PSResourceGet' } | %{ $_.Name } | Sort-Object | Get-Unique | %{ Update-PSResource $_ }
-# EOF
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mUpdating oh-my-posh\e[0m"
+curl -s https://ohmyposh.dev/install.sh | bash -s
 
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mUpdating kustomize\e[0m"
+download_url=$(curl -s "https://api.github.com/repos/kubernetes-sigs/kustomize/releases/latest" | jq -r ".assets[] | select(.content_type == \"application/x-gtar\") | select(.name | test(\"linux_$arch\")) | .browser_download_url")
+curl -sL $download_url -o /tmp/kustomize.tar.gz
+sudo tar -xvf /tmp/kustomize.tar.gz -C /usr/bin/
+sudo chmod +x /usr/bin/kustomize
+rm /tmp/kustomize.tar.gz
+
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mUpdating PowerShell Modules\e[0m"
+pwsh -NoProfile -Command - <<'EOF'
+Get-InstalledPSResource -ErrorAction:SilentlyContinue | ?{ $_.Name -ne 'Microsoft.PowerShell.PSResourceGet' } | %{ $_.Name } | Sort-Object | Get-Unique | %{ Update-PSResource $_ }
+EOF
 
 echo ''
 echo -e "\e[1;32m------\e[0m"
