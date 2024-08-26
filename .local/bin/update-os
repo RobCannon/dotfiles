@@ -31,9 +31,10 @@ arch=$(dpkg --print-architecture)
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mInstalling PowerShell from download\e[0m"
-ps_version=$(curl -s "https://api.github.com/repos/PowerShell/PowerShell/releases/latest" | jq -r .tag_name | sed 's/v//')
-ps_current_version=$(pwsh --version 2>/dev/null | grep -oP '(\d+\.)+\d+') || true
-if [ "$ps_version" != "$ps_current_version" ]; then
+available_version=$(curl -s "https://api.github.com/repos/PowerShell/PowerShell/releases/latest" | jq -r .tag_name | sed 's/v//')
+installed_version=$(pwsh --version 2>/dev/null | grep -oP '(\d+\.)+\d+') || true
+if [ "$available_version" != "$installed_version" ]; then
+    # Powershell downloads don't follow linux arch naming conventions
     if [ "$arch" == "arm64" ]; then
         ps_arch="arm64"
     else
@@ -70,13 +71,21 @@ echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mUpdating pulumi\e[0m"
 export PATH=$PATH:/home/rcannon/.local/bin:/home/rcannon/.pulumi/bin
-curl -fsSL https://get.pulumi.com | sh
+available_version=$(curl -s "https://api.github.com/repos/pulumi/pulumi/releases/latest" | jq -r .tag_name)
+installed_version=$(pulumi version 2>/dev/null) || true
+if [ "$available_version" != "$installed_version" ]; then
+    curl -fsSL https://get.pulumi.com | sh
+fi
 
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mUpdating oh-my-posh\e[0m"
-curl -s https://ohmyposh.dev/install.sh | bash -s
+available_version=$(curl -s "https://api.github.com/repos/JanDeDobbeleer/oh-my-posh/releases/latest" | jq -r .tag_name | sed 's/v//')
+installed_version=$(oh-my-posh --version 2>/dev/null) || true
+if [ "$available_version" != "$installed_version" ]; then
+    curl -s https://ohmyposh.dev/install.sh | bash -s
+fi
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
