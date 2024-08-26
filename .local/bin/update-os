@@ -70,7 +70,7 @@ fi
 echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mUpdating pulumi\e[0m"
-export PATH=$PATH:/home/rcannon/.local/bin:/home/rcannon/.pulumi/bin
+export PATH=$PATH:$HOME/.local/bin:$HOME/.pulumi/bin
 available_version=$(curl -s "https://api.github.com/repos/pulumi/pulumi/releases/latest" | jq -r .tag_name)
 installed_version=$(pulumi version 2>/dev/null) || true
 if [ "$available_version" != "$installed_version" ]; then

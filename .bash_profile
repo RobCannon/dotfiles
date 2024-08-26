@@ -5,7 +5,7 @@ if [ -f ~/.bashrc ]; then
 fi
 
 # User specific environment and startup programs
-export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH:$HOME/.pulumi/bin"
 export KUBECONFIG=$HOME/.kube/config
 
 export DOCKER_BUILDKIT=1
