@@ -205,9 +205,9 @@ echo ''
 echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mCreate symlinks to Windows host\e[0m"
 rm -rf ~/.aws
-ln -sf $USERPROFILE/.aws $HOME/.aws
+ln -sf "$USERPROFILE/.aws" "$HOME/.aws"
 rm -rf ~/.ssh
-ln -sf $USERPROFILE/.ssh $HOME/.ssh
+ln -sf "$USERPROFILE/.ssh" "$HOME/.ssh"
 
 
 # Initialize ssh-agent
