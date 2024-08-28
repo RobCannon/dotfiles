@@ -92,7 +92,7 @@ echo -e "\e[1;36m------\e[0m"
 echo -e "\e[1;36mUpdating kustomize\e[0m"
 download_url=$(curl -s "https://api.github.com/repos/kubernetes-sigs/kustomize/releases/latest" | jq -r ".assets[] | select(.content_type == \"application/x-gtar\") | select(.name | test(\"linux_$arch\")) | .browser_download_url")
 curl -sL $download_url -o /tmp/kustomize.tar.gz
-sudo tar -xvf /tmp/kustomize.tar.gz -C /usr/bin/
+sudo tar -xvf /tmp/kustomize.tar.gz -C /usr/bin/ > /dev/null
 sudo chmod +x /usr/bin/kustomize
 rm /tmp/kustomize.tar.gz
 
