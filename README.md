@@ -14,6 +14,7 @@ dotfiles config --local status.showUntrackedFiles no
 dotfiles checkout -f main
 
 ~/.local/bin/init-os.sh
+gh auth login
 ```
 
 Only Rob should run this.  This is to update the repo.
