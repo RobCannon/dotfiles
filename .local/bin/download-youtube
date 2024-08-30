@@ -3,8 +3,8 @@ mkdir -p "$USERPROFILE/Videos/YouTube"
 yt-dlp --yes-playlist --output "$USERPROFILE/Videos/YouTube/%(title)s [%(id)s].%(ext)s" https://www.youtube.com/playlist?list=PLvnxQqu1341lUepwKchlXj_t2E8OWkqoh
 
 
-yt-dlp --yes-playlist --output "$USERPROFILE/Videos/YouTube/%(title)s [%(id)s].%(ext)s" https://vimeo.com/802356543/b9866b9a58
-yt-dlp --yes-playlist --output "$USERPROFILE/Videos/YouTube/%(title)s [%(id)s].%(ext)s" https://vimeo.com/802356470/0f019a3d14
-yt-dlp --yes-playlist --output "$USERPROFILE/Videos/YouTube/%(title)s [%(id)s].%(ext)s" https://player.vimeo.com/video/803336816
-yt-dlp --yes-playlist --output "$USERPROFILE/Videos/YouTube/%(title)s [%(id)s].%(ext)s" https://player.vimeo.com/video/803341482
-yt-dlp --yes-playlist --output "$USERPROFILE/Videos/YouTube/%(title)s [%(id)s].%(ext)s" https://player.vimeo.com/video/803348201
+# yt-dlp --yes-playlist --output "$USERPROFILE/Videos/YouTube/%(title)s [%(id)s].%(ext)s" https://vimeo.com/802356543/b9866b9a58
+# yt-dlp --yes-playlist --output "$USERPROFILE/Videos/YouTube/%(title)s [%(id)s].%(ext)s" https://vimeo.com/802356470/0f019a3d14
+# yt-dlp --yes-playlist --output "$USERPROFILE/Videos/YouTube/%(title)s [%(id)s].%(ext)s" https://player.vimeo.com/video/803336816
+# yt-dlp --yes-playlist --output "$USERPROFILE/Videos/YouTube/%(title)s [%(id)s].%(ext)s" https://player.vimeo.com/video/803341482
+# yt-dlp --yes-playlist --output "$USERPROFILE/Videos/YouTube/%(title)s [%(id)s].%(ext)s" https://player.vimeo.com/video/803348201
