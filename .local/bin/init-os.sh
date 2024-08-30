@@ -128,6 +128,13 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubc
 #   "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
 #   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
+echo ''
+echo -e "\e[1;36m------\e[0m"
+echo -e "\e[1;36mInstall k6 GPG keys\e[0m"
+sudo gpg -k
+sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+
 
 echo ''
 echo -e "\e[1;36m------\e[0m"
@@ -159,6 +166,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get -yq install \
   virtualenv \
   wslu \
   gh \
+  k6 \
   packer \
   nodejs \
   postgresql-client \
