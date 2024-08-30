@@ -27,7 +27,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
   ca-certificates \
   lsb-release \
   systemd-timesyncd \
-  gnupg \
+  gnupg2 \
   curl \
   wget \
   software-properties-common \
