@@ -1,3 +1,3 @@
 #!/usr/bin/env sh
 mkdir -p "$USERPROFILE/Videos/YouTube"
-yt-dlp --yes-playlist -S "mp4" --output "$USERPROFILE/Videos/YouTube/%(title)s.%(ext)s" https://www.youtube.com/playlist?list=PLvnxQqu1341lUepwKchlXj_t2E8OWkqoh
+yt-dlp --yes-playlist -w -f "bv+ba/b" --output "$USERPROFILE/Videos/YouTube/%(title)s.%(ext)s"  --restrict-filenames https://www.youtube.com/playlist?list=PLvnxQqu1341lUepwKchlXj_t2E8OWkqoh
